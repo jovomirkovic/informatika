@@ -13,43 +13,157 @@
         RASTA
       </q-toolbar-title>
 
-      <q-btn
+      <q-btn-dropdown
         flat
         dense
         round
-        icon="info"
-        style="font-size: 8vw; margin-right: 15px"
-      />
+        dropdown-icon="more_vert"
+        style="font-size: 5vw; margin-right: 15px"
+        content-style="background-color: #00000000;"
+      >
+        <div style="background-color: #00000040; color: #ffffff">
+          <q-item
+            @click="languageDialog = true"
+            clickable
+            v-ripple
+            v-close-popup
+            class="flex items-center"
+          >
+            <q-icon size="1.5em" name="language" style="margin-right: 10px" />
+            <span> Jezik</span>
+          </q-item>
+
+          <q-item
+            @click="infomationDialog = true"
+            clickable
+            v-ripple
+            v-close-popup
+            class="flex items-center"
+          >
+            <q-icon size="1.5em" name="info" style="margin-right: 10px" />
+            <span> Informacije </span>
+          </q-item>
+        </div>
+      </q-btn-dropdown>
     </q-toolbar>
     <div
       style="min-height: calc(100vh - 180px); margin: 10px"
       class="flex justify-end column"
     >
       <span class="row">
-        <q-btn class="girlBtn mainBtn" push>
+        <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn" push>
           <q-icon size="3em" name="female" />
           <div style="width: 70%">Dodaj devojčicu</div>
         </q-btn>
 
-        <q-btn class="boyBtn mainBtn" push>
+        <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn" push>
           <q-icon size="3em" name="male" />
           <div style="width: 70%">Dodaj dečaka</div>
         </q-btn>
       </span>
 
-      <q-btn class="kidsBtn mainBtn" push>
+      <q-btn @click="goTo('/myChildren')" class="kidsBtn mainBtn" push>
         <q-icon size="3em" name="fa-solid fa-child-reaching" />
         <div style="width: 70%">Moja Deca</div>
       </q-btn>
+      <p style="color: #00000040; text-align: center; font-size: 12pt">
+        Visina nije mala stvar!
+      </p>
     </div>
+
+    <q-dialog v-model="infomationDialog">
+      <q-card style="background-color: #ffffff; color: #1e1e1e">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">O aplikaciji</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          Poštovani korisniče,<br />
+          Karta rasta je aplikacija namenjana praćenju rasta i pravovremenom
+          prepoznavanju problema koji mogu da nastanu tokom rasta i razvoja
+          deteta. Ova aplikacija ne zamenjuje redovna merenja tokom sistematskih
+          pregleda u Domu Zdravlja. Za sve dodatne informacije obratite se Vašem
+          izabranom lekaru!
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="languageDialog">
+      <q-card style="background-color: #ffffff; color: #1e1e1e; width: 100%">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Izbor jezika</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section class="flex items-center column">
+          <q-avatar style="margin: 20px">
+            <img
+              v-if="selectedLanguage.value == 'srb'"
+              src="../assets/flags/srb.png"
+            />
+            <img
+              v-else-if="selectedLanguage.value == 'eng'"
+              src="../assets/flags/eng.png"
+            />
+            <!-- <img :src="'../assets/flags/' + selectedLanguage.value + '.png'" /> -->
+          </q-avatar>
+          <q-select
+            style="width: 100%; margin-bottom: 25px"
+            rounded
+            outlined
+            v-model="selectedLanguage"
+            :options="languageOptions"
+            label="Izaberite jezik"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "IndexPage",
+  setup() {
+    let router = useRouter();
+
+    let infomationDialog = ref(false);
+    let languageDialog = ref(false);
+    let selectedLanguage = ref({
+      label: "Srpski",
+      value: "srb",
+    });
+    let languageOptions = [
+      {
+        label: "Srpski",
+        value: "srb",
+      },
+      {
+        label: "English",
+        value: "eng",
+      },
+    ];
+
+    function goTo(path) {
+      console.log(path);
+      console.log(router);
+      router.push(path);
+    }
+
+    return {
+      infomationDialog,
+      languageDialog,
+      selectedLanguage,
+      languageOptions,
+      goTo,
+    };
+  },
 });
 </script>
 <style lang="scss">

@@ -84,8 +84,10 @@ module.exports = configure(function (ctx) {
           secondary: "#26A69A",
           accent: "#9C27B0",
           boy: "#759eff",
+          male: "#759eff",
           "boy-color": "#347dc1",
           "girl-color": "#cc6594",
+          female: "#cc6594",
           dark: "#1D1D1D",
           "dark-page": "#121212",
           positive: "#21BA45",
@@ -106,7 +108,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ["Notify"],
     },
 
     // animations: 'all', // --- includes all animations
