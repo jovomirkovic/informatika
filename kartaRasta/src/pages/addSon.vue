@@ -21965,6 +21965,7 @@ export default defineComponent({
           },
         ],
       };
+
       if (newChild.id == null) children.value.push(child);
       else {
         debugger;
