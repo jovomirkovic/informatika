@@ -9,6 +9,7 @@
         @put-child="putChild"
         @add-child="addChild"
         @resetuj-selektovano-dete="resetujSelektovanoDete"
+        @select-child="selectChild"
       />
     </q-page-container>
   </q-layout>
@@ -22009,10 +22010,8 @@ export default defineComponent({
     function editChild(child) {
       selectedChild.value = child;
 
-      setTimeout(() => {
-        if (child.gender == "male") router.push("/addSon");
-        else router.push("/addDaughter");
-      }, 1000);
+      if (child.gender == "male") router.push("/addSon");
+      else router.push("/addDaughter");
     }
 
     const putChild = (child) => {
@@ -22028,6 +22027,9 @@ export default defineComponent({
     function resetujSelektovanoDete() {
       selectedChild.value = {};
     }
+    function selectChild(child) {
+      selectedChild.value = child;
+    }
     return {
       children,
       selectedChild,
@@ -22035,6 +22037,7 @@ export default defineComponent({
       editChild,
       putChild,
       removeChild,
+      selectChild,
       resetujSelektovanoDete,
     };
   },

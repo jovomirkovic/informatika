@@ -4,68 +4,75 @@
     style="
       background-color: #ffffffa0;
       border-radius: 15px;
-      margin: 15px 0px;
-      padding: 0px 0px 25px 0px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      padding: 0px 0px 25px 0px;
+      margin: 8px 0px;
     "
     :style="{
       color: [selectedChild.gender == 'male' ? '#759eff' : '#de60ba'],
     }"
     v-if="selectedChild"
   >
-    <img
-      style="
-        width: 100%;
-        border-radius: 15px 15px 0px 0px;
-        height: 200px;
-        object-fit: cover;
-      "
-      v-if="selectedChild.childPhoto"
-      :src="selectedChild.childPhoto"
-    />
-    <q-icon v-else name="fa-solid fa-baby" size="7em" style="height: 200px" />
-    <span class="title">{{
-      selectedChild.firstName + " " + selectedChild.lastName
-    }}</span>
-    <span class="subtitle" style="margin-bottom: 20px">{{
-      selectedChild.dateOfBirth
-    }}</span>
-    <div class="row flex justify-between items-center" style="width: 80%">
-      <span class="row flex flex-center">
-        <q-icon size="1.3em" class="q-ma-sm" name="straighten" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Dužina na rođenju</span
-        >
-      </span>
-      <span class="rightSide">{{ selectedChild.birthHeight }}cm</span>
-    </div>
-    <div class="row flex justify-between items-center" style="width: 80%">
-      <span class="row flex flex-center">
-        <q-icon size="1.3em" class="q-ma-sm" name="scale" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Težina na rođenju</span
-        >
-      </span>
-      <span class="rightSide">{{ selectedChild.birthWeight }}g</span>
-    </div>
-    <span
-      class="separatorLine"
-      :style="{
-        backgroundColor: [
-          selectedChild.gender == 'male' ? '#759eff' : '#de60ba',
-        ],
-      }"
-    ></span>
-    <span class="subtitle2">Poslednje izmerena visina</span>
-    <div class="row flex justify-between" style="width: 80%">
-      <span class="q-mr-md rightSide">{{
-        selectedChild.heightData[selectedChild.heightData.length - 1].date
+    <div
+      class="flex flex-center column"
+      style="width: 100%"
+      @click="viewChildInformation"
+    >
+      <img
+        style="
+          width: 100%;
+          border-radius: 15px 15px 0px 0px;
+          height: 200px;
+          object-fit: cover;
+        "
+        v-if="selectedChild.childPhoto"
+        :src="selectedChild.childPhoto"
+      />
+      <q-icon v-else name="fa-solid fa-baby" size="7em" style="height: 200px" />
+      <span class="title">{{
+        selectedChild.firstName + " " + selectedChild.lastName
       }}</span>
-      <span class="rightSide"
-        >{{
-          selectedChild.heightData[selectedChild.heightData.length - 1].height
-        }}cm</span
-      >
+      <span class="subtitle" style="margin-bottom: 20px">{{
+        selectedChild.dateOfBirth
+      }}</span>
+      <div class="row flex justify-between items-center" style="width: 80%">
+        <span class="row flex flex-center">
+          <q-icon size="1.3em" class="q-ma-sm" name="straighten" />
+          <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
+            >Dužina na rođenju</span
+          >
+        </span>
+        <span class="rightSide">{{ selectedChild.birthHeight }}cm</span>
+      </div>
+      <div class="row flex justify-between items-center" style="width: 80%">
+        <span class="row flex flex-center">
+          <q-icon size="1.3em" class="q-ma-sm" name="scale" />
+          <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
+            >Težina na rođenju</span
+          >
+        </span>
+        <span class="rightSide">{{ selectedChild.birthWeight }}g</span>
+      </div>
+      <span
+        class="separatorLine"
+        :style="{
+          backgroundColor: [
+            selectedChild.gender == 'male' ? '#759eff' : '#de60ba',
+          ],
+        }"
+      ></span>
+      <span class="subtitle2">Poslednje izmerena visina</span>
+      <div class="row flex justify-between" style="width: 80%">
+        <span class="q-mr-md rightSide">{{
+          selectedChild.heightData[selectedChild.heightData.length - 1].date
+        }}</span>
+        <span class="rightSide"
+          >{{
+            selectedChild.heightData[selectedChild.heightData.length - 1]
+              .height
+          }}cm</span
+        >
+      </div>
     </div>
 
     <div class="row q-mt-md" style="width: 80%">
@@ -136,22 +143,6 @@ export default defineComponent({
 
     onMounted(() => {
       selectedChild.value = props.child;
-      console.log("props.child");
-      console.log("props.child");
-      console.log("props.child");
-      console.log(props.child);
-      console.log(selectedChild.value);
-      console.log(selectedChild.value.heightData);
-      console.log(
-        selectedChild.value.heightData[
-          selectedChild.value.heightData.length - 1
-        ]
-      );
-      console.log(
-        selectedChild.value.heightData[
-          selectedChild.value.heightData.length - 1
-        ].date
-      );
     });
 
     function goTo(path) {
@@ -164,6 +155,10 @@ export default defineComponent({
     function editChild() {
       ctx.emit("edit-child", selectedChild.value);
     }
+    function viewChildInformation() {
+      ctx.emit("select-child", selectedChild.value);
+      goTo("/childInformation");
+    }
 
     return {
       selectedChild,
@@ -171,6 +166,7 @@ export default defineComponent({
       goTo,
       removeChild,
       editChild,
+      viewChildInformation,
     };
   },
 });

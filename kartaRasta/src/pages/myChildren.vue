@@ -1,5 +1,5 @@
 <template>
-  <q-page class="container q-pa-md">
+  <q-page class="container flex flex-center">
     <q-toolbar style="color: #00000040">
       <q-btn flat icon="arrow_back_ios" @click="goTo('/')" />
       <q-toolbar-title
@@ -15,11 +15,13 @@
       </q-toolbar-title>
     </q-toolbar>
     <childCardComponent
+      style="width: calc(100% - 32px)"
       v-for="child in props.children"
       :key="child.id"
       :child="child"
       @remove-child="removeChild"
       @edit-child="editChild"
+      @select-child="selectChild"
     ></childCardComponent>
   </q-page>
 </template>
@@ -47,6 +49,9 @@ export default defineComponent({
     function editChild(child) {
       ctx.emit("edit-child", child);
     }
+    function selectChild(child) {
+      ctx.emit("select-child", child);
+    }
 
     function goTo(path) {
       router.push(path);
@@ -62,6 +67,7 @@ export default defineComponent({
       goTo,
       editChild,
       removeChild,
+      selectChild,
     };
   },
 });

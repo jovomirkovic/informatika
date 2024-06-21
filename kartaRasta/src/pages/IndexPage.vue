@@ -125,12 +125,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "IndexPage",
-  setup() {
+  setup(props, ctx) {
     let router = useRouter();
 
     let infomationDialog = ref(false);
@@ -149,6 +149,10 @@ export default defineComponent({
         value: "eng",
       },
     ];
+
+    onMounted(() => {
+      ctx.emit("resetuj-selektovano-dete", "");
+    });
 
     function goTo(path) {
       console.log(path);

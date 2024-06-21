@@ -1,7 +1,11 @@
 <template>
   <q-page class="container">
     <q-toolbar style="color: #00000040">
-      <q-btn flat icon="arrow_back_ios" @click="goTo('/')" />
+      <q-btn
+        flat
+        icon="arrow_back_ios"
+        @click="props.selectedChild.id ? goTo('/myChildren') : goTo('/')"
+      />
       <q-toolbar-title
         style="
           font-weight: 800;
