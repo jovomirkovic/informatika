@@ -18,6 +18,7 @@
       :selectedChild="props.selectedChild"
       gender="female"
       @add_child="addChild"
+      @resetuj-selektovano-dete="resetujSelektovanoDete"
     ></addChildComponent>
   </q-page>
 </template>
@@ -35,55 +36,18 @@ export default defineComponent({
     addChildComponent,
   },
   props: ["selectedChild"],
-  setup(props) {
+  setup(props, ctx) {
     let router = useRouter();
-    const $q = useQuasar();
-
-    const children = ref([]);
 
     function addChild(newChild) {
-      const child = {
-        ...newChild,
-        id: Date.now(),
-        gender: "female",
-        heightData: [{ height: "", date: "" }],
-      };
-      children.value.push(child);
-      console.log(children.value);
-      console.log(child);
-
-      saveChildren(newChild);
+      if (newChild.id != undefined && newChild.id != null)
+        ctx.emit("put-child", newChild);
+      else ctx.emit("add-child", { gender: "female", ...newChild });
     }
 
-    const loadChildren = async () => {
-      const storedChildren = await localforage.getItem("children");
-      if (storedChildren) {
-        children.value = JSON.parse(storedChildren);
-      }
-    };
-
-    const saveChildren = async (newChild) => {
-      await localforage
-        .setItem("children", JSON.stringify(children.value))
-        .then(() => {
-          $q.notify({
-            message: "Dodato dete " + newChild.firstName,
-            color: "positive",
-          });
-        })
-        .catch((e) => {
-          console.log("ERROR");
-          console.log(e);
-          $q.notify({
-            message: "Došlo je do greške",
-            color: "negative",
-          });
-        });
-    };
-
-    onMounted(() => {
-      loadChildren();
-    });
+    function resetujSelektovanoDete() {
+      ctx.emit("resetuj-selektovano-dete", "");
+    }
 
     function goTo(path) {
       router.push(path);
@@ -91,6 +55,7 @@ export default defineComponent({
 
     return {
       props,
+      resetujSelektovanoDete,
       addChild,
       goTo,
     };

@@ -136,6 +136,22 @@ export default defineComponent({
 
     onMounted(() => {
       selectedChild.value = props.child;
+      console.log("props.child");
+      console.log("props.child");
+      console.log("props.child");
+      console.log(props.child);
+      console.log(selectedChild.value);
+      console.log(selectedChild.value.heightData);
+      console.log(
+        selectedChild.value.heightData[
+          selectedChild.value.heightData.length - 1
+        ]
+      );
+      console.log(
+        selectedChild.value.heightData[
+          selectedChild.value.heightData.length - 1
+        ].date
+      );
     });
 
     function goTo(path) {

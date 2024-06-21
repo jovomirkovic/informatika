@@ -115,7 +115,7 @@
         push
         class="text-white bg-negative q-mr-sm col"
         label="Otkaži"
-        @click="goTo('/')"
+        @click="otkazi"
       />
       <q-btn
         push
@@ -162,6 +162,8 @@ export default defineComponent({
     let birthHeightRef = ref(null);
     let fathersHeightRef = ref(null);
     let mothersHeightRef = ref(null);
+    let heightData = ref(undefined);
+    let gender = ref(undefined);
 
     onMounted(() => {
       console.log("props");
@@ -169,7 +171,7 @@ export default defineComponent({
       console.log(props.selectedChild);
       console.log("props");
 
-      if (props.selectedChild) {
+      if (props.selectedChild.id != undefined) {
         id.value = props.selectedChild.id;
         firstName.value = props.selectedChild.firstName;
         lastName.value = props.selectedChild.lastName;
@@ -177,7 +179,9 @@ export default defineComponent({
         birthWeight.value = props.selectedChild.birthWeight;
         birthHeight.value = props.selectedChild.birthHeight;
         fathersHeight.value = props.selectedChild.fathersHeight;
+        heightData.value = props.selectedChild.heightData;
         mothersHeight.value = props.selectedChild.mothersHeight;
+        gender.value = props.selectedChild.gender;
       }
     });
 
@@ -221,6 +225,8 @@ export default defineComponent({
         mothersHeight: mothersHeight.value,
         childPhoto: childPhoto.value,
         childTargetHeight: childTargetHeight.value,
+        gender: gender.value,
+        heightData: heightData.value,
       };
 
       console.log("childInfomation");
@@ -230,6 +236,10 @@ export default defineComponent({
       // goTo("/");
     }
 
+    function otkazi() {
+      ctx.emit("resetuj-selektovano-dete", "");
+      goTo("/");
+    }
     function getAppIcon(files) {
       downscaleImage(files.base64, 320, "image/jpeg", 0.7);
     }
@@ -286,6 +296,7 @@ export default defineComponent({
       birthHeightRef,
       fathersHeightRef,
       mothersHeightRef,
+      otkazi,
       goTo,
       getAppIcon,
       save,

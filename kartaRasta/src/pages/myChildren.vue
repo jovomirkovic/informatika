@@ -15,7 +15,7 @@
       </q-toolbar-title>
     </q-toolbar>
     <childCardComponent
-      v-for="child in children"
+      v-for="child in props.children"
       :key="child.id"
       :child="child"
       @remove-child="removeChild"
@@ -36,57 +36,29 @@ export default defineComponent({
   components: {
     childCardComponent,
   },
+  props: ["children"],
   setup(props, ctx) {
     let router = useRouter();
     const $q = useQuasar();
 
-    const children = ref([]);
-
-    const loadChildren = async () => {
-      const storedChildren = await localforage.getItem("children");
-      if (storedChildren) {
-        children.value = JSON.parse(storedChildren);
-      }
-      console.log("children.value");
-      console.log(children.value);
-    };
-
-    const saveChildren = async (newChild) => {
-      await localforage
-        .setItem("children", JSON.stringify(children.value))
-        .then(() => {
-          $q.notify({
-            message: "Dodato dete " + newChild.firstName,
-            color: "positive",
-          });
-        })
-        .catch((e) => {
-          console.log("ERROR");
-          console.log(e);
-          $q.notify({
-            message: "Došlo je do greške",
-            color: "negative",
-          });
-        });
-    };
-
     function removeChild(child) {
-      ctx.emit("remove-child", child);
+      ctx.emit("remove-child", child.id);
     }
     function editChild(child) {
       ctx.emit("edit-child", child);
     }
 
-    onMounted(() => {
-      loadChildren();
-    });
-
     function goTo(path) {
       router.push(path);
     }
 
+    onMounted(() => {
+      console.log("props.children");
+      console.log(props);
+      console.log(props.children);
+    });
     return {
-      children,
+      props,
       goTo,
       editChild,
       removeChild,
