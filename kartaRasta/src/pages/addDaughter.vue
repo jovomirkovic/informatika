@@ -46,7 +46,7 @@ export default defineComponent({
     function addChild(newChild) {
       if (newChild.id != undefined && newChild.id != null)
         ctx.emit("put-child", newChild);
-      else ctx.emit("add-child", { gender: "female", ...newChild });
+      else ctx.emit("add-child", { ...newChild, gender: "female" });
     }
 
     function resetujSelektovanoDete() {

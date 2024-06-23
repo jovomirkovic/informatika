@@ -1,5 +1,5 @@
 <template>
-  <q-page class="container flex flex-center">
+  <q-page class="container flex column items-center">
     <q-toolbar style="color: #00000040">
       <q-btn flat icon="arrow_back_ios" @click="goTo('/')" />
       <q-toolbar-title
@@ -23,6 +23,33 @@
       @edit-child="editChild"
       @select-child="selectChild"
     ></childCardComponent>
+    <span
+      class="col column flex justify-end items-center"
+      v-if="props.children == undefined || props.children.length <= 0"
+    >
+      <span
+        class=""
+        style="
+          font-weight: 600;
+          font-size: 15pt;
+          line-height: 1;
+          color: #00000040;
+          margin: 50px 0px;
+        "
+        >Još uvek niste uneli ni jedno dete!</span
+      >
+      <span class="row">
+        <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn" push>
+          <q-icon size="3em" name="female" />
+          <div style="width: 70%">Dodaj devojčicu</div>
+        </q-btn>
+
+        <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn" push>
+          <q-icon size="3em" name="male" />
+          <div style="width: 70%">Dodaj dečaka</div>
+        </q-btn>
+      </span>
+    </span>
   </q-page>
 </template>
 

@@ -62,7 +62,14 @@
         }"
       ></span>
       <span class="subtitle2">Poslednje izmerena visina</span>
-      <div class="row flex justify-between" style="width: 80%">
+      <div
+        v-if="
+          selectedChild.heightData != undefined &&
+          selectedChild.heightData.length > 0
+        "
+        class="row flex justify-between"
+        style="width: 80%"
+      >
         <span class="q-mr-md rightSide">{{
           selectedChild.heightData[selectedChild.heightData.length - 1].date
         }}</span>

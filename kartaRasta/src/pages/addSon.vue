@@ -46,7 +46,7 @@ export default defineComponent({
     function addChild(newChild) {
       if (newChild.id != undefined && newChild.id != null)
         ctx.emit("put-child", newChild);
-      else ctx.emit("add-child", { gender: "male", ...newChild });
+      else ctx.emit("add-child", { ...newChild, gender: "male" });
     }
 
     function generateDailyHeightData(dateOfBirth) {

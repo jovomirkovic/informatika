@@ -72,7 +72,12 @@
     </div>
 
     <q-dialog v-model="infomationDialog">
-      <q-card style="background-color: #ffffff; color: #1e1e1e">
+      <q-card
+        style="
+          background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
+          color: #1e1e1e;
+        "
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">O aplikaciji</div>
           <q-space />
@@ -91,7 +96,13 @@
     </q-dialog>
 
     <q-dialog v-model="languageDialog">
-      <q-card style="background-color: #ffffff; color: #1e1e1e; width: 100%">
+      <q-card
+        style="
+          background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
+          color: #1e1e1e;
+          width: 100%;
+        "
+      >
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">Izbor jezika</div>
           <q-space />

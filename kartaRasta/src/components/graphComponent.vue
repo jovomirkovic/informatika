@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import { date } from "quasar";
+import averageHeight from "../scripts/averageHeight.vue";
 
 export default defineComponent({
   name: "graphComponent",
@@ -42,8 +43,17 @@ export default defineComponent({
       console.log(props.child.heightData);
     });
 
+    watch(props, (newProps) => {
+      // if (root.value != null) root.value.dispose();
+      // setTimeout(() => {
+      //   root.value = null;
+      //   createChard();
+      // }, 500);
+    });
     function createChard() {
       var root = am5.Root.new("chartdiv");
+      console.log(root);
+      console.log(root.value);
 
       root.setThemes([am5themes_Animated.new(root)]);
 
@@ -55,19 +65,73 @@ export default defineComponent({
         })
       );
 
+      var dataa =
+        props.child.gender == "male"
+          ? averageHeight().boys
+          : averageHeight().girls;
+
+      var totalMonths =
+        date.getDateDiff(
+          date.extractDate(
+            props.child.heightData[props.child.heightData.length - 1].date,
+            "YYYY-MM-DD"
+          ),
+          date.extractDate(props.child.heightData[0].date, "YYYY-MM-DD"),
+          "month"
+        ) + 1;
+
+      var procenjenaVisina =
+        (parseFloat(props.child.fathersHeight) +
+          parseFloat(props.child.mothersHeight) +
+          13 * (props.child.gender == "male" ? 1 : -1)) /
+        2;
+
+      var koeficientRoditelja =
+        procenjenaVisina / dataa.filter((e) => e.age == 240)[0].height;
+
+      var data2 = dataa
+        .filter((e) => e.age <= totalMonths)
+        .map((e) => {
+          return {
+            date: date
+              .addToDate(
+                date.extractDate(props.child.heightData[0].date, "YYYY-MM-DD"),
+                { months: e.age }
+              )
+              .getTime(),
+            height: e.height,
+          };
+        });
+
+      var data3 = dataa
+        .filter((e) => e.age <= totalMonths)
+        .map((e) => {
+          return {
+            date: date
+              .addToDate(
+                date.extractDate(props.child.heightData[0].date, "YYYY-MM-DD"),
+                { months: e.age }
+              )
+              .getTime(),
+            topHeight: e.height * koeficientRoditelja + 5,
+            bottomHeight: e.height * koeficientRoditelja - 5,
+          };
+        });
+
+      console.log("data3");
+      console.log(data3);
+      console.log(koeficientRoditelja);
       // Define data
       var data = props.child.heightData.map((e) => {
         return {
           date: new Date(e.date).getTime(),
           height: e.height,
-          topHeight: e.height + 0.07 * e.height,
-          bottomHeight: e.height - 0.07 * e.height,
-          averageHeight: e.height + 0.035 * e.height,
+          topHeight: parseFloat(e.height) + 0.07 * parseFloat(e.height),
+          bottomHeight: parseFloat(e.height) - 0.07 * parseFloat(e.height),
+          averageHeight: parseFloat(e.height) + 0.035 * parseFloat(e.height),
         };
       });
-
-      console.log("data");
-      console.log(data);
+      debugger;
 
       // Craete Y-axis
       let yAxis = chart.yAxes.push(
@@ -117,7 +181,7 @@ export default defineComponent({
 
       series2.set("fill", am5.color("#00ff00"));
       series2.set("stroke", am5.color("#00ff00"));
-      series2.data.setAll(data);
+      series2.data.setAll(data3);
 
       var series3 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -136,20 +200,20 @@ export default defineComponent({
 
       series3.set("fill", am5.color("#ff0000"));
       series3.set("stroke", am5.color("#ff0000"));
-      series3.data.setAll(data);
+      series3.data.setAll(data3);
 
       var series4 = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: "Prosečna visina ta uzrast",
+          name: "Prosečna visina za uzrast",
           xAxis: xAxis,
           yAxis: yAxis,
-          valueYField: "averageHeight",
+          valueYField: "height",
           valueXField: "date",
         })
       );
 
       series4.set("stroke", am5.color("#000000"));
-      series4.data.setAll(data);
+      series4.data.setAll(data2);
 
       chart.set(
         "scrollbarX",
@@ -203,6 +267,6 @@ export default defineComponent({
 }
 #chartdiv {
   width: 100%;
-  height: 75vh;
+  height: calc(100vh - 170px);
 }
 </style>

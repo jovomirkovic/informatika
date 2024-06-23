@@ -84,7 +84,11 @@
     />
 
     <q-avatar size="10em" style="margin: 20px">
-      <img v-if="childPhoto != null" :src="childPhoto" />
+      <img
+        v-if="childPhoto != null"
+        :src="childPhoto"
+        style="object-fit: cover"
+      />
       <q-icon
         v-else
         name="fa-solid fa-baby"
@@ -120,7 +124,7 @@
       <q-btn
         push
         class="text-white bg-positive q-ml-sm col"
-        label="Dodaj"
+        :label="id == null || id == undefined ? 'Dodaj' : 'Izmeni'"
         @click="save"
       />
     </div>
@@ -162,6 +166,7 @@ export default defineComponent({
     let birthHeightRef = ref(null);
     let fathersHeightRef = ref(null);
     let mothersHeightRef = ref(null);
+
     let heightData = ref(undefined);
     let gender = ref(undefined);
 
@@ -179,8 +184,9 @@ export default defineComponent({
         birthWeight.value = props.selectedChild.birthWeight;
         birthHeight.value = props.selectedChild.birthHeight;
         fathersHeight.value = props.selectedChild.fathersHeight;
-        heightData.value = props.selectedChild.heightData;
         mothersHeight.value = props.selectedChild.mothersHeight;
+        childPhoto.value = props.selectedChild.childPhoto;
+        heightData.value = props.selectedChild.heightData;
         gender.value = props.selectedChild.gender;
       }
     });
@@ -279,6 +285,7 @@ export default defineComponent({
     }
 
     return {
+      id,
       firstName,
       lastName,
       dateOfBirth,

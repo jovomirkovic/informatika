@@ -17,7 +17,7 @@
       style="
         width: 100%;
         border-radius: 15px 15px 0px 0px;
-        height: 200px;
+        height: calc(100vh - 415px);
         object-fit: cover;
       "
       v-if="props.child.childPhoto"
@@ -57,7 +57,9 @@
     <span class="subtitle2">Poslednje izmerena visina</span>
     <div
       class="row flex justify-between"
-      v-if="props.child.heightData"
+      v-if="
+        props.child.heightData != undefined && props.child.heightData.length > 0
+      "
       style="width: 80%"
     >
       <span class="q-mr-md rightSide">{{
