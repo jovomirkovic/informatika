@@ -24,6 +24,8 @@ import { useQuasar } from "quasar";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import * as d3 from "https://cdn.skypack.dev/d3-shape@3";
+
 import { date } from "quasar";
 import averageHeight from "../scripts/averageHeight.vue";
 
@@ -159,9 +161,23 @@ export default defineComponent({
           tooltip: am5.Tooltip.new(root, {
             labelText: "{valueY}",
           }),
+          // curveFactory: d3.curveNatural,
         })
       );
       series1.set("stroke", am5.color("#e55d8b"));
+
+      series1.bullets.push(function () {
+        return am5.Bullet.new(root, {
+          locationY: 0,
+          sprite: am5.Circle.new(root, {
+            radius: 4,
+            stroke: root.interfaceColors.get("background"),
+            strokeWidth: 2,
+            fill: am5.color("#e55d8b"),
+          }),
+        });
+      });
+
       series1.data.setAll(data);
 
       var series2 = chart.series.push(
@@ -267,6 +283,6 @@ export default defineComponent({
 }
 #chartdiv {
   width: 100%;
-  height: calc(100vh - 170px);
+  height: calc(100vh - 220px);
 }
 </style>

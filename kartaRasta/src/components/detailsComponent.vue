@@ -17,7 +17,7 @@
       style="
         width: 100%;
         border-radius: 15px 15px 0px 0px;
-        height: calc(100vh - 415px);
+        height: calc(100vh - 465px);
         object-fit: cover;
       "
       v-if="props.child.childPhoto"

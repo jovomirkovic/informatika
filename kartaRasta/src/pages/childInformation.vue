@@ -13,7 +13,23 @@
       >
         {{ props.selectedChild.firstName + " " + props.selectedChild.lastName }}
       </q-toolbar-title>
-      <q-btn flat icon="add" @click="addHeightDialog = true" />
+      <q-btn
+        style="
+          position: fixed;
+          bottom: 15px;
+          left: calc(50vw - 90px);
+          width: 180px;
+          color: #ffffff;
+        "
+        :class="{
+          'bg-girl': props.selectedChild.gender == 'female',
+          'bg-boy': props.selectedChild.gender == 'male',
+        }"
+        rounded
+        label="Novo merenje"
+        icon="add"
+        @click="addHeightDialog = true"
+      />
     </q-toolbar>
 
     <q-tabs v-model="selectedTab" dense align="justify" narrow-indicator>
@@ -101,6 +117,7 @@
                     :color="selectedChild.gender"
                     v-model="dateOfMeasurement"
                     mask="DD.MM.YYYY."
+                    @update:model-value="dateOfMeasurementRef.hide()"
                   >
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />

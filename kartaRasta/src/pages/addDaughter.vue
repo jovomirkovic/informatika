@@ -8,6 +8,7 @@
       />
       <q-toolbar-title
         style="
+          overflow: visible;
           font-weight: 800;
           font-size: 20pt;
           text-align: left;

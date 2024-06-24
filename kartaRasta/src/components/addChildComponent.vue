@@ -37,7 +37,12 @@
             transition-show="scale"
             transition-hide="scale"
           >
-            <q-date :color="gender" v-model="dateOfBirth" mask="DD.MM.YYYY.">
+            <q-date
+              :color="gender"
+              v-model="dateOfBirth"
+              mask="DD.MM.YYYY."
+              @update:model-value="dateOfBirthPopupRef.hide()"
+            >
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -47,6 +52,7 @@
       </template>
     </q-input>
     <q-input
+      type="number"
       :color="gender"
       ref="birthWeightRef"
       rounded
@@ -56,6 +62,7 @@
       :rules="[(val) => !!val || 'Obavezno polje']"
     />
     <q-input
+      type="number"
       :color="gender"
       ref="birthHeightRef"
       rounded
@@ -65,6 +72,7 @@
       :rules="[(val) => !!val || 'Obavezno polje']"
     />
     <q-input
+      type="number"
       :color="gender"
       ref="fathersHeightRef"
       rounded
@@ -74,6 +82,7 @@
       :rules="[(val) => !!val || 'Obavezno polje']"
     />
     <q-input
+      type="number"
       :color="gender"
       ref="mothersHeightRef"
       rounded
@@ -108,7 +117,7 @@
       class="column items-center text-left text-bold q-mt-xl q-mb-xl"
       style="font-size: 12pt; color: #000000a0"
     >
-      <div class="col">Cijana visina:</div>
+      <div class="col">Ciljana visina:</div>
       <div class="col">
         {{ childTargetHeight ? childTargetHeight + " cm" : "/" }}
       </div>
@@ -132,9 +141,9 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import { useQuasar, date } from "quasar";
 import base64 from "../components/base64.vue";
 
 export default defineComponent({
@@ -150,7 +159,7 @@ export default defineComponent({
     let id = ref(null);
     let firstName = ref(null);
     let lastName = ref(null);
-    let dateOfBirth = ref(null);
+    let dateOfBirth = ref(date.formatDate(Date.now(), "DD.MM.YYYY."));
     let birthWeight = ref(null);
     let birthHeight = ref(null);
     let fathersHeight = ref(null);
@@ -170,6 +179,20 @@ export default defineComponent({
     let heightData = ref(undefined);
     let gender = ref(undefined);
 
+    watch(fathersHeight, (newFathersHeight) => {
+      if (newFathersHeight != null && mothersHeight.value != null) {
+        childTargetHeight.value =
+          (parseFloat(newFathersHeight) + parseFloat(mothersHeight.value)) / 2 +
+          (gender == "male" ? 13 : -13);
+      }
+    });
+    watch(mothersHeight, (newMothersHeight) => {
+      if (newMothersHeight != null && fathersHeight.value != null) {
+        childTargetHeight.value =
+          (parseFloat(newMothersHeight) + parseFloat(fathersHeight.value)) / 2 +
+          (gender.value == "male" ? 13 : -13);
+      }
+    });
     onMounted(() => {
       console.log("props");
       console.log(props);
@@ -188,7 +211,7 @@ export default defineComponent({
         childPhoto.value = props.selectedChild.childPhoto;
         heightData.value = props.selectedChild.heightData;
         gender.value = props.selectedChild.gender;
-      }
+      } else gender.value = props.gender;
     });
 
     function goTo(path) {

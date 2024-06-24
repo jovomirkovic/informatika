@@ -15,7 +15,7 @@
   >
     <div
       class="flex flex-center column"
-      style="width: 100%"
+      style="width: 100%; position: relative"
       @click="viewChildInformation"
     >
       <img
@@ -29,6 +29,11 @@
         :src="selectedChild.childPhoto"
       />
       <q-icon v-else name="fa-solid fa-baby" size="7em" style="height: 200px" />
+      <q-icon
+        name="info"
+        size="20pt"
+        style="position: absolute; top: 10px; right: 10px"
+      />
       <span class="title">{{
         selectedChild.firstName + " " + selectedChild.lastName
       }}</span>

@@ -13,7 +13,7 @@
     }"
   >
     <q-table
-      style="height: calc(100vh - 145px)"
+      style="height: calc(100vh - 195px)"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -23,6 +23,7 @@
         <q-td key="action" :props="props">
           <q-btn
             icon="delete"
+            :disabled="props.row.id == 'childTargetHeight'"
             push
             class="text-white bg-negative q-ml-sm col"
             round
@@ -123,6 +124,7 @@ export default defineComponent({
     watch(props, (newProps) => {
       rows.value = newProps.child.heightData.map((e) => {
         return {
+          id: e.id || "",
           height: e.height,
           age:
             date.getDateDiff(
@@ -161,6 +163,7 @@ export default defineComponent({
     onMounted(() => {
       rows.value = props.child.heightData.map((e) => {
         return {
+          id: e.id || "",
           height: e.height,
           age:
             date.getDateDiff(

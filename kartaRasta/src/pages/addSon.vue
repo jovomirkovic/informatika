@@ -8,6 +8,7 @@
       />
       <q-toolbar-title
         style="
+          overflow: visible;
           font-weight: 800;
           font-size: 20pt;
           text-align: left;
@@ -15,7 +16,7 @@
           margin: 25px 0px;
         "
       >
-        DODAJ DEVOJČICU
+        DODAJ DEČAKA
       </q-toolbar-title>
     </q-toolbar>
     <addChildComponent
