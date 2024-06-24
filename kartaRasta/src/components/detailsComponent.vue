@@ -17,7 +17,7 @@
       style="
         width: 100%;
         border-radius: 15px 15px 0px 0px;
-        height: calc(100vh - 465px);
+        height: calc(100vh - 535px);
         object-fit: cover;
       "
       v-if="props.child.childPhoto"
@@ -56,7 +56,7 @@
     ></span>
     <span class="subtitle2">Poslednje izmerena visina</span>
     <div
-      class="row flex justify-between"
+      class="row flex justify-around"
       v-if="
         props.child.heightData != undefined && props.child.heightData.length > 0
       "
@@ -70,6 +70,10 @@
           props.child.heightData[props.child.heightData.length - 1].height
         }}cm</span
       >
+    </div>
+    <div class="column flex items-center q-mt-md" style="width: 80%">
+      <span class="subtitle2">Ciljana visina</span>
+      <span class="rightSide">{{ props.child.childTargetHeight }}cm</span>
     </div>
   </div>
 </template>
