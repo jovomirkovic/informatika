@@ -165,23 +165,23 @@ export default defineComponent({
         var age = "";
         if (
           date.getDateDiff(
-            date.extractDate(e.date, "YYYY-MM-DD"),
             Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
             "years"
           ) != 0
         )
           age =
             age +
             date.getDateDiff(
-              date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
               "years"
             ) +
             " g";
         if (
           date.getDateDiff(
-            date.extractDate(e.date, "YYYY-MM-DD"),
             Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
             "months"
           ) != 0
         )
@@ -189,27 +189,27 @@ export default defineComponent({
             age +
             (age == "" ? "" : ", ") +
             (date.getDateDiff(
-              date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
               "months"
             ) -
               12 *
                 date.getDateDiff(
-                  date.extractDate(e.date, "YYYY-MM-DD"),
                   Date.now(),
+                  date.extractDate(e.date, "YYYY-MM-DD"),
                   "years"
                 )) +
             " m";
 
         if (
           date.getDateDiff(
-            date.extractDate(e.date, "YYYY-MM-DD"),
             Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
             "years"
           ) == 0 &&
           date.getDateDiff(
-            date.extractDate(e.date, "YYYY-MM-DD"),
             Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
             "months"
           ) == 0
         )
