@@ -9,8 +9,8 @@
           margin: 25px 25px;
         "
       >
-        KARTA <br />
-        RASTA
+        {{ $t("general.title1") }} <br />
+        {{ $t("general.title2") }}
       </q-toolbar-title>
 
       <q-btn-dropdown
@@ -30,18 +30,18 @@
             class="flex items-center"
           >
             <q-icon size="1.5em" name="language" style="margin-right: 10px" />
-            <span> Jezik</span>
+            <span> {{ $t("general.language") }}</span>
           </q-item>
 
           <q-item
-            @click="infomationDialog = true"
+            @click="informationDialog = true"
             clickable
             v-ripple
             v-close-popup
             class="flex items-center"
           >
             <q-icon size="1.5em" name="info" style="margin-right: 10px" />
-            <span> Informacije </span>
+            <span> {{ $t("general.info") }} </span>
           </q-item>
         </div>
       </q-btn-dropdown>
@@ -53,25 +53,25 @@
       <span class="row">
         <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn" push>
           <q-icon size="3em" name="female" />
-          <div style="width: 70%">Dodaj devojčicu</div>
+          <div style="width: 70%">{{ $t("general.addGirl") }}</div>
         </q-btn>
 
         <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn" push>
           <q-icon size="3em" name="male" />
-          <div style="width: 70%">Dodaj dečaka</div>
+          <div style="width: 70%">{{ $t("general.addBoy") }}</div>
         </q-btn>
       </span>
 
       <q-btn @click="goTo('/myChildren')" class="kidsBtn mainBtn" push>
         <q-icon size="3em" name="fa-solid fa-child-reaching" />
-        <div style="width: 70%">Moja Deca</div>
+        <div style="width: 70%">{{ $t("general.myChildren") }}</div>
       </q-btn>
       <p style="color: #00000040; text-align: center; font-size: 12pt">
-        Visina nije mala stvar!
+        {{ $t("general.heightIsNotASmallThing") }}
       </p>
     </div>
 
-    <q-dialog v-model="infomationDialog">
+    <q-dialog v-model="informationDialog">
       <q-card
         style="
           background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
@@ -79,18 +79,12 @@
         "
       >
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">O aplikaciji</div>
+          <div class="text-h6">{{ $t("general.aboutTheApp") }}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section>
-          Poštovani korisniče,<br />
-          Karta rasta je aplikacija namenjana praćenju rasta i pravovremenom
-          prepoznavanju problema koji mogu da nastanu tokom rasta i razvoja
-          deteta. Ova aplikacija ne zamenjuje redovna merenja tokom sistematskih
-          pregleda u Domu Zdravlja. Za sve dodatne informacije obratite se Vašem
-          izabranom lekaru!
+        <q-card-section v-html="$t('general.aboutTheAppText')">
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -104,7 +98,7 @@
         "
       >
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Izbor jezika</div>
+          <div class="text-h6">{{ $t("general.languageSelection") }}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
@@ -112,11 +106,11 @@
         <q-card-section class="flex items-center column">
           <q-avatar style="margin: 20px">
             <img
-              v-if="selectedLanguage.value == 'srb'"
+              v-if="selectedLanguage.value == 'sr'"
               src="../assets/flags/srb.png"
             />
             <img
-              v-else-if="selectedLanguage.value == 'eng'"
+              v-else-if="selectedLanguage.value == 'en-US'"
               src="../assets/flags/eng.png"
             />
             <!-- <img :src="'../assets/flags/' + selectedLanguage.value + '.png'" /> -->
@@ -127,7 +121,8 @@
             outlined
             v-model="selectedLanguage"
             :options="languageOptions"
-            label="Izaberite jezik"
+            :label="$t('general.selectLanguage')"
+            @update:model-value="changeLanguage"
           />
         </q-card-section>
       </q-card>
@@ -138,33 +133,53 @@
 <script>
 import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "IndexPage",
   setup(props, ctx) {
     let router = useRouter();
+    const { locale } = useI18n({ useScope: "global" });
 
-    let infomationDialog = ref(false);
+    let informationDialog = ref(false);
     let languageDialog = ref(false);
     let selectedLanguage = ref({
       label: "Srpski",
-      value: "srb",
+      value: "sr",
     });
-    let languageOptions = [
+    const languageOptions = [
       {
         label: "Srpski",
-        value: "srb",
+        value: "sr",
       },
       {
         label: "English",
-        value: "eng",
+        value: "en-US",
       },
     ];
 
     onMounted(() => {
       ctx.emit("resetuj-selektovano-dete", "");
+
+      if (localStorage.getItem("lang") != null) {
+        if (localStorage.getItem("lang") == "sr") {
+          selectedLanguage.value = {
+            label: "Srpski",
+            value: "sr",
+          };
+        } else {
+          selectedLanguage.value = {
+            label: "English",
+            value: "en-US",
+          };
+        }
+      }
     });
 
+    function changeLanguage() {
+      locale.value = selectedLanguage.value.value;
+      localStorage.setItem("lang", selectedLanguage.value.value);
+    }
     function goTo(path) {
       console.log(path);
       console.log(router);
@@ -172,11 +187,12 @@ export default defineComponent({
     }
 
     return {
-      infomationDialog,
+      informationDialog,
       languageDialog,
       selectedLanguage,
       languageOptions,
       goTo,
+      changeLanguage,
     };
   },
 });

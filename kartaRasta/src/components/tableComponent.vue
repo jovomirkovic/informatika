@@ -17,7 +17,7 @@
       :rows="rows"
       :columns="columns"
       row-key="name"
-      no-results-label="Nema podataka"
+      :no-results-label="$t('general.noResults')"
     >
       <template v-slot:body-cell-action="props">
         <q-td key="action" :props="props">
@@ -39,15 +39,17 @@
           class="row flex flex-center q-pb-none text-center q-mb-xl"
         >
           <span style="font-size: 12pt">
-            Da li ste sigurni da želite da obrišete uneto merenje
+            {{ $t("general.areYouSureDeleteMeasurement") }}
           </span>
           <span style="font-size: 15pt; font-weight: 600">
             {{
-              selectedHeight.data.date +
-              ": " +
-              selectedHeight.data.height +
-              " cm"
+              date.formatDate(
+                date.extractDate(selectedHeight.data.date, "YYYY-MM-DD"),
+                "DD.MM.YYYY."
+              )
             }}
+            <br />
+            {{ selectedHeight.data.height + " cm" }}
           </span>
         </q-card-section>
 
@@ -74,9 +76,9 @@
 <script>
 import { defineComponent, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 import base64 from "../components/base64.vue";
 import { date } from "quasar";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "tableComponent",
@@ -85,8 +87,8 @@ export default defineComponent({
   },
   props: ["child"],
   setup(props, ctx) {
+    const t = useI18n();
     let router = useRouter();
-    const $q = useQuasar();
     let areYouSure = ref(false);
     let selectedHeight = ref(false);
 
@@ -94,28 +96,28 @@ export default defineComponent({
       {
         name: "height",
         align: "center",
-        label: "Visina (cm)",
+        label: t.t("general.heightShortCM"),
         field: "height",
         sortable: false,
       },
       {
         name: "age",
         align: "center",
-        label: "Starost",
+        label: t.t("general.age"),
         field: "age",
         sortable: false,
       },
       {
         name: "date",
         align: "center",
-        label: "Datum merenja",
+        label: t.t("general.dateLabel"),
         field: "date",
         sortable: false,
       },
       {
         name: "action",
         align: "center",
-        label: "Akcija",
+        label: t.t("general.action"),
         field: "action",
         sortable: false,
       },
@@ -123,28 +125,75 @@ export default defineComponent({
 
     watch(props, (newProps) => {
       rows.value = newProps.child.heightData.map((e) => {
-        return {
-          id: e.id || "",
-          height: e.height,
-          age:
+        var age = "";
+        if (
+          date.getDateDiff(
+            Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            "years"
+          ) != 0
+        )
+          age =
+            age +
             date.getDateDiff(
-              date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
               "years"
             ) +
-            " g, " +
+            " " +
+            t.t("general.yearShort") +
+            "";
+        if (
+          date.getDateDiff(
+            Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            "months"
+          ) != 0
+        )
+          age =
+            age +
+            (age == "" ? "" : ", ") +
             (date.getDateDiff(
-              date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
               "months"
             ) -
               12 *
                 date.getDateDiff(
-                  date.extractDate(e.date, "YYYY-MM-DD"),
                   Date.now(),
+                  date.extractDate(e.date, "YYYY-MM-DD"),
                   "years"
                 )) +
-            " m",
+            " " +
+            t.t("general.monthShort") +
+            "";
+
+        if (
+          date.getDateDiff(
+            Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            "years"
+          ) == 0 &&
+          date.getDateDiff(
+            Date.now(),
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            "months"
+          ) == 0
+        )
+          age =
+            age +
+            date.getDateDiff(
+              Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
+              "days"
+            ) +
+            " " +
+            t.t("general.dayShort") +
+            "";
+        return {
+          id: e.id || "",
+          height: e.height,
+          age: age,
           date: date.formatDate(
             date.extractDate(e.date, "YYYY-MM-DD"),
             "DD.MM.YYYY."
@@ -177,7 +226,9 @@ export default defineComponent({
               date.extractDate(e.date, "YYYY-MM-DD"),
               "years"
             ) +
-            " g";
+            " " +
+            t.t("general.yearShort") +
+            "";
         if (
           date.getDateDiff(
             Date.now(),
@@ -199,7 +250,9 @@ export default defineComponent({
                   date.extractDate(e.date, "YYYY-MM-DD"),
                   "years"
                 )) +
-            " m";
+            " " +
+            t.t("general.monthShort") +
+            "";
 
         if (
           date.getDateDiff(
@@ -220,7 +273,9 @@ export default defineComponent({
               date.extractDate(e.date, "YYYY-MM-DD"),
               "days"
             ) +
-            " d";
+            " " +
+            t.t("general.dayShort") +
+            "";
 
         return {
           id: e.id || "",
@@ -273,6 +328,7 @@ export default defineComponent({
       rows,
       areYouSure,
       selectedHeight,
+      date,
       goTo,
       removeHeight1,
       removeHeight,

@@ -11,7 +11,7 @@
           margin: 25px 0px;
         "
       >
-        MOJA DECA
+        {{ $t("general.myChildren") }}
       </q-toolbar-title>
     </q-toolbar>
     <childCardComponent
@@ -36,17 +36,17 @@
           color: #00000040;
           margin: 50px 0px;
         "
-        >Još uvek niste uneli ni jedno dete!</span
+        >{{ $t("general.noChildren") }}</span
       >
       <span class="row">
         <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn" push>
           <q-icon size="3em" name="female" />
-          <div style="width: 70%">Dodaj devojčicu</div>
+          <div style="width: 70%">{{ $t("general.addGirl") }}</div>
         </q-btn>
 
         <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn" push>
           <q-icon size="3em" name="male" />
-          <div style="width: 70%">Dodaj dečaka</div>
+          <div style="width: 70%">{{ $t("general.addBoy") }}</div>
         </q-btn>
       </span>
     </span>
@@ -56,9 +56,7 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 import childCardComponent from "../components/childCardComponent.vue";
-import localforage from "localforage";
 
 export default defineComponent({
   name: "myChildren",
@@ -68,7 +66,6 @@ export default defineComponent({
   props: ["children"],
   setup(props, ctx) {
     let router = useRouter();
-    const $q = useQuasar();
 
     function removeChild(child) {
       ctx.emit("remove-child", child.id);
@@ -84,11 +81,6 @@ export default defineComponent({
       router.push(path);
     }
 
-    onMounted(() => {
-      console.log("props.children");
-      console.log(props);
-      console.log(props.children);
-    });
     return {
       props,
       goTo,

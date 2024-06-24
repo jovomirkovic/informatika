@@ -43,20 +43,20 @@
       <div class="row flex justify-between items-center" style="width: 80%">
         <span class="row flex flex-center">
           <q-icon size="1.3em" class="q-ma-sm" name="straighten" />
-          <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-            >Dužina na rođenju</span
-          >
+          <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+            $t("general.birthHeightShort")
+          }}</span>
         </span>
-        <span class="rightSide">{{ selectedChild.birthHeight }}cm</span>
+        <span class="rightSide">{{ selectedChild.birthHeight }} cm</span>
       </div>
       <div class="row flex justify-between items-center" style="width: 80%">
         <span class="row flex flex-center">
           <q-icon size="1.3em" class="q-ma-sm" name="scale" />
-          <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-            >Težina na rođenju</span
-          >
+          <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+            $t("general.birthWeightShort")
+          }}</span>
         </span>
-        <span class="rightSide">{{ selectedChild.birthWeight }}g</span>
+        <span class="rightSide">{{ selectedChild.birthWeight }} g</span>
       </div>
       <span
         class="separatorLine"
@@ -66,7 +66,7 @@
           ],
         }"
       ></span>
-      <span class="subtitle2">Poslednje izmerena visina</span>
+      <span class="subtitle2">{{ $t("general.lastMeasurement") }}</span>
       <div
         v-if="
           selectedChild.heightData != undefined &&
@@ -76,13 +76,20 @@
         style="width: 80%"
       >
         <span class="q-mr-md rightSide">{{
-          selectedChild.heightData[selectedChild.heightData.length - 1].date
+          date.formatDate(
+            date.extractDate(
+              selectedChild.heightData[selectedChild.heightData.length - 1]
+                .date,
+              "YYYY-MM-DD"
+            ),
+            "DD.MM.YYYY."
+          )
         }}</span>
         <span class="rightSide"
           >{{
-            selectedChild.heightData[selectedChild.heightData.length - 1]
-              .height
-          }}cm</span
+            selectedChild.heightData[selectedChild.heightData.length - 1].height
+          }}
+          cm</span
         >
       </div>
     </div>
@@ -91,13 +98,13 @@
       <q-btn
         push
         class="text-white bg-positive q-mr-sm col"
-        label="Izmeni"
+        :label="$t('general.edit')"
         @click="editChild"
       />
       <q-btn
         push
         class="text-white bg-negative q-ml-sm col"
-        label="Obriši"
+        :label="$t('general.delete')"
         @click="areYouSure = true"
       />
     </div>
@@ -108,7 +115,7 @@
           class="row flex flex-center q-pb-none text-center q-mb-xl"
         >
           <span style="font-size: 12pt">
-            Da li ste sigurni da želite da obrišete dete
+            {{ $t("general.areYouSureDelete") }}:
           </span>
           <span style="font-size: 15pt; font-weight: 600">
             {{ selectedChild.firstName + " " + selectedChild.lastName }}
@@ -120,13 +127,13 @@
             v-close-popup
             push
             class="text-white bg-negative q-mr-sm col"
-            label="Da"
+            :label="$t('general.yes')"
             @click="removeChild"
           />
           <q-btn
             push
             class="text-white bg-positive q-ml-sm col"
-            label="Ne"
+            :label="$t('general.no')"
             @click="areYouSure = false"
           />
         </span>
@@ -138,8 +145,8 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 import base64 from "../components/base64.vue";
+import { date } from "quasar";
 
 export default defineComponent({
   name: "childCardComponent",
@@ -149,7 +156,6 @@ export default defineComponent({
   props: ["child"],
   setup(props, ctx) {
     let router = useRouter();
-    const $q = useQuasar();
     let selectedChild = ref(null);
     let areYouSure = ref(false);
 
@@ -175,6 +181,7 @@ export default defineComponent({
     return {
       selectedChild,
       areYouSure,
+      date,
       goTo,
       removeChild,
       editChild,

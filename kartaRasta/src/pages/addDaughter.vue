@@ -16,7 +16,7 @@
           margin: 25px 0px;
         "
       >
-        DODAJ DEVOJČICU
+        {{ $t("general.addGirl") }}
       </q-toolbar-title>
     </q-toolbar>
     <addChildComponent
@@ -31,9 +31,7 @@
 <script>
 import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 import addChildComponent from "../components/addChildComponent.vue";
-import localforage from "localforage";
 
 export default defineComponent({
   name: "addDaughter",

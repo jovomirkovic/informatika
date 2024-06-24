@@ -22,11 +22,13 @@ import { defineComponent, onMounted, ref } from "vue";
 import localforage from "localforage";
 import { useRouter } from "vue-router";
 import { useQuasar, date } from "quasar";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "MainLayout",
 
   setup() {
+    const t = useI18n();
     const $q = useQuasar();
     const children = ref([]);
     const selectedChild = ref({});
@@ -44,20 +46,14 @@ export default defineComponent({
         );
         saveChildren();
       }
-
-      console.log("children.value");
-      console.log(children.value);
     };
 
     const removeChild = (id) => {
-      console.log(children.value);
       children.value = children.value.filter((child) => child.id !== id);
-      saveChildren("Dete je uspešno uklonjeno", "info");
+      saveChildren(t.t("general.childRemovedSuccessfully"), "info");
     };
 
     function addChild(newChild) {
-      console.log("newChild");
-      console.log(newChild);
       const child = {
         ...newChild,
         id: Date.now(),
@@ -75,16 +71,17 @@ export default defineComponent({
 
       if (newChild.id == null) children.value.push(child);
       else {
-        debugger;
         let index = children.value.indexOf(
           children.value.filter((e) => e.id == newChild.id)[0]
         );
         if (index != -1) children.value[index] = newChild;
       }
-      console.log(children.value);
-      console.log(child);
 
-      saveChildren("Dete je uspešno dodato", "positive", "/myChildren");
+      saveChildren(
+        t.t("general.childAddedSuccessfully"),
+        "positive",
+        "/myChildren"
+      );
     }
 
     const saveChildren = async (message, type, to) => {
@@ -106,7 +103,7 @@ export default defineComponent({
           console.log("ERROR");
           console.log(e);
           $q.notify({
-            message: "Došlo je do greške prilikom čuvanja",
+            message: t.t("general.generalError"),
             color: "negative",
           });
         });
@@ -120,7 +117,6 @@ export default defineComponent({
     }
 
     const putChild = (child) => {
-      debugger;
       const index = children.value.indexOf(
         children.value.filter((e) => e.id == child.id)[0]
       );
@@ -142,20 +138,18 @@ export default defineComponent({
           ),
         };
       }
-      saveChildren("Dete je uspešno izmenjeno", "positive", "/myChildren");
+      saveChildren(
+        t.t("general.childEditedSuccessfully"),
+        "positive",
+        "/myChildren"
+      );
     };
 
     const addHeight = (data) => {
-      debugger;
       const index = children.value.indexOf(
         children.value.filter((e) => e.id == data.id)[0]
       );
-      console.log("data");
-      console.log(data);
-      console.log({
-        date: data.date,
-        height: data.height,
-      });
+
       if (index != -1) {
         if (children.value[index].heightData == undefined) {
           children.value[index].heightData = [
@@ -176,7 +170,7 @@ export default defineComponent({
             height: data.height,
           });
       }
-      saveChildren("Uspešno dodato merenje", "positive");
+      saveChildren(t.t("general.heightAddedSuccessfully"), "positive");
     };
     const removeHeight = (data) => {
       const index = children.value.indexOf(
@@ -192,7 +186,7 @@ export default defineComponent({
 
         children.value[index].heightData.splice(index2, 1);
       }
-      saveChildren("Uspešno obrisano merenje", "positive");
+      saveChildren(t.t("general.heightRemovedSuccessfully"), "positive");
     };
 
     function resetujSelektovanoDete() {

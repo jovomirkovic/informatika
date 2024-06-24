@@ -18,40 +18,28 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, watch } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import { date } from "quasar";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import * as d3 from "https://cdn.skypack.dev/d3-shape@3";
 
-import { date } from "quasar";
 import averageHeight from "../scripts/averageHeight.vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "graphComponent",
   props: ["child"],
-  setup(props, ctx) {
+  setup(props) {
+    const t = useI18n();
     let router = useRouter();
-    const $q = useQuasar();
-    const root = ref(null);
 
     onMounted(() => {
       createChard();
-      console.log("props.child.heightData");
-      console.log(props);
-      console.log(props.child);
-      console.log(props.child.heightData);
     });
 
-    watch(props, (newProps) => {
-      // if (root.value != null) root.value.dispose();
-      // setTimeout(() => {
-      //   root.value = null;
-      //   createChard();
-      // }, 500);
-    });
     function createChard() {
       var root = am5.Root.new("chartdiv");
       console.log(root);
@@ -67,7 +55,7 @@ export default defineComponent({
         })
       );
 
-      var dataa =
+      var dataTmp =
         props.child.gender == "male"
           ? averageHeight().boys
           : averageHeight().girls;
@@ -88,10 +76,10 @@ export default defineComponent({
           13 * (props.child.gender == "male" ? 1 : -1)) /
         2;
 
-      var koeficientRoditelja =
-        procenjenaVisina / dataa.filter((e) => e.age == 240)[0].height;
+      var koeficijentRoditelja =
+        procenjenaVisina / dataTmp.filter((e) => e.age == 240)[0].height;
 
-      var data2 = dataa
+      var data2 = dataTmp
         .filter((e) => e.age <= totalMonths)
         .map((e) => {
           return {
@@ -105,7 +93,7 @@ export default defineComponent({
           };
         });
 
-      var data3 = dataa
+      var data3 = dataTmp
         .filter((e) => e.age <= totalMonths)
         .map((e) => {
           return {
@@ -115,14 +103,11 @@ export default defineComponent({
                 { months: e.age }
               )
               .getTime(),
-            topHeight: e.height * koeficientRoditelja + 5,
-            bottomHeight: e.height * koeficientRoditelja - 5,
+            topHeight: e.height * koeficijentRoditelja + 5,
+            bottomHeight: e.height * koeficijentRoditelja - 5,
           };
         });
 
-      console.log("data3");
-      console.log(data3);
-      console.log(koeficientRoditelja);
       // Define data
       var data = props.child.heightData.map((e) => {
         return {
@@ -133,9 +118,8 @@ export default defineComponent({
           averageHeight: parseFloat(e.height) + 0.035 * parseFloat(e.height),
         };
       });
-      debugger;
 
-      // Craete Y-axis
+      // Create Y-axis
       let yAxis = chart.yAxes.push(
         am5xy.ValueAxis.new(root, {
           renderer: am5xy.AxisRendererY.new(root, {}),
@@ -153,7 +137,7 @@ export default defineComponent({
       // Create series
       var series1 = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: "Visina deteta",
+          name: t.t("general.childHeight"),
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "height",
@@ -182,7 +166,7 @@ export default defineComponent({
 
       var series2 = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: "Zona optimalnog rasta",
+          name: t.t("general.optimalZone"),
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "topHeight",
@@ -201,7 +185,7 @@ export default defineComponent({
 
       var series3 = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: "Zona niskog rasta",
+          name: t.t("general.lowZone"),
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "bottomHeight",
@@ -220,7 +204,7 @@ export default defineComponent({
 
       var series4 = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: "Prosečna visina za uzrast",
+          name: t.t("general.averageHeightForAge"),
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: "height",

@@ -33,36 +33,36 @@
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
         <q-icon size="1.3em" class="q-ma-sm" name="straighten" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Dužina na rođenju</span
-        >
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+          $t("general.birthHeightShort")
+        }}</span>
       </span>
       <span class="rightSide">{{ props.child.birthHeight }} cm</span>
     </div>
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
         <q-icon size="1.3em" class="q-ma-sm" name="scale" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Težina na rođenju</span
-        >
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+          $t("general.birthWeightShort")
+        }}</span>
       </span>
       <span class="rightSide">{{ props.child.birthWeight }} g</span>
     </div>
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
         <q-icon size="1.3em" class="q-ma-sm" name="height" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Visina oca</span
-        >
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+          $t("general.fathersHeightShort")
+        }}</span>
       </span>
       <span class="rightSide">{{ props.child.fathersHeight }} cm</span>
     </div>
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
         <q-icon size="1.3em" color="girl" class="q-ma-sm" name="height" />
-        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
-          >Visina majke</span
-        >
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500">{{
+          $t("general.mothersHeightShort")
+        }}</span>
       </span>
       <span class="rightSide">{{ props.child.mothersHeight }} cm</span>
     </div>
@@ -72,7 +72,7 @@
         backgroundColor: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
       }"
     ></span>
-    <span class="subtitle2">Poslednje izmerena visina</span>
+    <span class="subtitle2">{{ $t("general.lastMeasurement") }}</span>
     <div
       class="row flex justify-around"
       v-if="
@@ -81,25 +81,32 @@
       style="width: 80%"
     >
       <span class="q-mr-md rightSide">{{
-        props.child.heightData[props.child.heightData.length - 1].date
+        date.formatDate(
+          date.extractDate(
+            props.child.heightData[props.child.heightData.length - 1].date,
+            "YYYY-MM-DD"
+          ),
+          "DD.MM.YYYY."
+        )
       }}</span>
       <span class="rightSide"
         >{{
           props.child.heightData[props.child.heightData.length - 1].height
-        }}cm</span
+        }}
+        cm</span
       >
     </div>
     <div class="column flex items-center q-mt-md" style="width: 80%">
-      <span class="subtitle2">Ciljana visina</span>
-      <span class="rightSide">{{ props.child.childTargetHeight }}cm</span>
+      <span class="subtitle2">{{ $t("general.targetHeight") }}</span>
+      <span class="rightSide">{{ props.child.childTargetHeight }} cm</span>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import { date } from "quasar";
 import base64 from "../components/base64.vue";
 
 export default defineComponent({
@@ -108,9 +115,8 @@ export default defineComponent({
     base64,
   },
   props: ["child"],
-  setup(props, ctx) {
+  setup(props) {
     let router = useRouter();
-    const $q = useQuasar();
 
     function goTo(path) {
       router.push(path);
@@ -118,6 +124,7 @@ export default defineComponent({
 
     return {
       props,
+      date,
       goTo,
     };
   },

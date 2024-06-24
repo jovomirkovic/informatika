@@ -6,8 +6,8 @@
       rounded
       outlined
       v-model="firstName"
-      :rules="[(val) => !!val || 'Obavezno polje']"
-      label="Ime"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
+      :label="$t('general.firstName')"
     />
     <q-input
       :color="gender"
@@ -15,8 +15,8 @@
       rounded
       outlined
       v-model="lastName"
-      label="Prezime"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :label="$t('general.lastName')"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     />
     <q-input
       :color="gender"
@@ -24,10 +24,10 @@
       rounded
       outlined
       v-model="dateOfBirth"
-      label="Datum rođenja"
+      :label="$t('general.dateOfBirth')"
       mask="##.##.####."
       @click="dateOfBirthPopupRef.show()"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     >
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
@@ -38,6 +38,7 @@
             transition-hide="scale"
           >
             <q-date
+              :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb"
               :color="gender"
               v-model="dateOfBirth"
               mask="DD.MM.YYYY."
@@ -58,8 +59,8 @@
       rounded
       outlined
       v-model="birthWeight"
-      label="Telesna masa na rođenju (g)"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :label="$t('general.birthWeight')"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     />
     <q-input
       type="number"
@@ -68,8 +69,8 @@
       rounded
       outlined
       v-model="birthHeight"
-      label="Telesna dužina na rođenju (cm)"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :label="$t('general.birthHeight')"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     />
     <q-input
       type="number"
@@ -78,8 +79,8 @@
       rounded
       outlined
       v-model="fathersHeight"
-      label="Visina oca (cm)"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :label="$t('general.fathersHeight')"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     />
     <q-input
       type="number"
@@ -88,8 +89,8 @@
       rounded
       outlined
       v-model="mothersHeight"
-      label="Visina majke (cm)"
-      :rules="[(val) => !!val || 'Obavezno polje']"
+      :label="$t('general.mothersHeight')"
+      :rules="[(val) => !!val || $t('general.requiredField')]"
     />
 
     <q-avatar size="10em" style="margin: 20px">
@@ -107,7 +108,7 @@
     </q-avatar>
 
     <base64
-      label="Dodaj fotografiju"
+      :label="$t('general.addPhoto')"
       :multiple="false"
       :gender="gender"
       @done="getAppIcon"
@@ -117,7 +118,7 @@
       class="column items-center text-left text-bold q-mt-xl q-mb-xl"
       style="font-size: 12pt; color: #000000a0"
     >
-      <div class="col">Ciljana visina:</div>
+      <div class="col">{{ $t("general.targetHeight") }}:</div>
       <div class="col">
         {{ childTargetHeight ? childTargetHeight + " cm" : "/" }}
       </div>
@@ -133,7 +134,9 @@
       <q-btn
         push
         class="text-white bg-positive q-ml-sm col"
-        :label="id == null || id == undefined ? 'Dodaj' : 'Izmeni'"
+        :label="
+          id == null || id == undefined ? $t('general.add') : $t('general.edit')
+        "
         @click="save"
       />
     </div>
@@ -145,6 +148,7 @@ import { defineComponent, ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar, date } from "quasar";
 import base64 from "../components/base64.vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "addChildComponent",
@@ -155,6 +159,7 @@ export default defineComponent({
   setup(props, ctx) {
     let router = useRouter();
     const $q = useQuasar();
+    const { locale } = useI18n({ useScope: "global" });
 
     let id = ref(null);
     let firstName = ref(null);
@@ -179,6 +184,35 @@ export default defineComponent({
     let heightData = ref(undefined);
     let gender = ref(undefined);
 
+    const myLocaleSrb = {
+      /* starting with Sunday */
+      days: "Nedelja_Ponedeljak_Utorak_Sreda_Četvrtak_Petak_Subota".split("_"),
+      daysShort: "Ned_Pon_Uto_Sre_Čet_Pet_Sub".split("_"),
+      months:
+        "Januar_Februar_Mart_April_Maj_Jun_Jul_Avgust_Septembar_Oktobar_Novembar_Decembar".split(
+          "_"
+        ),
+      monthsShort: "Jan_Feb_Mar_Apr_Maj_Jun_Jul_Avg_Sep_Okt_Nov_Dec".split("_"),
+      firstDayOfWeek: 1, // 0-6, 0 - Sunday, 1 Monday, ...
+      format24h: true,
+      pluralDay: "i",
+    };
+    const myLocaleEng = {
+      /* starting with Sunday */
+      days: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+        "_"
+      ),
+      daysShort: "Sun_Mon_Tue_Wed_Thu_Fry_Sat".split("_"),
+      months:
+        "January_February_March_April_May_Jun_July_August_September_October_November_December".split(
+          "_"
+        ),
+      monthsShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
+      firstDayOfWeek: 1, // 0-6, 0 - Sunday, 1 Monday, ...
+      format24h: true,
+      pluralDay: "i",
+    };
+
     watch(fathersHeight, (newFathersHeight) => {
       if (newFathersHeight != null && mothersHeight.value != null) {
         childTargetHeight.value =
@@ -194,11 +228,6 @@ export default defineComponent({
       }
     });
     onMounted(() => {
-      console.log("props");
-      console.log(props);
-      console.log(props.selectedChild);
-      console.log("props");
-
       if (props.selectedChild.id != undefined) {
         id.value = props.selectedChild.id;
         firstName.value = props.selectedChild.firstName;
@@ -219,7 +248,6 @@ export default defineComponent({
     }
 
     function save() {
-      // proveri da li je sve uneto
       if (
         firstName.value == null ||
         lastName.value == null ||
@@ -237,13 +265,13 @@ export default defineComponent({
         fathersHeightRef.value.validate();
         mothersHeightRef.value.validate();
         $q.notify({
-          message: "Sva polja su obavezna",
+          message: $t("general.allFieldsAreRequired"),
           color: "negative",
         });
         return;
       }
 
-      let childInfomation = {
+      let childInformation = {
         id: id.value,
         firstName: firstName.value,
         lastName: lastName.value,
@@ -258,11 +286,7 @@ export default defineComponent({
         heightData: heightData.value,
       };
 
-      console.log("childInfomation");
-      console.log(childInfomation);
-      ctx.emit("add_child", childInfomation);
-
-      // goTo("/");
+      ctx.emit("add_child", childInformation);
     }
 
     function otkazi() {
@@ -326,6 +350,9 @@ export default defineComponent({
       birthHeightRef,
       fathersHeightRef,
       mothersHeightRef,
+      myLocaleSrb,
+      myLocaleEng,
+      locale,
       otkazi,
       goTo,
       getAppIcon,

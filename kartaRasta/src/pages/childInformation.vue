@@ -26,7 +26,7 @@
           'bg-boy': props.selectedChild.gender == 'male',
         }"
         rounded
-        label="Novo merenje"
+        :label="$t('general.newMeasurement')"
         icon="add"
         @click="addHeightDialog = true"
       />
@@ -40,9 +40,9 @@
           props.selectedChild.heightData?.length <= 0
         "
         name="graph"
-        label="Grafikon"
+        :label="$t('general.graph')"
       />
-      <q-tab name="table" label="Tabela" />
+      <q-tab name="table" :label="$t('general.table')" />
     </q-tabs>
 
     <q-separator />
@@ -77,7 +77,7 @@
         "
       >
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Unesite novo merenje</div>
+          <div class="text-h6">{{ $t("general.addNewMeasurement") }}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
@@ -90,8 +90,8 @@
             outlined
             v-model="height"
             ref="heightRef"
-            :rules="[(val) => !!val || 'Obavezno polje!']"
-            label="Visina (cm)"
+            :rules="[(val) => !!val || $t('general.requiredField')]"
+            :label="$t('general.heightLabel')"
           />
 
           <q-input
@@ -100,10 +100,10 @@
             rounded
             outlined
             v-model="dateOfMeasurement"
-            label="Datum merenja"
+            :label="$t('general.dateLabel')"
             mask="##.##.####."
             @click="dateOfMeasurementRef.show()"
-            :rules="[(val) => !!val || 'Obavezno polje']"
+            :rules="[(val) => !!val || $t('general.requiredField')]"
           >
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
@@ -114,6 +114,7 @@
                   transition-hide="scale"
                 >
                   <q-date
+                    :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb"
                     :color="selectedChild.gender"
                     v-model="dateOfMeasurement"
                     mask="DD.MM.YYYY."
@@ -132,13 +133,17 @@
             <q-btn
               push
               class="text-white bg-negative q-mr-sm col"
-              label="Otkaži"
+              :label="$t('general.cancel')"
               @click="cancel"
             />
             <q-btn
               push
               class="text-white bg-positive q-ml-sm col"
-              :label="id == null || id == undefined ? 'Dodaj' : 'Izmeni'"
+              :label="
+                id == null || id == undefined
+                  ? $t('general.add')
+                  : $t('general.edit')
+              "
               @click="addMeasurement"
             />
           </div>
@@ -155,6 +160,7 @@ import { date, useQuasar } from "quasar";
 import detailsComponent from "../components/detailsComponent.vue";
 import graphComponent from "../components/graphComponent.vue";
 import tableComponent from "../components/tableComponent.vue";
+import { useI18n } from "vue-i18n";
 
 export default defineComponent({
   name: "childInformation",
@@ -165,6 +171,8 @@ export default defineComponent({
   },
   props: ["selectedChild"],
   setup(props, ctx) {
+    const t = useI18n();
+    const { locale } = useI18n({ useScope: "global" });
     let router = useRouter();
     const $q = useQuasar();
 
@@ -175,6 +183,35 @@ export default defineComponent({
     const dateOfMeasurement = ref(date.formatDate(Date.now(), "DD.MM.YYYY."));
     const selectedTab = ref("details");
 
+    const myLocaleSrb = {
+      /* starting with Sunday */
+      days: "Nedelja_Ponedeljak_Utorak_Sreda_Četvrtak_Petak_Subota".split("_"),
+      daysShort: "Ned_Pon_Uto_Sre_Čet_Pet_Sub".split("_"),
+      months:
+        "Januar_Februar_Mart_April_Maj_Jun_Jul_Avgust_Septembar_Oktobar_Novembar_Decembar".split(
+          "_"
+        ),
+      monthsShort: "Jan_Feb_Mar_Apr_Maj_Jun_Jul_Avg_Sep_Okt_Nov_Dec".split("_"),
+      firstDayOfWeek: 1, // 0-6, 0 - Sunday, 1 Monday, ...
+      format24h: true,
+      pluralDay: "i",
+    };
+    const myLocaleEng = {
+      /* starting with Sunday */
+      days: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split(
+        "_"
+      ),
+      daysShort: "Sun_Mon_Tue_Wed_Thu_Fry_Sat".split("_"),
+      months:
+        "January_February_March_April_May_Jun_July_August_September_October_November_December".split(
+          "_"
+        ),
+      monthsShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
+      firstDayOfWeek: 1, // 0-6, 0 - Sunday, 1 Monday, ...
+      format24h: true,
+      pluralDay: "i",
+    };
+
     watch(props, (newProps) => {
       // Bad Trick to refresh am5chart..
       // But it works!
@@ -182,7 +219,7 @@ export default defineComponent({
         (selectedTab.value =
           "graph" && props.selectedChild.heightData.length > 0)
       ) {
-        selectedTab.value = "adfg";
+        selectedTab.value = "nonExistentTab";
         setTimeout(() => {
           selectedTab.value = "graph";
         }, 200);
@@ -194,29 +231,20 @@ export default defineComponent({
         props.selectedChild.id == undefined
       )
         goTo("/myChildren");
-      console.log("props.children");
-      console.log(props);
-      console.log(props);
     });
 
     function goTo(path) {
       router.push(path);
     }
     function removeHeight(data) {
-      console.log("data1");
-      console.log(data);
       ctx.emit("remove-height", data);
     }
 
     function addMeasurement() {
-      console.log("Dodaj merenje");
-      console.log(height.value);
-      console.log(dateOfMeasurement.value);
-
       if (height.value == null) {
         heightRef.value.validate();
         $q.notify({
-          message: "Sva polja su obavezna",
+          message: t.t("general.allFieldsAreRequired"),
           color: "negative",
         });
         return;
@@ -247,6 +275,9 @@ export default defineComponent({
       heightRef,
       dateOfMeasurement,
       dateOfMeasurementRef,
+      myLocaleSrb,
+      myLocaleEng,
+      locale,
       goTo,
       addMeasurement,
       cancel,

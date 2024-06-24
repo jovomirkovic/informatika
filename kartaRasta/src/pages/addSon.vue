@@ -16,7 +16,7 @@
           margin: 25px 0px;
         "
       >
-        DODAJ DEČAKA
+        {{ $t("general.addBoy") }}
       </q-toolbar-title>
     </q-toolbar>
     <addChildComponent
@@ -31,9 +31,7 @@
 <script>
 import { defineComponent, ref, onMounted, withCtx } from "vue";
 import { useRouter } from "vue-router";
-import { useQuasar, date } from "quasar";
 import addChildComponent from "../components/addChildComponent.vue";
-import localforage from "localforage";
 
 export default defineComponent({
   name: "addSon",
@@ -48,32 +46,6 @@ export default defineComponent({
       if (newChild.id != undefined && newChild.id != null)
         ctx.emit("put-child", newChild);
       else ctx.emit("add-child", { ...newChild, gender: "male" });
-    }
-
-    function generateDailyHeightData(dateOfBirth) {
-      const heightData = [];
-      const startDate = date.extractDate(dateOfBirth, "YYYY-MM-DD");
-      const endDate = date.addToDate(startDate, { years: 15 });
-
-      let currentDate = startDate;
-      let height = Math.floor(Math.random() * 10) + 50; // Random initial height between 50cm and 60cm
-
-      while (date.getDateDiff(endDate, currentDate, "days") >= 0) {
-        console.log(1);
-        // Generate daily height fluctuation (growth + some noise)
-        const dailyGrowth = Math.random() * 0.03 + 0.01; // Between 0.01cm and 0.04cm per day
-        height += dailyGrowth;
-
-        heightData.push({
-          date: date.formatDate(currentDate, "YYYY-MM-DD"),
-          height: parseFloat(height.toFixed(2)), // Keeping height to 2 decimal places
-        });
-
-        // Increment the current date by one day
-        currentDate = date.addToDate(currentDate, { days: 1 });
-      }
-
-      return heightData;
     }
 
     function resetujSelektovanoDete() {
