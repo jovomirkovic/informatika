@@ -162,16 +162,32 @@ export default defineComponent({
     const rows = ref([]);
     onMounted(() => {
       rows.value = props.child.heightData.map((e) => {
-        return {
-          id: e.id || "",
-          height: e.height,
-          age:
+        var age = "";
+        if (
+          date.getDateDiff(
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            Date.now(),
+            "years"
+          ) != 0
+        )
+          age =
+            age +
             date.getDateDiff(
               date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
               "years"
             ) +
-            " g, " +
+            " g";
+        if (
+          date.getDateDiff(
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            Date.now(),
+            "months"
+          ) != 0
+        )
+          age =
+            age +
+            (age == "" ? "" : ", ") +
             (date.getDateDiff(
               date.extractDate(e.date, "YYYY-MM-DD"),
               Date.now(),
@@ -183,7 +199,33 @@ export default defineComponent({
                   Date.now(),
                   "years"
                 )) +
-            " m",
+            " m";
+
+        if (
+          date.getDateDiff(
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            Date.now(),
+            "years"
+          ) == 0 &&
+          date.getDateDiff(
+            date.extractDate(e.date, "YYYY-MM-DD"),
+            Date.now(),
+            "months"
+          ) == 0
+        )
+          age =
+            age +
+            date.getDateDiff(
+              Date.now(),
+              date.extractDate(e.date, "YYYY-MM-DD"),
+              "days"
+            ) +
+            " d";
+
+        return {
+          id: e.id || "",
+          height: e.height,
+          age: age,
           date: date.formatDate(
             date.extractDate(e.date, "YYYY-MM-DD"),
             "DD.MM.YYYY."
