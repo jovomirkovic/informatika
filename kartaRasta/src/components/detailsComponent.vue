@@ -17,7 +17,7 @@
       style="
         width: 100%;
         border-radius: 15px 15px 0px 0px;
-        height: calc(100vh - 535px);
+        height: calc(100vh - 600px);
         object-fit: cover;
       "
       v-if="props.child.childPhoto"
@@ -37,7 +37,7 @@
           >Dužina na rođenju</span
         >
       </span>
-      <span class="rightSide">{{ props.child.birthHeight }}cm</span>
+      <span class="rightSide">{{ props.child.birthHeight }} cm</span>
     </div>
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
@@ -46,7 +46,25 @@
           >Težina na rođenju</span
         >
       </span>
-      <span class="rightSide">{{ props.child.birthWeight }}g</span>
+      <span class="rightSide">{{ props.child.birthWeight }} g</span>
+    </div>
+    <div class="row flex justify-between items-center" style="width: 80%">
+      <span class="row flex flex-center">
+        <q-icon size="1.3em" class="q-ma-sm" name="height" />
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
+          >Visina oca</span
+        >
+      </span>
+      <span class="rightSide">{{ props.child.fathersHeight }} cm</span>
+    </div>
+    <div class="row flex justify-between items-center" style="width: 80%">
+      <span class="row flex flex-center">
+        <q-icon size="1.3em" color="girl" class="q-ma-sm" name="height" />
+        <span class="q-mr-md" style="color: #000000a0; font-weight: 500"
+          >Visina majke</span
+        >
+      </span>
+      <span class="rightSide">{{ props.child.mothersHeight }} cm</span>
     </div>
     <span
       class="separatorLine"
