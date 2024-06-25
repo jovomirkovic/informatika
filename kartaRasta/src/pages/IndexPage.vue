@@ -4,7 +4,7 @@
       <q-toolbar-title
         style="
           font-weight: 800;
-          font-size: 15vw;
+          font-size: 14vw;
           line-height: 1;
           margin: 25px 25px;
         "
@@ -173,6 +173,7 @@ export default defineComponent({
             value: "en-US",
           };
         }
+        changeLanguage();
       }
     });
 

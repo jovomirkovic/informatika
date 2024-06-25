@@ -128,7 +128,7 @@
       <q-btn
         push
         class="text-white bg-negative q-mr-sm col"
-        label="Otkaži"
+        :label="$t('general.cancel')"
         @click="otkazi"
       />
       <q-btn
@@ -267,6 +267,7 @@ export default defineComponent({
         $q.notify({
           message: $t("general.allFieldsAreRequired"),
           color: "negative",
+          position: "top",
         });
         return;
       }

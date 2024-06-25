@@ -92,6 +92,7 @@ export default defineComponent({
             $q.notify({
               message: message,
               color: type,
+              position: "top",
             });
           }
 
@@ -105,6 +106,7 @@ export default defineComponent({
           $q.notify({
             message: t.t("general.generalError"),
             color: "negative",
+            position: "top",
           });
         });
     };

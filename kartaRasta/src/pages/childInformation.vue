@@ -17,8 +17,8 @@
         style="
           position: fixed;
           bottom: 15px;
-          left: calc(50vw - 90px);
-          width: 180px;
+          left: calc(50vw - 105px);
+          width: 210px;
           color: #ffffff;
         "
         :class="{
@@ -246,6 +246,7 @@ export default defineComponent({
         $q.notify({
           message: t.t("general.allFieldsAreRequired"),
           color: "negative",
+          position: "top",
         });
         return;
       }

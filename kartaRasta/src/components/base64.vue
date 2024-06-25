@@ -80,7 +80,8 @@ export default {
       // if(files[0].size/1000 > 900){
       //   this.$q.notify({
       //       message: "Fajl ne sme biti veci od 900kb!",
-      //       color: "red"
+      //       color: "red",
+      // position: "top",
       //     });
       //     return;
       // }
@@ -89,6 +90,7 @@ export default {
         this.$q.notify({
           message: "Fajl mora biti slika!",
           color: "red",
+          position: "top",
         });
         return;
       }
