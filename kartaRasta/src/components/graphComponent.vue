@@ -105,9 +105,10 @@ export default defineComponent({
                 { months: e.age }
               )
               .getTime(),
-            topHeight: (e.height + 4 * e.deviation) * coefficientBasedOnParents,
+            topHeight: (e.height + 1 * e.deviation) * coefficientBasedOnParents,
             bottomHeight:
-              (e.height - 4 * e.deviation) * coefficientBasedOnParents,
+              (e.height - 1 * e.deviation) * coefficientBasedOnParents,
+            lowHeight: (e.height - 3 * e.deviation) * coefficientBasedOnParents,
           };
         });
 
@@ -116,9 +117,6 @@ export default defineComponent({
         return {
           date: new Date(e.date).getTime(),
           height: e.height,
-          topHeight: parseFloat(e.height) + 0.07 * parseFloat(e.height),
-          bottomHeight: parseFloat(e.height) - 0.07 * parseFloat(e.height),
-          averageHeight: parseFloat(e.height) + 0.035 * parseFloat(e.height),
         };
       });
 
@@ -138,34 +136,6 @@ export default defineComponent({
         })
       );
       // Create series
-      var series1 = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: t.t("general.childHeight"),
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "height",
-          valueXField: "date",
-          tooltip: am5.Tooltip.new(root, {
-            labelText: "{valueY}",
-          }),
-          // curveFactory: d3.curveNatural,
-        })
-      );
-      series1.set("stroke", am5.color("#e55d8b"));
-
-      series1.bullets.push(function () {
-        return am5.Bullet.new(root, {
-          locationY: 0,
-          sprite: am5.Circle.new(root, {
-            radius: 4,
-            stroke: root.interfaceColors.get("background"),
-            strokeWidth: 2,
-            fill: am5.color("#e55d8b"),
-          }),
-        });
-      });
-
-      series1.data.setAll(childHeightChartData);
 
       var series2 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -186,12 +156,31 @@ export default defineComponent({
       series2.set("stroke", am5.color("#00ff00"));
       series2.data.setAll(optimalHeightZoneChartData);
 
+      var series21 = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: "hide",
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "bottomHeight",
+          valueXField: "date",
+        })
+      );
+
+      series21.fills.template.setAll({
+        fillOpacity: 0.8,
+        visible: true,
+      });
+
+      series21.set("fill", am5.color("#ffffff"));
+      series21.set("stroke", am5.color("#00ff00"));
+      series21.data.setAll(optimalHeightZoneChartData);
+
       var series3 = chart.series.push(
         am5xy.LineSeries.new(root, {
           name: t.t("general.lowZone"),
           xAxis: xAxis,
           yAxis: yAxis,
-          valueYField: "bottomHeight",
+          valueYField: "lowHeight",
           valueXField: "date",
         })
       );
@@ -218,6 +207,35 @@ export default defineComponent({
       series4.set("stroke", am5.color("#000000"));
       series4.data.setAll(averageHeightChartData);
 
+      var series1 = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: t.t("general.childHeight"),
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "height",
+          valueXField: "date",
+          tooltip: am5.Tooltip.new(root, {
+            labelText: "{valueY}",
+          }),
+          // curveFactory: d3.curveNatural,
+        })
+      );
+      series1.set("stroke", am5.color("#0000ff"));
+
+      series1.bullets.push(function () {
+        return am5.Bullet.new(root, {
+          locationY: 0,
+          sprite: am5.Circle.new(root, {
+            radius: 4,
+            stroke: root.interfaceColors.get("background"),
+            strokeWidth: 2,
+            fill: am5.color("#0000ff"),
+          }),
+        });
+      });
+
+      series1.data.setAll(childHeightChartData);
+
       chart.set(
         "scrollbarX",
         am5.Scrollbar.new(root, {
@@ -226,7 +244,14 @@ export default defineComponent({
       );
       // Add legend
       var legend = chart.children.push(am5.Legend.new(root, {}));
-      legend.data.setAll(chart.series.values);
+      console.log("chart.series.values");
+      console.log(chart.series.values);
+      console.log(
+        chart.series.values.filter((e) => e._settings.name != "hide")
+      );
+      legend.data.setAll(
+        chart.series.values.filter((e) => e._settings.name != "hide")
+      );
     }
 
     function goTo(path) {
