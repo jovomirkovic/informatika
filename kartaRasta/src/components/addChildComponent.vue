@@ -216,15 +216,19 @@ export default defineComponent({
     watch(fathersHeight, (newFathersHeight) => {
       if (newFathersHeight != null && mothersHeight.value != null) {
         childTargetHeight.value =
-          (parseFloat(newFathersHeight) + parseFloat(mothersHeight.value)) / 2 +
-          (gender == "male" ? 13 : -13);
+          (parseFloat(newFathersHeight) +
+            parseFloat(mothersHeight.value) +
+            (gender == "male" ? 13 : -13)) /
+          2;
       }
     });
     watch(mothersHeight, (newMothersHeight) => {
       if (newMothersHeight != null && fathersHeight.value != null) {
         childTargetHeight.value =
-          (parseFloat(newMothersHeight) + parseFloat(fathersHeight.value)) / 2 +
-          (gender.value == "male" ? 13 : -13);
+          (parseFloat(newMothersHeight) +
+            parseFloat(fathersHeight.value) +
+            (gender.value == "male" ? 13 : -13)) /
+          2;
       }
     });
     onMounted(() => {

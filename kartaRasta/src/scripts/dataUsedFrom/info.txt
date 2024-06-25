@@ -1,0 +1,16 @@
+Date of data collection: 25.06.2024.
+
+Data source:
+
+  Girls
+    https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_girls_z_0_2.pdf?sfvrsn=6b77f3cd_9
+    https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_girls_z_2_5.pdf?sfvrsn=72bff814_9
+    https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-(5-19-years)/sft-hfa-girls-z-5-19years.pdf?sfvrsn=65c549dc_4
+
+  Boys
+    https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_boys_z_0_2.pdf?sfvrsn=ebd98e93_9
+    https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_boys_z_2_5.pdf?sfvrsn=e70e3a87_7
+    https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-(5-19-years)/sft-hfa-boys-z-5-19years.pdf?sfvrsn=133da6b6_4
+
+  General
+    https://ebmcalc.com/HeightPotential.htm

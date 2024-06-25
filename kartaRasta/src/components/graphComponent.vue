@@ -55,12 +55,12 @@ export default defineComponent({
         })
       );
 
-      var dataTmp =
+      var averageDataFromWHO =
         props.child.gender == "male"
           ? averageHeight().boys
           : averageHeight().girls;
 
-      var totalMonths =
+      var numberOfMonthsForDisplay =
         date.getDateDiff(
           date.extractDate(
             props.child.heightData[props.child.heightData.length - 1].date,
@@ -70,17 +70,13 @@ export default defineComponent({
           "month"
         ) + 1;
 
-      var procenjenaVisina =
-        (parseFloat(props.child.fathersHeight) +
-          parseFloat(props.child.mothersHeight) +
-          13 * (props.child.gender == "male" ? 1 : -1)) /
-        2;
+      // 228 - is the last month of measured data gathered from WHO
+      var coefficientBasedOnParents =
+        props.child.childTargetHeight /
+        averageDataFromWHO.filter((e) => e.age == 228)[0].height;
 
-      var koeficijentRoditelja =
-        procenjenaVisina / dataTmp.filter((e) => e.age == 240)[0].height;
-
-      var data2 = dataTmp
-        .filter((e) => e.age <= totalMonths)
+      var averageHeightChartData = averageDataFromWHO
+        .filter((e) => e.age <= numberOfMonthsForDisplay)
         .map((e) => {
           return {
             date: date
@@ -93,8 +89,14 @@ export default defineComponent({
           };
         });
 
-      var data3 = dataTmp
-        .filter((e) => e.age <= totalMonths)
+      // How is the zone calculated:
+      // We take the average height for the given age gathered from WHO
+      // We add/subtract 4 times the standard deviation for that age
+      // We adjust the data by multiplying it with the parent coefficient
+      // The parent coefficient is the percentile difference from the target adult height and the average adult height
+
+      var optimalHeightZoneChartData = averageDataFromWHO
+        .filter((e) => e.age <= numberOfMonthsForDisplay)
         .map((e) => {
           return {
             date: date
@@ -103,13 +105,14 @@ export default defineComponent({
                 { months: e.age }
               )
               .getTime(),
-            topHeight: e.height * koeficijentRoditelja + 5,
-            bottomHeight: e.height * koeficijentRoditelja - 5,
+            topHeight: (e.height + 4 * e.deviation) * coefficientBasedOnParents,
+            bottomHeight:
+              (e.height - 4 * e.deviation) * coefficientBasedOnParents,
           };
         });
 
-      // Define data
-      var data = props.child.heightData.map((e) => {
+      // Define childHeightChartData
+      var childHeightChartData = props.child.heightData.map((e) => {
         return {
           date: new Date(e.date).getTime(),
           height: e.height,
@@ -162,7 +165,7 @@ export default defineComponent({
         });
       });
 
-      series1.data.setAll(data);
+      series1.data.setAll(childHeightChartData);
 
       var series2 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -181,7 +184,7 @@ export default defineComponent({
 
       series2.set("fill", am5.color("#00ff00"));
       series2.set("stroke", am5.color("#00ff00"));
-      series2.data.setAll(data3);
+      series2.data.setAll(optimalHeightZoneChartData);
 
       var series3 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -200,7 +203,7 @@ export default defineComponent({
 
       series3.set("fill", am5.color("#ff0000"));
       series3.set("stroke", am5.color("#ff0000"));
-      series3.data.setAll(data3);
+      series3.data.setAll(optimalHeightZoneChartData);
 
       var series4 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -213,7 +216,7 @@ export default defineComponent({
       );
 
       series4.set("stroke", am5.color("#000000"));
-      series4.data.setAll(data2);
+      series4.data.setAll(averageHeightChartData);
 
       chart.set(
         "scrollbarX",
