@@ -27,7 +27,7 @@ export default {
     allFieldsAreRequired: "Sva polja su obavezna!",
 
     heightLabel: "Visina (cm)",
-    dateLabel: "Datum merenja",
+    dateLabel: "Datum",
 
     cancel: "Otkaži",
     add: "Dodaj",

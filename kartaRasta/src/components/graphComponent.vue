@@ -13,7 +13,10 @@
       color: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
     }"
   >
-    <div id="chartdiv"></div>
+    <p style="text-align: center; margin: 0px; position: relative; top: 30px">
+      Zona visokog rasta
+    </p>
+    <div id="chartdiv" style="margin-top: -30px"></div>
   </div>
 </template>
 
@@ -105,6 +108,8 @@ export default defineComponent({
                 { months: e.age }
               )
               .getTime(),
+            highHeight:
+              (e.height + 2 * e.deviation) * coefficientBasedOnParents,
             topHeight: (e.height + 1 * e.deviation) * coefficientBasedOnParents,
             bottomHeight:
               (e.height - 1 * e.deviation) * coefficientBasedOnParents,
@@ -132,6 +137,15 @@ export default defineComponent({
         am5xy.DateAxis.new(root, {
           baseInterval: { timeUnit: "day", count: 1 },
           renderer: am5xy.AxisRendererX.new(root, {}),
+          gridIntervals: [
+            { timeUnit: "day", count: 1 },
+            { timeUnit: "day", count: 2 },
+            { timeUnit: "day", count: 3 },
+            { timeUnit: "month", count: 1 },
+            { timeUnit: "month", count: 2 },
+            { timeUnit: "year", count: 1 },
+            { timeUnit: "year", count: 2 },
+          ],
           tooltipDateFormat: "yyyy-MM-dd",
         })
       );
@@ -194,6 +208,24 @@ export default defineComponent({
       series3.set("stroke", am5.color("#ff0000"));
       series3.data.setAll(optimalHeightZoneChartData);
 
+      var series32 = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: t.t("general.lowZone"),
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "highHeight",
+          valueXField: "date",
+        })
+      );
+
+      series32.fills.template.setAll({
+        fillOpacity: 0.5,
+        visible: false,
+      });
+
+      series32.set("stroke", am5.color("#ff0000"));
+      series32.data.setAll(optimalHeightZoneChartData);
+
       var series4 = chart.series.push(
         am5xy.LineSeries.new(root, {
           name: t.t("general.averageHeightForAge"),
@@ -236,6 +268,56 @@ export default defineComponent({
 
       series1.data.setAll(childHeightChartData);
 
+      // Calculate the number of years passed from a given date to now
+      function timePassed(ms) {
+        // Constants for time calculations
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const msPerYear = 365.25 * msPerDay;
+        const msPerMonth = msPerYear / 12;
+
+        // Calculate the years, months, and days
+        const years = Math.floor(ms / msPerYear);
+        ms %= msPerYear;
+
+        const months = Math.floor(ms / msPerMonth);
+        ms %= msPerMonth;
+
+        const days = Math.floor(ms / msPerDay);
+
+        if (years > 0) {
+          return years + t.t("general.yearShort");
+        } else if (months > 0) {
+          return months + t.t("general.monthShort");
+        } else {
+          return days + t.t("general.dayShort");
+        }
+      }
+
+      // Customize date axis labels
+      // xAxis
+      //   .get("renderer")
+      //   .labels.template.adapters.add("text", function (text, target) {
+      //     console.log("target");
+      //     console.log(text);
+      //     console.log(target);
+      //     var date = target.dataItem.get("value");
+      //     return yearsPassed(date) + " years ago";
+      //   });
+
+      xAxis
+        .get("renderer")
+        .labels.template.adapters.add("text", function (text, target) {
+          console.log(target.dataItem);
+          var years = timePassed(
+            Math.abs(
+              date
+                .extractDate(props.child.dateOfBirth, "DD.MM.YYYY.")
+                .getTime() - target.dataItem?._settings.value
+            )
+          );
+
+          return years; //yearsPassed(value) + " years ago";
+        });
       chart.set(
         "scrollbarX",
         am5.Scrollbar.new(root, {

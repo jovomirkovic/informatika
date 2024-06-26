@@ -128,16 +128,16 @@ export default defineComponent({
         var age = "";
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "years"
           ) != 0
         )
           age =
             age +
             date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "years"
             ) +
             " " +
@@ -145,8 +145,8 @@ export default defineComponent({
             "";
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "months"
           ) != 0
         )
@@ -154,14 +154,14 @@ export default defineComponent({
             age +
             (age == "" ? "" : ", ") +
             (date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "months"
             ) -
               12 *
                 date.getDateDiff(
-                  Date.now(),
                   date.extractDate(e.date, "YYYY-MM-DD"),
+                  date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
                   "years"
                 )) +
             " " +
@@ -170,21 +170,30 @@ export default defineComponent({
 
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "years"
           ) == 0 &&
-          date.getDateDiff(
-            Date.now(),
+          (date.getDateDiff(
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "months"
-          ) == 0
+          ) == 0 ||
+            (date.getDateDiff(
+              date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+              "months"
+            ) == 1 &&
+              date.getDateDiff(
+                date.extractDate(e.date, "YYYY-MM-DD"),
+                date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+                "days"
+              ) <= 31))
         )
           age =
-            age +
             date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "days"
             ) +
             " " +
@@ -210,20 +219,21 @@ export default defineComponent({
     });
     const rows = ref([]);
     onMounted(() => {
+      console.log(props.child);
       rows.value = props.child.heightData.map((e) => {
         var age = "";
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "years"
           ) != 0
         )
           age =
             age +
             date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "years"
             ) +
             " " +
@@ -231,8 +241,8 @@ export default defineComponent({
             "";
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "months"
           ) != 0
         )
@@ -240,14 +250,14 @@ export default defineComponent({
             age +
             (age == "" ? "" : ", ") +
             (date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "months"
             ) -
               12 *
                 date.getDateDiff(
-                  Date.now(),
                   date.extractDate(e.date, "YYYY-MM-DD"),
+                  date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
                   "years"
                 )) +
             " " +
@@ -256,21 +266,30 @@ export default defineComponent({
 
         if (
           date.getDateDiff(
-            Date.now(),
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "years"
           ) == 0 &&
-          date.getDateDiff(
-            Date.now(),
+          (date.getDateDiff(
             date.extractDate(e.date, "YYYY-MM-DD"),
+            date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
             "months"
-          ) == 0
+          ) == 0 ||
+            (date.getDateDiff(
+              date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+              "months"
+            ) == 1 &&
+              date.getDateDiff(
+                date.extractDate(e.date, "YYYY-MM-DD"),
+                date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+                "days"
+              ) <= 31))
         )
           age =
-            age +
             date.getDateDiff(
-              Date.now(),
               date.extractDate(e.date, "YYYY-MM-DD"),
+              date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
               "days"
             ) +
             " " +

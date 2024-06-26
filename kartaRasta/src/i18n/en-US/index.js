@@ -27,7 +27,7 @@ export default {
     allFieldsAreRequired: "All fields are required!",
 
     heightLabel: "height (cm)",
-    dateLabel: "Date of measurement",
+    dateLabel: "Date",
 
     cancel: "Cancel",
     add: "Add",

@@ -20,6 +20,7 @@
           left: calc(50vw - 105px);
           width: 210px;
           color: #ffffff;
+          z-index: 1000;
         "
         :class="{
           'bg-girl': props.selectedChild.gender == 'female',

@@ -44,6 +44,20 @@ export default defineComponent({
         children.value = JSON.parse(storedChildren).filter(
           (e) => e.gender != undefined
         );
+
+        console.log("children.value");
+        console.log(children.value);
+        children.value.forEach((entry, index) =>
+          children.value[index].heightData.sort((a, b) => {
+            return date.extractDate(a.date, "YYYY-MM-DD").getTime() -
+              date.extractDate(b.date, "YYYY-MM-DD").getTime() >
+              0
+              ? 1
+              : -1;
+          })
+        );
+        console.log("children.value");
+        console.log(children.value);
         saveChildren();
       }
     };
