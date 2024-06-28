@@ -16,4 +16,6 @@ public class MainActivity extends BridgeActivity {
     super.attachBaseContext(newBase);
   }
 
+// mislim da je to to
+  //jad da vidimo
 }
