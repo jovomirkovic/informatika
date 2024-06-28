@@ -1,3 +1,8 @@
+Podaci od visini oca i majke su uneti od strane korisnika.
+Podatke o prosečnoj visini i standardnoj devijaciji za određeni uzrast smo nabavili sa sajta Svetske Zdravstvene Organizacije.
+Linkovi sa podacima su na dnu fajla.
+
+
 Ciljana Visina Dečak  = (Visina Oca + Visina Majke + 13) / 2
 Ciljana Visina Devojčica  = (Visina Oca + Visina Majke - 13) / 2
 
@@ -5,22 +10,29 @@ Koeficijent za korekciju visine kod dečaka = Ciljana Visina Dečak / Prosečna 
 Koeficijent za korekciju visine kod devojčice = Ciljana Visina Devojčica / Prosečna visina odrasle žene (163.2cm)
 
 
-Optimalna visina za dečaka za starost X = Prosečna visina muškarca starosti X *
+Optimalna visina za dečaka starosti X = (Prosečna visina muškarca starosti X +- Standardna devijacija visine za muškarca starosti X) * Koeficijent za korekciju visine kod dečaka
+Optimalna visina za devojčicu starosti X = (Prosečna visina žene starosti X +- Standardna devijacija visine za ženu starosti X) * Koeficijent za korekciju visine kod devojčice
+
+Zona visokog rasta za dečaka starosti X = (Prosečna visina muškarca starosti X + 2 * Standardna devijacija visine za muškarca starosti X) * Koeficijent za korekciju visine kod dečaka
+Zona visokog rasta za devojčicu starosti X = (Prosečna visina žene starosti X + 2 * Standardna devijacija visine za ženu starosti X) * Koeficijent za korekciju visine kod devojčice
+
+Zona niskog rasta za dečaka starosti X = (Prosečna visina muškarca starosti X - 3 * Standardna devijacija visine za muškarca starosti X) * Koeficijent za korekciju visine kod dečaka
+Zona niskog rasta za devojčicu starosti X = (Prosečna visina žene starosti X - 3 * Standardna devijacija visine za ženu starosti X) * Koeficijent za korekciju visine kod devojčice
 
 
-Date of data collection: 25.06.2024.
+Datum prikupljanja podataka: 25.06.2024.
 
-Data source:
+Izvori podataka:
 
-  Girls
+  Devojčice - visine za uzrast
     https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_girls_z_0_2.pdf?sfvrsn=6b77f3cd_9
     https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_girls_z_2_5.pdf?sfvrsn=72bff814_9
     https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-(5-19-years)/sft-hfa-girls-z-5-19years.pdf?sfvrsn=65c549dc_4
 
-  Boys
+  Dečaci - visine za uzrast
     https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_boys_z_0_2.pdf?sfvrsn=ebd98e93_9
     https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/length-height-for-age/sft_lhfa_boys_z_2_5.pdf?sfvrsn=e70e3a87_7
     https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/height-for-age-(5-19-years)/sft-hfa-boys-z-5-19years.pdf?sfvrsn=133da6b6_4
 
-  General
+  Opšte - Algoritam sa računanje ciljane visine
     https://ebmcalc.com/HeightPotential.htm
