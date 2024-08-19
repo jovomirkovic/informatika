@@ -78,7 +78,9 @@ export default {
     childHeight: "Child height",
     optimalZone: "Zone of optimal growth",
     lowZone: "Zone of low growth",
+    highZone: "Zone of high growth",
     averageHeightForAge: "Average height for age",
+    optimalHeightDot: "Target height",
 
     // tableComponent
     noResults: "No data",

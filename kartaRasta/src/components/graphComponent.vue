@@ -1,29 +1,30 @@
 <template>
-  <div
-    class="flex flex-center column"
-    style="
+  <div class="flex flex-center column" style="
       background-color: #ffffffa0;
       border-radius: 15px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       padding: 0px 0px 25px 0px;
       margin: 8px 0px;
-    "
-    v-if="props.child"
-    :style="{
-      color: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
-    }"
-  >
-    <p style="text-align: center; margin: 0px; position: relative; top: 30px">
+    " v-if="props.child" :style="{
+      color: [props.child.gender == 'male' ? '#ffffff' : '#ffffff'],
+    }">
+    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; z-index: 1000; left: 40%">
       Zona visokog rasta
     </p>
-    <div id="chartdiv" style="margin-top: -30px"></div>
+    <p style="text-align: center; margin: 0px; position: absolute; z-index: 1000; left: 25%"
+      :style="{ top: [topPosition + 'px'] }">
+      Zona niskog rasta
+      <br />
+      Obratite se vašem izabranom lekaru
+    </p>
+    <div id="chartdiv" ref="chartRef"></div>
   </div>
 </template>
 
 <script>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { date } from "quasar";
+import { useQuasar, date } from "quasar";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
@@ -38,6 +39,8 @@ export default defineComponent({
   setup(props) {
     const t = useI18n();
     let router = useRouter();
+    let topPosition = ref(100)
+    const $q = useQuasar();
 
     onMounted(() => {
       createChard();
@@ -45,8 +48,6 @@ export default defineComponent({
 
     function createChard() {
       var root = am5.Root.new("chartdiv");
-      console.log(root);
-      console.log(root.value);
 
       root.setThemes([am5themes_Animated.new(root)]);
 
@@ -57,21 +58,26 @@ export default defineComponent({
           layout: root.verticalLayout,
         })
       );
+      chart.plotContainer.set("background", am5.Rectangle.new(root, {
+        fill: am5.color(0xff00ff), // dark background color for chart area
+        fillOpacity: 1
+      }));
+
 
       var averageDataFromWHO =
         props.child.gender == "male"
           ? averageHeight().boys
           : averageHeight().girls;
 
-      var numberOfMonthsForDisplay =
-        date.getDateDiff(
-          date.extractDate(
-            props.child.heightData[props.child.heightData.length - 1].date,
-            "YYYY-MM-DD"
-          ),
-          date.extractDate(props.child.heightData[0].date, "YYYY-MM-DD"),
-          "month"
-        ) + 1;
+      var numberOfMonthsForDisplay = 216 //See full 18 years
+      // date.getDateDiff(
+      //   date.extractDate(
+      //     props.child.heightData[props.child.heightData.length - 1].date,
+      //     "YYYY-MM-DD"
+      //   ),
+      //   date.extractDate(props.child.heightData[0].date, "YYYY-MM-DD"),
+      //   "month"
+      // ) + 1;
 
       // 228 - is the last month of measured data gathered from WHO
       var coefficientBasedOnParents =
@@ -109,26 +115,59 @@ export default defineComponent({
               )
               .getTime(),
             highHeight:
-              (e.height + 2 * e.deviation) * coefficientBasedOnParents,
+              (e.height + 2 * e.deviation),
             topHeight: (e.height + 1 * e.deviation) * coefficientBasedOnParents,
             bottomHeight:
               (e.height - 1 * e.deviation) * coefficientBasedOnParents,
-            lowHeight: (e.height - 3 * e.deviation) * coefficientBasedOnParents,
+            lowHeight: (e.height - 2 * e.deviation),
           };
         });
 
       // Define childHeightChartData
-      var childHeightChartData = props.child.heightData.map((e) => {
+      var childHeightChartData = props.child.heightData.map((e, index) => {
+        console.log(index)
+        let comparisonDateData = optimalHeightZoneChartData.filter(entry => {
+
+          var date1 = new Date(e.date);
+          var date2 = new Date(entry.date);
+
+          var sameYear = date1.getFullYear() === date2.getFullYear();
+          var sameMonth = date1.getMonth() === date2.getMonth(); // Months are zero-indexed (0 for January, 11 for December)
+
+          return sameYear && sameMonth;
+        })[0]
+        if (e.height > comparisonDateData.highHeight) {
+          $q.notify({
+            message: "PREVISOKO",
+            color: "negative",
+            position: "top",
+          });
+
+        } else if (e.height < comparisonDateData.lowHeight) {
+          $q.notify({
+            message: "prenisko",
+            color: "negative",
+            position: "bottom",
+          });
+
+        }
         return {
           date: new Date(e.date).getTime(),
           height: e.height,
         };
       });
 
+      // Define target height dot
+      var childTargetHeightData = [{
+        date: optimalHeightZoneChartData[optimalHeightZoneChartData.length - 1].date,
+        height: props.child.childTargetHeight,
+      }];
+
       // Create Y-axis
       let yAxis = chart.yAxes.push(
         am5xy.ValueAxis.new(root, {
           renderer: am5xy.AxisRendererY.new(root, {}),
+          extraMax: 0.1 // Adds 10% more space above the highest value
         })
       );
 
@@ -151,6 +190,26 @@ export default defineComponent({
       );
       // Create series
 
+      // Series 32 is the first because of the white fill
+      var series32 = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: t.t("general.highZone"),
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "highHeight",
+          valueXField: "date",
+        })
+      );
+
+      series32.fills.template.set("above", true);
+      series32.fills.template.setAll({
+        fillOpacity: 1,
+        visible: true,
+      });
+
+      series32.set("fill", am5.color("#ffffff"));
+      series32.set("stroke", am5.color("#ff00ff"));
+      series32.data.setAll(optimalHeightZoneChartData);
       var series2 = chart.series.push(
         am5xy.LineSeries.new(root, {
           name: t.t("general.optimalZone"),
@@ -208,23 +267,6 @@ export default defineComponent({
       series3.set("stroke", am5.color("#ff0000"));
       series3.data.setAll(optimalHeightZoneChartData);
 
-      var series32 = chart.series.push(
-        am5xy.LineSeries.new(root, {
-          name: t.t("general.lowZone"),
-          xAxis: xAxis,
-          yAxis: yAxis,
-          valueYField: "highHeight",
-          valueXField: "date",
-        })
-      );
-
-      series32.fills.template.setAll({
-        fillOpacity: 0.5,
-        visible: false,
-      });
-
-      series32.set("stroke", am5.color("#ff0000"));
-      series32.data.setAll(optimalHeightZoneChartData);
 
       var series4 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -238,6 +280,31 @@ export default defineComponent({
 
       series4.set("stroke", am5.color("#000000"));
       series4.data.setAll(averageHeightChartData);
+
+      var series5 = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: t.t("general.optimalHeightDot"),
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: "height",
+          valueXField: "date",
+        })
+      );
+
+      series5.set("stroke", am5.color("#00ff00"));
+      series5.bullets.push(function () {
+        return am5.Bullet.new(root, {
+          locationY: 0,
+          sprite: am5.Circle.new(root, {
+            radius: 4,
+            stroke: root.interfaceColors.get("background"),
+            strokeWidth: 2,
+            stroke: am5.color("#00ff00"),
+            fill: am5.color("#ffffff"),
+          }),
+        });
+      });
+      series5.data.setAll(childTargetHeightData);
 
       var series1 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -307,7 +374,6 @@ export default defineComponent({
       xAxis
         .get("renderer")
         .labels.template.adapters.add("text", function (text, target) {
-          console.log(target.dataItem);
           var years = timePassed(
             Math.abs(
               date
@@ -326,14 +392,17 @@ export default defineComponent({
       );
       // Add legend
       var legend = chart.children.push(am5.Legend.new(root, {}));
-      console.log("chart.series.values");
-      console.log(chart.series.values);
-      console.log(
-        chart.series.values.filter((e) => e._settings.name != "hide")
-      );
       legend.data.setAll(
         chart.series.values.filter((e) => e._settings.name != "hide")
       );
+
+
+      root.events.on("frameended", function () {
+        var chartContainerHeight = root.container.innerHeight();
+        var legendHeight = legend.height();
+        var plotAreaHeight = chartContainerHeight - legendHeight;
+        topPosition.value = plotAreaHeight - 60;
+      });
     }
 
     function goTo(path) {
@@ -342,6 +411,7 @@ export default defineComponent({
 
     return {
       props,
+      topPosition,
       goTo,
     };
   },
@@ -351,14 +421,17 @@ export default defineComponent({
 .componentContainer {
   padding: 15px;
 }
+
 .title {
   font-size: 15pt;
   font-weight: 600;
 }
+
 .subtitle {
   font-size: 11pt;
   font-style: italic;
 }
+
 .subtitle2 {
   font-size: 11pt;
   // margin: 10px;
@@ -370,11 +443,13 @@ export default defineComponent({
 .rightSide {
   font-weight: 600;
 }
+
 .separatorLine {
   width: 50%;
   height: 0.5px;
   margin: 25px;
 }
+
 #chartdiv {
   width: 100%;
   height: calc(100vh - 220px);

@@ -78,7 +78,9 @@ export default {
     childHeight: "Visina deteta",
     optimalZone: "Zona optimalnog rasta",
     lowZone: "Zona niskog rasta",
+    highZone: "Zona visokog rasta",
     averageHeightForAge: "Prosečna visina za uzrast",
+    optimalHeightDot: "Ciljana visina",
 
     // tableComponent
     noResults: "Nema podataka",
