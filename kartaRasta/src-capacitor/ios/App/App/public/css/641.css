@@ -1,0 +1,112 @@
+
+.inputfile[data-v-c8c99e2e] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile + label[data-v-c8c99e2e] {
+  font-size: 1.25em;
+  font-weight: 700;
+  padding: 10px 15px;
+  color: white;
+  background-color: black;
+  display: inline-block;
+  border-radius: 3px;
+}
+.inputfile:focus + label[data-v-c8c99e2e],
+.inputfile + label[data-v-c8c99e2e]:hover {
+  background-color: red;
+}
+
+.componentContainer[data-v-2cc8bd27] {
+  padding: 15px;
+}
+.title[data-v-2cc8bd27] {
+  font-size: 15pt;
+  font-weight: 600;
+}
+.subtitle[data-v-2cc8bd27] {
+  font-size: 11pt;
+  font-style: italic;
+}
+.subtitle2[data-v-2cc8bd27] {
+  font-size: 11pt;
+  color: rgba(0, 0, 0, 0.6274509804);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.rightSide[data-v-2cc8bd27] {
+  font-weight: 600;
+}
+.separatorLine[data-v-2cc8bd27] {
+  width: 50%;
+  height: 0.5px;
+  margin: 25px;
+}
+.componentContainer[data-v-818341c6] {
+  padding: 15px;
+}
+.title[data-v-818341c6] {
+  font-size: 15pt;
+  font-weight: 600;
+}
+.subtitle[data-v-818341c6] {
+  font-size: 11pt;
+  font-style: italic;
+}
+.subtitle2[data-v-818341c6] {
+  font-size: 11pt;
+  color: rgba(0, 0, 0, 0.6274509804);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.rightSide[data-v-818341c6] {
+  font-weight: 600;
+}
+.separatorLine[data-v-818341c6] {
+  width: 50%;
+  height: 0.5px;
+  margin: 25px;
+}
+#chartdiv[data-v-818341c6] {
+  width: 100%;
+  height: calc(100vh - 220px);
+}
+.componentContainer[data-v-6a71dc92] {
+  padding: 15px;
+}
+.title[data-v-6a71dc92] {
+  font-size: 15pt;
+  font-weight: 600;
+}
+.subtitle[data-v-6a71dc92] {
+  font-size: 11pt;
+  font-style: italic;
+}
+.subtitle2[data-v-6a71dc92] {
+  font-size: 11pt;
+  color: rgba(0, 0, 0, 0.6274509804);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.rightSide[data-v-6a71dc92] {
+  font-weight: 600;
+}
+.separatorLine[data-v-6a71dc92] {
+  width: 50%;
+  height: 0.5px;
+  margin: 25px;
+}
+.q-table__container[data-v-6a71dc92] {
+  background-color: transparent;
+  box-shadow: none;
+  width: 100%;
+}
+.container {
+  background: linear-gradient(180deg, rgba(117, 158, 255, 0.3) 0%, rgba(234, 202, 244, 0.3) 100%);
+}
+
+/*# sourceMappingURL=641.css.map*/

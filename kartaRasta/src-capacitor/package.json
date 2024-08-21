@@ -1,5 +1,5 @@
 {
-  "name": "kartarasta",
+  "name": "com.mkonekt.kartaRasta",
   "version": "0.0.1",
   "description": "Karta rasta za sve roditelje",
   "author": "Jovo N. Mirkovic <jovo@mirkovic.rs>",
@@ -8,6 +8,7 @@
     "@capacitor/android": "^6.1.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
-    "@capacitor/core": "^6.0.0"
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/local-notifications": "^6.1.0"
   }
 }

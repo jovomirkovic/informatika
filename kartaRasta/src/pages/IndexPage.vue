@@ -1,62 +1,39 @@
 <template>
   <q-page class="container">
     <q-toolbar style="color: #00000040">
-      <q-toolbar-title
-        style="
+      <q-toolbar-title style="
           font-weight: 800;
           font-size: 14vw;
           line-height: 1;
           margin: 25px 25px;
-        "
-      >
+        ">
         {{ $t("general.title1") }} <br />
         {{ $t("general.title2") }}
       </q-toolbar-title>
 
-      <q-btn-dropdown
-        flat
-        dense
-        round
-        dropdown-icon="more_vert"
-        style="font-size: 5vw; margin-right: 15px"
-        content-style="background-color: #00000000;"
-      >
+      <q-btn-dropdown flat dense round dropdown-icon="more_vert" style="font-size: 5vw; margin-right: 15px"
+        content-style="background-color: #00000000;">
         <div style="background-color: #00000040; color: #ffffff">
-          <q-item
-            @click="languageDialog = true"
-            clickable
-            v-ripple
-            v-close-popup
-            class="flex items-center"
-          >
+          <q-item @click="languageDialog = true" clickable v-ripple v-close-popup class="flex items-center">
             <q-icon size="1.5em" name="language" style="margin-right: 10px" />
             <span> {{ $t("general.language") }}</span>
           </q-item>
 
-          <q-item
-            @click="informationDialog = true"
-            clickable
-            v-ripple
-            v-close-popup
-            class="flex items-center"
-          >
+          <q-item @click="informationDialog = true" clickable v-ripple v-close-popup class="flex items-center">
             <q-icon size="1.5em" name="info" style="margin-right: 10px" />
             <span> {{ $t("general.info") }} </span>
           </q-item>
         </div>
       </q-btn-dropdown>
     </q-toolbar>
-    <div
-      style="min-height: calc(100vh - 180px); margin: 10px"
-      class="flex justify-end column"
-    >
+    <div style="min-height: calc(100vh - 180px); margin: 10px" class="flex justify-end column">
       <span class="row">
-        <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn" push>
+        <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn column no-wrap" push>
           <q-icon size="3em" name="female" />
           <div style="width: 70%">{{ $t("general.addGirl") }}</div>
         </q-btn>
 
-        <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn" push>
+        <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn column no-wrap" push>
           <q-icon size="3em" name="male" />
           <div style="width: 70%">{{ $t("general.addBoy") }}</div>
         </q-btn>
@@ -72,12 +49,10 @@
     </div>
 
     <q-dialog v-model="informationDialog">
-      <q-card
-        style="
+      <q-card style="
           background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
           color: #1e1e1e;
-        "
-      >
+        ">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ $t("general.aboutTheApp") }}</div>
           <q-space />
@@ -90,13 +65,11 @@
     </q-dialog>
 
     <q-dialog v-model="languageDialog">
-      <q-card
-        style="
+      <q-card style="
           background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
           color: #1e1e1e;
           width: 100%;
-        "
-      >
+        ">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ $t("general.languageSelection") }}</div>
           <q-space />
@@ -105,25 +78,12 @@
 
         <q-card-section class="flex items-center column">
           <q-avatar style="margin: 20px">
-            <img
-              v-if="selectedLanguage.value == 'sr'"
-              src="../assets/flags/srb.png"
-            />
-            <img
-              v-else-if="selectedLanguage.value == 'en-US'"
-              src="../assets/flags/eng.png"
-            />
+            <img v-if="selectedLanguage.value == 'sr'" src="../assets/flags/srb.png" />
+            <img v-else-if="selectedLanguage.value == 'en-US'" src="../assets/flags/eng.png" />
             <!-- <img :src="'../assets/flags/' + selectedLanguage.value + '.png'" /> -->
           </q-avatar>
-          <q-select
-            style="width: 100%; margin-bottom: 25px"
-            rounded
-            outlined
-            v-model="selectedLanguage"
-            :options="languageOptions"
-            :label="$t('general.selectLanguage')"
-            @update:model-value="changeLanguage"
-          />
+          <q-select style="width: 100%; margin-bottom: 25px" rounded outlined v-model="selectedLanguage"
+            :options="languageOptions" :label="$t('general.selectLanguage')" @update:model-value="changeLanguage" />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -200,11 +160,9 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .container {
-  background: linear-gradient(
-    180deg,
-    rgba(117, 158, 255, 0.3) 0%,
-    rgba(234, 202, 244, 0.3) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(117, 158, 255, 0.3) 0%,
+      rgba(234, 202, 244, 0.3) 100%);
 }
 
 .mainBtn {
@@ -222,9 +180,11 @@ export default defineComponent({
 .girlBtn {
   background-color: var(--q-girl-color);
 }
+
 .boyBtn {
   background-color: var(--q-boy-color);
 }
+
 .kidsBtn {
   width: calc(100% - 20px);
   height: 100px;

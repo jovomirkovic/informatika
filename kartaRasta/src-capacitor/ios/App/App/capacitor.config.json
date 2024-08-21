@@ -1,0 +1,9 @@
+{
+	"appId": "com.mkonekt.kartaRasta",
+	"appName": "Karta rasta",
+	"webDir": "www",
+	"packageClassList": [
+		"AppPlugin",
+		"LocalNotificationsPlugin"
+	]
+}

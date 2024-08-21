@@ -1,0 +1,31 @@
+
+.inputfile[data-v-c8c99e2e] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile + label[data-v-c8c99e2e] {
+  font-size: 1.25em;
+  font-weight: 700;
+  padding: 10px 15px;
+  color: white;
+  background-color: black;
+  display: inline-block;
+  border-radius: 3px;
+}
+.inputfile:focus + label[data-v-c8c99e2e],
+.inputfile + label[data-v-c8c99e2e]:hover {
+  background-color: red;
+}
+
+.componentContainer {
+  padding: 15px;
+}
+.container {
+  background: linear-gradient(180deg, rgba(117, 158, 255, 0.3) 0%, rgba(234, 202, 244, 0.3) 100%);
+}
+
+/*# sourceMappingURL=897.css.map*/
