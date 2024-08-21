@@ -1,18 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
-      <router-view
-        :selectedChild="selectedChild"
-        :children="children"
-        @remove-child="removeChild"
-        @edit-child="editChild"
-        @put-child="putChild"
-        @add-child="addChild"
-        @resetuj-selektovano-dete="resetujSelektovanoDete"
-        @select-child="selectChild"
-        @add-height="addHeight"
-        @remove-height="removeHeight"
-      />
+      <router-view :selectedChild="selectedChild" :children="children" @remove-child="removeChild"
+        @edit-child="editChild" @put-child="putChild" @add-child="addChild"
+        @resetuj-selektovano-dete="resetujSelektovanoDete" @select-child="selectChild" @add-height="addHeight"
+        @remove-height="removeHeight" />
     </q-page-container>
   </q-layout>
 </template>
@@ -23,6 +15,40 @@ import localforage from "localforage";
 import { useRouter } from "vue-router";
 import { useQuasar, date } from "quasar";
 import { useI18n } from "vue-i18n";
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { addMonths, addMinutes, addSeconds } from 'date-fns';
+import logo from "../assets/logo.png"
+
+// LocalNotifications.addListener('localNotificationReceived', async (notification) => {
+//   console.log('Notification received:', notification);
+
+//   // Reschedule the notification for another 6 months in the future
+//   const now = new Date();
+//   // const sixMonthsLater = addSeconds(new Date(), 15); // Calculate date 6 months from now
+//   const sixMonthsLater = addMonths(now, 6); // Calculate date 6 months from now
+
+
+
+//   await LocalNotifications.schedule({
+//     notifications: [
+//       {
+//         id: notification.id, // Unique ID for the next notification
+//         title: notification.title,
+//         body: notification.body,
+//         schedule: {
+//           at: sixMonthsLater,
+//         },
+//         schedule: {
+//           at: sixMonthsLater,
+//           repeats: true, // Set to repeat
+//           every: 'year', // Repeats every year after initial 6 months
+//         },
+//         sound: notification.sound,
+//         smallIcon: notification.smallIcon,
+//       }
+//     ],
+//   });
+// });
 
 export default defineComponent({
   name: "MainLayout",
@@ -32,11 +58,81 @@ export default defineComponent({
     const $q = useQuasar();
     const children = ref([]);
     const selectedChild = ref({});
+    const pendingNotifications = ref([]);
     const router = useRouter();
 
-    onMounted(() => {
-      loadChildren();
+    onMounted(async () => {
+
+      try {
+        // Request notification permissions
+        const permission1 = await LocalNotifications.checkPermissions();
+        const permission = await LocalNotifications.requestPermissions();
+        if (permission.display !== 'granted') {
+          console.error('Notification permission not granted.');
+          return;
+        }
+
+        // Schedule the reminder notification
+        checkScheduledNotifications(true);
+      } catch (error) {
+        console.error('Notification setup error: ', error);
+      }
     });
+
+
+    const scheduleNotificationInSixMonths = async (child) => {
+      const now = new Date();
+      const sixMonthsLater = addMonths(now, 6);  // 6 months from now
+      const oneYearLater = addMonths(now, 12);   // 1 year from now
+
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: child.id % 2000000000,
+            title: 'Podsetnik',
+            body: 'Vreme je da unesete novu visinu za: ' + child.firstName + ' ' + child.lastName + '!',
+            schedule: {
+              at: sixMonthsLater,
+              repeats: true, // Set to repeat
+              every: 'year', // Repeats every year after initial 6 months
+            },
+            sound: 'default',
+            smallIcon: logo,
+          },
+          {
+            id: child.id % 2000000000 + 1,
+            title: 'Podsetnik',
+            body: 'Vreme je da unesete novu visinu za: ' + child.firstName + ' ' + child.lastName + '!',
+            schedule: {
+              at: oneYearLater,
+              repeats: true, // Set to repeat
+              every: 'year', // Repeats every year after initial 1 year
+            },
+            sound: 'default',
+            smallIcon: logo,
+          }
+        ],
+      });
+    };
+    const checkScheduledNotifications = async (test) => {
+      try {
+        const { notifications } = await LocalNotifications.getPending();
+
+        if (notifications.length > 0) {
+          console.log('Scheduled notifications:', notifications);
+          pendingNotifications.value = notifications
+          // Process or display the notifications as needed
+        } else {
+          console.log('No scheduled notifications.');
+        }
+        if (test)
+          loadChildren();
+      } catch (error) {
+        console.error('Error retrieving scheduled notifications:', error);
+        if (test)
+          loadChildren();
+      }
+    };
 
     const loadChildren = async () => {
       const storedChildren = await localforage.getItem("children");
@@ -47,7 +143,9 @@ export default defineComponent({
 
         console.log("children.value");
         console.log(children.value);
-        children.value.forEach((entry, index) =>
+        children.value.forEach((entry, index) => {
+
+
           children.value[index].heightData.sort((a, b) => {
             return date.extractDate(a.date, "YYYY-MM-DD").getTime() -
               date.extractDate(b.date, "YYYY-MM-DD").getTime() >
@@ -55,7 +153,7 @@ export default defineComponent({
               ? 1
               : -1;
           })
-        );
+        });
         console.log("children.value");
         console.log(children.value);
         saveChildren();
@@ -109,6 +207,13 @@ export default defineComponent({
               position: "top",
             });
           }
+
+          children.value.forEach((entry, index) => {
+            if (pendingNotifications.value.filter(e => e.body.includes(entry.firstName + ' ' + entry.lastName)).length == 0) {
+              scheduleNotificationInSixMonths(entry)
+            }
+          });
+          checkScheduledNotifications(false);
 
           if (to != undefined) {
             goTo(to);
