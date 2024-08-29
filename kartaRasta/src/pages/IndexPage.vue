@@ -1,5 +1,5 @@
 <template>
-  <q-page class="container">
+  <q-page class="container flex justify-center">
     <q-toolbar style="color: #00000040">
       <q-toolbar-title style="
           font-weight: 800;
@@ -26,22 +26,32 @@
         </div>
       </q-btn-dropdown>
     </q-toolbar>
+
+    <span style="height: 0px; overflow: visible; width: 80%;">
+      <video width="100%" controls poster="../assets/placeholder.png">
+        <source src="../assets/Merenje_visine_rasta.mp4" type="video/mp4">
+        Your browser does not support HTML video.
+      </video>
+    </span>
+
+
+
     <div style="min-height: calc(100vh - 180px); margin: 10px" class="flex justify-end column">
       <span class="row">
         <q-btn @click="goTo('/addDaughter')" class="girlBtn mainBtn column no-wrap" push>
-          <q-icon size="3em" name="female" />
-          <div style="width: 70%">{{ $t("general.addGirl") }}</div>
+          <q-icon size="2.5em" name="female" />
+          <div style="width: 90%;">{{ $t("general.addGirl") }}</div>
         </q-btn>
 
         <q-btn @click="goTo('/addSon')" class="boyBtn mainBtn column no-wrap" push>
-          <q-icon size="3em" name="male" />
-          <div style="width: 70%">{{ $t("general.addBoy") }}</div>
+          <q-icon size="2.5em" name="male" />
+          <div style="width: 90%;">{{ $t("general.addBoy") }}</div>
         </q-btn>
       </span>
 
       <q-btn @click="goTo('/myChildren')" class="kidsBtn mainBtn" push>
-        <q-icon size="3em" name="fa-solid fa-child-reaching" />
-        <div style="width: 70%">{{ $t("general.myChildren") }}</div>
+        <q-icon size="2.5em" name="fa-solid fa-child-reaching" />
+        <div style="width: 70%;">{{ $t("general.myChildren") }}</div>
       </q-btn>
       <p style="color: #00000040; text-align: center; font-size: 12pt">
         {{ $t("general.heightIsNotASmallThing") }}
@@ -172,7 +182,7 @@ export default defineComponent({
   padding: 15px;
   margin: 10px;
   width: min(calc(50% - 20px), 200px);
-  height: 180px;
+  height: 150px;
   color: #ffffff;
   border-radius: 15px;
 }
@@ -187,7 +197,7 @@ export default defineComponent({
 
 .kidsBtn {
   width: calc(100% - 20px);
-  height: 100px;
+  height: 80px;
   background-color: #e0d9d9;
   background-color: #00000030;
 }

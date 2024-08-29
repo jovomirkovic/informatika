@@ -8,8 +8,10 @@
     " v-if="props.child" :style="{
       color: [props.child.gender == 'male' ? '#ffffff' : '#ffffff'],
     }">
-    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; z-index: 1000; left: 40%">
+    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; z-index: 1000; left: 25%">
       Zona visokog rasta
+      <br />
+      Obratite se vašem izabranom lekaru
     </p>
     <p style="text-align: center; margin: 0px; position: absolute; z-index: 1000; left: 25%"
       :style="{ top: [topPosition + 'px'] }">
@@ -59,7 +61,7 @@ export default defineComponent({
         })
       );
       chart.plotContainer.set("background", am5.Rectangle.new(root, {
-        fill: am5.color(0xff00ff), // dark background color for chart area
+        fill: am5.color(0xffb2ff), // dark background color for chart area
         fillOpacity: 1
       }));
 
@@ -136,18 +138,36 @@ export default defineComponent({
 
           return sameYear && sameMonth;
         })[0]
-        if (e.height > comparisonDateData.highHeight) {
+        if (e.height > comparisonDateData.highHeight && index == props.child.heightData.length - 1) {
           $q.notify({
-            message: "PREVISOKO",
+            message: "Vaše dete je u zoni visokog rasta. Molimo vas obratite se vašem izabranom lekaru",
             color: "negative",
-            position: "top",
+            position: "center",
+            timeout: 0,
+            actions: [
+              {
+                icon: 'close',
+                // for individual action (button):
+                color: 'white',
+                'aria-label': 'Dismiss'
+              }
+            ]
           });
 
-        } else if (e.height < comparisonDateData.lowHeight) {
+        } else if (e.height < comparisonDateData.lowHeight && index == props.child.heightData.length - 1) {
           $q.notify({
-            message: "prenisko",
+            message: "Vaše dete je u zoni niskog rasta. Molimo vas obratite se vašem izabranom lekaru",
             color: "negative",
-            position: "bottom",
+            position: "center",
+            timeout: 0,
+            actions: [
+              {
+                icon: 'close',
+                // for individual action (button):
+                color: 'white',
+                'aria-label': 'Dismiss'
+              }
+            ]
           });
 
         }
@@ -201,9 +221,9 @@ export default defineComponent({
         })
       );
 
-      series32.fills.template.set("above", true);
+      // series32.fills.template.set("above", true);
       series32.fills.template.setAll({
-        fillOpacity: 1,
+        fillOpacity: 0.9,
         visible: true,
       });
 
