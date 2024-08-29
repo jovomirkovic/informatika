@@ -96,5 +96,12 @@ export default {
     // ErrorNotFound
     error404Message: "Uups, Nema ništa ovde...",
     errorHome: "Vrati se na početnu",
+    details: "Detalji",
+    callADoctor: "Obratite se vašem izabranom lekaru",
+    callADoctorHigh:
+      "Vaše dete je u zoni visokog rasta. Molimo vas obratite se vašem izabranom lekaru",
+    callADoctorLow:
+      "Vaše dete je u zoni niskog rasta. Molimo vas obratite se vašem izabranom lekaru",
+    rowsPerPage: "Broj zapisa po stranici",
   },
 };

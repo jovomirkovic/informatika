@@ -3,7 +3,7 @@
     <q-toolbar style="color: #00000040">
       <q-toolbar-title style="
           font-weight: 800;
-          font-size: 14vw;
+          font-size: 13vw;
           line-height: 1;
           margin: 25px 25px;
         ">

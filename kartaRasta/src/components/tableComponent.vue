@@ -1,43 +1,25 @@
 <template>
-  <div
-    class="flex flex-center column"
-    style="
+  <div class="flex flex-center column" style="
       background-color: #ffffffa0;
       border-radius: 15px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       margin: 8px 0px;
-    "
-    v-if="props.child"
-    :style="{
+    " v-if="props.child" :style="{
       color: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
-    }"
-  >
-    <q-table
-      style="height: calc(100vh - 195px)"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      :no-results-label="$t('general.noResults')"
-    >
+    }">
+    <q-table style="height: calc(100vh - 195px)" :rows="rows" :columns="columns" row-key="name"
+      :no-results-label="$t('general.noResults')" :rows-per-page-label="$t('general.rowsPerPage')">
       <template v-slot:body-cell-action="props">
         <q-td key="action" :props="props">
-          <q-btn
-            icon="delete"
-            :disabled="props.row.id == 'childTargetHeight'"
-            push
-            class="text-white bg-negative q-ml-sm col"
-            round
-            @click="removeHeight1(props.row)"
-          />
+          <q-btn icon="delete" :disabled="props.row.id == 'childTargetHeight'" push
+            class="text-white bg-negative q-ml-sm col" round @click="removeHeight1(props.row)" />
         </q-td>
       </template>
     </q-table>
 
     <q-dialog v-model="areYouSure">
       <q-card class="flex flex-center">
-        <q-card-section
-          class="row flex flex-center q-pb-none text-center q-mb-xl"
-        >
+        <q-card-section class="row flex flex-center q-pb-none text-center q-mb-xl">
           <span style="font-size: 12pt">
             {{ $t("general.areYouSureDeleteMeasurement") }}
           </span>
@@ -54,19 +36,8 @@
         </q-card-section>
 
         <span class="row q-mb-lg" style="width: 90%">
-          <q-btn
-            v-close-popup
-            push
-            class="text-white bg-negative q-mr-sm col"
-            label="Da"
-            @click="removeHeight()"
-          />
-          <q-btn
-            push
-            class="text-white bg-positive q-ml-sm col"
-            label="Ne"
-            @click="cancel"
-          />
+          <q-btn v-close-popup push class="text-white bg-negative q-mr-sm col" label="Da" @click="removeHeight()" />
+          <q-btn push class="text-white bg-positive q-ml-sm col" label="Ne" @click="cancel" />
         </span>
       </q-card>
     </q-dialog>
@@ -159,11 +130,11 @@ export default defineComponent({
               "months"
             ) -
               12 *
-                date.getDateDiff(
-                  date.extractDate(e.date, "YYYY-MM-DD"),
-                  date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
-                  "years"
-                )) +
+              date.getDateDiff(
+                date.extractDate(e.date, "YYYY-MM-DD"),
+                date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+                "years"
+              )) +
             " " +
             t.t("general.monthShort") +
             "";
@@ -255,11 +226,11 @@ export default defineComponent({
               "months"
             ) -
               12 *
-                date.getDateDiff(
-                  date.extractDate(e.date, "YYYY-MM-DD"),
-                  date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
-                  "years"
-                )) +
+              date.getDateDiff(
+                date.extractDate(e.date, "YYYY-MM-DD"),
+                date.extractDate(props.child.dateOfBirth, "DD.MM.YYYY."),
+                "years"
+              )) +
             " " +
             t.t("general.monthShort") +
             "";
@@ -360,14 +331,17 @@ export default defineComponent({
 .componentContainer {
   padding: 15px;
 }
+
 .title {
   font-size: 15pt;
   font-weight: 600;
 }
+
 .subtitle {
   font-size: 11pt;
   font-style: italic;
 }
+
 .subtitle2 {
   font-size: 11pt;
   // margin: 10px;
@@ -379,11 +353,13 @@ export default defineComponent({
 .rightSide {
   font-weight: 600;
 }
+
 .separatorLine {
   width: 50%;
   height: 0.5px;
   margin: 25px;
 }
+
 .q-table__container {
   background-color: transparent;
   box-shadow: none;

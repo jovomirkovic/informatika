@@ -2,57 +2,39 @@
   <q-page class="container">
     <q-toolbar style="color: #00000040">
       <q-btn flat icon="arrow_back_ios" @click="goTo('/myChildren')" />
-      <q-toolbar-title
-        style="
+      <q-toolbar-title style="
           font-weight: 800;
           font-size: 20pt;
           text-align: left;
           line-height: 1;
           margin: 25px 0px;
-        "
-      >
+        ">
         {{ props.selectedChild.firstName + " " + props.selectedChild.lastName }}
       </q-toolbar-title>
-      <q-btn
-        style="
+      <q-btn style="
           position: fixed;
           bottom: 15px;
           left: calc(50vw - 105px);
           width: 210px;
           color: #ffffff;
           z-index: 1000;
-        "
-        :class="{
+        " :class="{
           'bg-girl': props.selectedChild.gender == 'female',
           'bg-boy': props.selectedChild.gender == 'male',
-        }"
-        rounded
-        :label="$t('general.newMeasurement')"
-        icon="add"
-        @click="addHeightDialog = true"
-      />
+        }" rounded :label="$t('general.newMeasurement')" icon="add" @click="addHeightDialog = true" />
     </q-toolbar>
 
     <q-tabs v-model="selectedTab" dense align="justify" narrow-indicator>
-      <q-tab name="details" label="Detalji" />
-      <q-tab
-        :disable="
-          props.selectedChild.heightData &&
-          props.selectedChild.heightData?.length <= 0
-        "
-        name="graph"
-        :label="$t('general.graph')"
-      />
+      <q-tab name="details" :label="$t('general.details')" />
+      <q-tab :disable="props.selectedChild.heightData &&
+        props.selectedChild.heightData?.length <= 0
+        " name="graph" :label="$t('general.graph')" />
       <q-tab name="table" :label="$t('general.table')" />
     </q-tabs>
 
     <q-separator />
 
-    <q-tab-panels
-      style="background-color: transparent"
-      v-model="selectedTab"
-      animated
-    >
+    <q-tab-panels style="background-color: transparent" v-model="selectedTab" animated>
       <q-tab-panel name="details" class="q-pa-sm">
         <detailsComponent :child="props.selectedChild"></detailsComponent>
       </q-tab-panel>
@@ -62,21 +44,16 @@
       </q-tab-panel>
 
       <q-tab-panel name="table" class="q-pa-sm">
-        <tableComponent
-          :child="props.selectedChild"
-          @remove-height="removeHeight"
-        ></tableComponent>
+        <tableComponent :child="props.selectedChild" @remove-height="removeHeight"></tableComponent>
       </q-tab-panel>
     </q-tab-panels>
 
     <q-dialog v-model="addHeightDialog">
-      <q-card
-        style="
+      <q-card style="
           background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
           color: #1e1e1e;
           width: 90vw;
-        "
-      >
+        ">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ $t("general.addNewMeasurement") }}</div>
           <q-space />
@@ -84,43 +61,18 @@
         </q-card-section>
 
         <q-card-section>
-          <q-input
-            style="width: 100%; margin-bottom: 25px"
-            rounded
-            type="number"
-            outlined
-            v-model="height"
-            ref="heightRef"
-            :rules="[(val) => !!val || $t('general.requiredField')]"
-            :label="$t('general.heightLabel')"
-          />
+          <q-input style="width: 100%; margin-bottom: 25px" rounded type="number" outlined v-model="height"
+            ref="heightRef" :rules="[(val) => !!val || $t('general.requiredField')]"
+            :label="$t('general.heightLabel')" />
 
-          <q-input
-            :color="selectedChild.gender"
-            ref="dateOfBirthRef"
-            rounded
-            outlined
-            v-model="dateOfMeasurement"
-            :label="$t('general.dateLabel')"
-            mask="##.##.####."
-            @click="dateOfMeasurementRef.show()"
-            :rules="[(val) => !!val || $t('general.requiredField')]"
-          >
+          <q-input :color="selectedChild.gender" ref="dateOfBirthRef" rounded outlined v-model="dateOfMeasurement"
+            :label="$t('general.dateLabel')" mask="##.##.####." @click="dateOfMeasurementRef.show()"
+            :rules="[(val) => !!val || $t('general.requiredField')]">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
-                <q-popup-proxy
-                  ref="dateOfMeasurementRef"
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb"
-                    :color="selectedChild.gender"
-                    v-model="dateOfMeasurement"
-                    mask="DD.MM.YYYY."
-                    @update:model-value="dateOfMeasurementRef.hide()"
-                  >
+                <q-popup-proxy ref="dateOfMeasurementRef" cover transition-show="scale" transition-hide="scale">
+                  <q-date :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb" :color="selectedChild.gender"
+                    v-model="dateOfMeasurement" mask="DD.MM.YYYY." @update:model-value="dateOfMeasurementRef.hide()">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -131,22 +83,11 @@
           </q-input>
 
           <div class="row">
-            <q-btn
-              push
-              class="text-white bg-negative q-mr-sm col"
-              :label="$t('general.cancel')"
-              @click="cancel"
-            />
-            <q-btn
-              push
-              class="text-white bg-positive q-ml-sm col"
-              :label="
-                id == null || id == undefined
-                  ? $t('general.add')
-                  : $t('general.edit')
-              "
-              @click="addMeasurement"
-            />
+            <q-btn push class="text-white bg-negative q-mr-sm col" :label="$t('general.cancel')" @click="cancel" />
+            <q-btn push class="text-white bg-positive q-ml-sm col" :label="id == null || id == undefined
+                ? $t('general.add')
+                : $t('general.edit')
+              " @click="addMeasurement" />
           </div>
         </q-card-section>
       </q-card>
@@ -290,10 +231,8 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .container {
-  background: linear-gradient(
-    180deg,
-    rgba(117, 158, 255, 0.3) 0%,
-    rgba(234, 202, 244, 0.3) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(117, 158, 255, 0.3) 0%,
+      rgba(234, 202, 244, 0.3) 100%);
 }
 </style>

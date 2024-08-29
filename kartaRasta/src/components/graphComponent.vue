@@ -8,16 +8,16 @@
     " v-if="props.child" :style="{
       color: [props.child.gender == 'male' ? '#ffffff' : '#ffffff'],
     }">
-    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; z-index: 1000; left: 25%">
-      Zona visokog rasta
+    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; width: 100%; z-index: 1000; left: 20px">
+      {{ $t("general.highZone") }}
       <br />
-      Obratite se vašem izabranom lekaru
+      {{ $t("general.callADoctor") }}
     </p>
-    <p style="text-align: center; margin: 0px; position: absolute; z-index: 1000; left: 25%"
+    <p style="text-align: center; margin: 0px; position: absolute; z-index: 1000; width: 100%; left: 20px"
       :style="{ top: [topPosition + 'px'] }">
-      Zona niskog rasta
+      {{ $t("general.lowZone") }}
       <br />
-      Obratite se vašem izabranom lekaru
+      {{ $t("general.callADoctor") }}
     </p>
     <div id="chartdiv" ref="chartRef"></div>
   </div>
@@ -140,7 +140,7 @@ export default defineComponent({
         })[0]
         if (e.height > comparisonDateData.highHeight && index == props.child.heightData.length - 1) {
           $q.notify({
-            message: "Vaše dete je u zoni visokog rasta. Molimo vas obratite se vašem izabranom lekaru",
+            message: t.t("general.callADoctorHigh"),
             color: "negative",
             position: "center",
             timeout: 0,
@@ -156,7 +156,7 @@ export default defineComponent({
 
         } else if (e.height < comparisonDateData.lowHeight && index == props.child.heightData.length - 1) {
           $q.notify({
-            message: "Vaše dete je u zoni niskog rasta. Molimo vas obratite se vašem izabranom lekaru",
+            message: t.t("general.callADoctorLow"),
             color: "negative",
             position: "center",
             timeout: 0,

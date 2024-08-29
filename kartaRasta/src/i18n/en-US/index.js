@@ -96,5 +96,12 @@ export default {
     // ErrorNotFound
     error404Message: "Oops, there is nothing here...",
     errorHome: "Go Home",
+    details: "Details",
+    callADoctor: "Contact your doctor of choice",
+    callADoctorHigh:
+      "Your child is in the high growth zone. Please consult your doctor of choice",
+    callADoctorLow:
+      "Your child is in the low growth zone. Please consult your doctor of choice",
+    rowsPerPage: "Records per page",
   },
 };
