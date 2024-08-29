@@ -8,7 +8,8 @@
       color: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
     }">
     <q-table style="height: calc(100vh - 195px)" :rows="rows" :columns="columns" row-key="name"
-      :no-results-label="$t('general.noResults')" :rows-per-page-label="$t('general.rowsPerPage')">
+      :no-results-label="$t('general.noResults')" :rows-per-page-label="$t('general.rowsPerPage')"
+      :pagination-label="(start, end, total) => `${start}-${end} ${$t('general.of')} ${total}`">
       <template v-slot:body-cell-action="props">
         <q-td key="action" :props="props">
           <q-btn icon="delete" :disabled="props.row.id == 'childTargetHeight'" push
@@ -36,8 +37,9 @@
         </q-card-section>
 
         <span class="row q-mb-lg" style="width: 90%">
-          <q-btn v-close-popup push class="text-white bg-negative q-mr-sm col" label="Da" @click="removeHeight()" />
-          <q-btn push class="text-white bg-positive q-ml-sm col" label="Ne" @click="cancel" />
+          <q-btn v-close-popup push class="text-white bg-negative q-mr-sm col" :label="$t('general.yes')"
+            @click="removeHeight()" />
+          <q-btn push class="text-white bg-positive q-ml-sm col" :label="$t('general.yes')" @click="cancel" />
         </span>
       </q-card>
     </q-dialog>

@@ -103,5 +103,8 @@ export default {
     callADoctorLow:
       "Your child is in the low growth zone. Please consult your doctor of choice",
     rowsPerPage: "Records per page",
+    of: "of",
+    reminder: "Reminder",
+    reminderText: "Time to enter a new height for",
   },
 };

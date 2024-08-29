@@ -103,5 +103,8 @@ export default {
     callADoctorLow:
       "Vaše dete je u zoni niskog rasta. Molimo vas obratite se vašem izabranom lekaru",
     rowsPerPage: "Broj zapisa po stranici",
+    of: "od",
+    reminder: "Podsetnik",
+    reminderText: "Vreme je da unesete novu visinu za",
   },
 };

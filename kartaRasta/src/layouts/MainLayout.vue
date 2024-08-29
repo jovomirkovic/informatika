@@ -89,8 +89,8 @@ export default defineComponent({
         notifications: [
           {
             id: child.id % 2000000000,
-            title: 'Podsetnik',
-            body: 'Vreme je da unesete novu visinu za: ' + child.firstName + ' ' + child.lastName + '!',
+            title: t.t("general.reminder"),
+            body: t.t("general.reminderText") + ': ' + child.firstName + ' ' + child.lastName + '!',
             schedule: {
               at: sixMonthsLater,
               repeats: true, // Set to repeat
@@ -101,8 +101,8 @@ export default defineComponent({
           },
           {
             id: child.id % 2000000000 + 1,
-            title: 'Podsetnik',
-            body: 'Vreme je da unesete novu visinu za: ' + child.firstName + ' ' + child.lastName + '!',
+            title: t.t("general.reminder"),
+            body: t.t("general.reminderText") + ': ' + child.firstName + ' ' + child.lastName + '!',
             schedule: {
               at: oneYearLater,
               repeats: true, // Set to repeat
