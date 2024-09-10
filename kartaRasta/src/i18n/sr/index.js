@@ -50,7 +50,7 @@ export default {
     selectLanguage: "Izaberite jezik",
 
     // myChildren
-    noChildren: "Još uvek niste uneli ni jedno dete!",
+    noChildren: "Još uvek niste uneli nijedno dete!",
 
     // COMPONENTS
     // addChildComponent
@@ -62,7 +62,7 @@ export default {
     fathersHeight: "Visina oca (cm)",
     mothersHeight: "Visina majke (cm)",
     addPhoto: "Dodaj fotografiju",
-    targetHeight: "Ciljana visina",
+    targetHeight: "Ciljna visina",
 
     // childCardComponent
     birthHeightShort: "Dužina na rođenju",
@@ -80,7 +80,7 @@ export default {
     lowZone: "Zona niskog rasta",
     highZone: "Zona visokog rasta",
     averageHeightForAge: "Prosečna visina za uzrast",
-    optimalHeightDot: "Ciljana visina",
+    optimalHeightDot: "Ciljna visina",
 
     // tableComponent
     noResults: "Nema podataka",

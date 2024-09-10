@@ -1,28 +1,19 @@
 <template>
-  <div
-    class="flex flex-center column"
-    style="
+  <div class="flex flex-center column" style="
       background-color: #ffffffa0;
       border-radius: 15px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       padding: 0px 0px 25px 0px;
       margin: 8px 0px;
-    "
-    v-if="props.child"
-    :style="{
+    " v-if="props.child" :style="{
       color: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
-    }"
-  >
-    <img
-      style="
+    }">
+    <img style="
         width: 100%;
         border-radius: 15px 15px 0px 0px;
         height: calc(100vh - 600px);
         object-fit: cover;
-      "
-      v-if="props.child.childPhoto"
-      :src="props.child.childPhoto"
-    />
+      " v-if="props.child.childPhoto" :src="props.child.childPhoto" />
     <q-icon v-else name="fa-solid fa-baby" size="7em" style="height: 200px" />
     <span class="title">{{
       props.child.firstName + " " + props.child.lastName
@@ -55,7 +46,8 @@
           $t("general.fathersHeightShort")
         }}</span>
       </span>
-      <span class="rightSide">{{ props.child.fathersHeight }} cm</span>
+      <span class="rightSide">{{ props.child.fathersHeight == null || props.child.fathersHeight == '' ? '/' :
+        props.child.fathersHeight }} cm</span>
     </div>
     <div class="row flex justify-between items-center" style="width: 80%">
       <span class="row flex flex-center">
@@ -64,22 +56,16 @@
           $t("general.mothersHeightShort")
         }}</span>
       </span>
-      <span class="rightSide">{{ props.child.mothersHeight }} cm</span>
+      <span class="rightSide">{{ props.child.mothersHeight == null || props.child.mothersHeight == '' ? '/' :
+        props.child.mothersHeight }} cm</span>
     </div>
-    <span
-      class="separatorLine"
-      :style="{
-        backgroundColor: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
-      }"
-    ></span>
+    <span class="separatorLine" :style="{
+      backgroundColor: [props.child.gender == 'male' ? '#759eff' : '#de60ba'],
+    }"></span>
     <span class="subtitle2">{{ $t("general.lastMeasurement") }}</span>
-    <div
-      class="row flex justify-around"
-      v-if="
-        props.child.heightData != undefined && props.child.heightData.length > 0
-      "
-      style="width: 80%"
-    >
+    <div class="row flex justify-around" v-if="
+      props.child.heightData != undefined && props.child.heightData.length > 0
+    " style="width: 80%">
       <span class="q-mr-md rightSide">{{
         date.formatDate(
           date.extractDate(
@@ -89,16 +75,15 @@
           "DD.MM.YYYY."
         )
       }}</span>
-      <span class="rightSide"
-        >{{
-          props.child.heightData[props.child.heightData.length - 1].height
+      <span class="rightSide">{{
+        props.child.heightData[props.child.heightData.length - 1].height
         }}
-        cm</span
-      >
+        cm</span>
     </div>
     <div class="column flex items-center q-mt-md" style="width: 80%">
       <span class="subtitle2">{{ $t("general.targetHeight") }}</span>
-      <span class="rightSide">{{ props.child.childTargetHeight }} cm</span>
+      <span class="rightSide">{{ props.child.childTargetHeight == null || props.child.childTargetHeight == '' ? '/' :
+        props.child.childTargetHeight }} cm</span>
     </div>
   </div>
 </template>
@@ -134,14 +119,17 @@ export default defineComponent({
 .componentContainer {
   padding: 15px;
 }
+
 .title {
   font-size: 15pt;
   font-weight: 600;
 }
+
 .subtitle {
   font-size: 11pt;
   font-style: italic;
 }
+
 .subtitle2 {
   font-size: 11pt;
   // margin: 10px;
@@ -153,6 +141,7 @@ export default defineComponent({
 .rightSide {
   font-weight: 600;
 }
+
 .separatorLine {
   width: 50%;
   height: 0.5px;

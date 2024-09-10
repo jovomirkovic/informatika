@@ -1,49 +1,17 @@
 <template>
   <div class="componentContainer text-center">
-    <q-input
-      :color="gender"
-      ref="firstNameRef"
-      rounded
-      outlined
-      v-model="firstName"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-      :label="$t('general.firstName')"
-    />
-    <q-input
-      :color="gender"
-      ref="lastNameRef"
-      rounded
-      outlined
-      v-model="lastName"
-      :label="$t('general.lastName')"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    />
-    <q-input
-      :color="gender"
-      ref="dateOfBirthRef"
-      rounded
-      outlined
-      v-model="dateOfBirth"
-      :label="$t('general.dateOfBirth')"
-      mask="##.##.####."
-      @click="dateOfBirthPopupRef.show()"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    >
+    <q-input :color="gender" ref="firstNameRef" rounded outlined v-model="firstName"
+      :rules="[(val) => !!val || $t('general.requiredField')]" :label="$t('general.firstName')" />
+    <q-input :color="gender" ref="lastNameRef" rounded outlined v-model="lastName" :label="$t('general.lastName')"
+      :rules="[(val) => !!val || $t('general.requiredField')]" />
+    <q-input :color="gender" ref="dateOfBirthRef" rounded outlined v-model="dateOfBirth"
+      :label="$t('general.dateOfBirth')" mask="##.##.####." @click="dateOfBirthPopupRef.show()"
+      :rules="[(val) => !!val || $t('general.requiredField')]">
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
-          <q-popup-proxy
-            ref="dateOfBirthPopupRef"
-            cover
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <q-date
-              :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb"
-              :color="gender"
-              v-model="dateOfBirth"
-              mask="DD.MM.YYYY."
-              @update:model-value="dateOfBirthPopupRef.hide()"
-            >
+          <q-popup-proxy ref="dateOfBirthPopupRef" cover transition-show="scale" transition-hide="scale">
+            <q-date :locale="locale == 'en-US' ? myLocaleEng : myLocaleSrb" :color="gender" v-model="dateOfBirth"
+              mask="DD.MM.YYYY." @update:model-value="dateOfBirthPopupRef.hide()">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -52,72 +20,24 @@
         </q-icon>
       </template>
     </q-input>
-    <q-input
-      type="number"
-      :color="gender"
-      ref="birthWeightRef"
-      rounded
-      outlined
-      v-model="birthWeight"
-      :label="$t('general.birthWeight')"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    />
-    <q-input
-      type="number"
-      :color="gender"
-      ref="birthHeightRef"
-      rounded
-      outlined
-      v-model="birthHeight"
-      :label="$t('general.birthHeight')"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    />
-    <q-input
-      type="number"
-      :color="gender"
-      ref="fathersHeightRef"
-      rounded
-      outlined
-      v-model="fathersHeight"
-      :label="$t('general.fathersHeight')"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    />
-    <q-input
-      type="number"
-      :color="gender"
-      ref="mothersHeightRef"
-      rounded
-      outlined
-      v-model="mothersHeight"
-      :label="$t('general.mothersHeight')"
-      :rules="[(val) => !!val || $t('general.requiredField')]"
-    />
+    <q-input type="number" :color="gender" ref="birthWeightRef" rounded outlined v-model="birthWeight"
+      :label="$t('general.birthWeight')" :rules="[(val) => !!val || $t('general.requiredField')]" />
+    <q-input type="number" :color="gender" ref="birthHeightRef" rounded outlined v-model="birthHeight"
+      :label="$t('general.birthHeight')" :rules="[(val) => !!val || $t('general.requiredField')]" />
+    <q-input type="number" :color="gender" ref="fathersHeightRef" rounded outlined v-model="fathersHeight"
+      :label="$t('general.fathersHeight')" />
+    <q-input type="number" :color="gender" ref="mothersHeightRef" rounded outlined v-model="mothersHeight"
+      :label="$t('general.mothersHeight')" />
 
     <q-avatar size="10em" style="margin: 20px">
-      <img
-        v-if="childPhoto != null"
-        :src="childPhoto"
-        style="object-fit: cover"
-      />
-      <q-icon
-        v-else
-        name="fa-solid fa-baby"
-        size="2em"
-        :style="{ color: [gender == 'male' ? '#759eff' : '#de60ba'] }"
-      />
+      <img v-if="childPhoto != null" :src="childPhoto" style="object-fit: cover" />
+      <q-icon v-else name="fa-solid fa-baby" size="2em"
+        :style="{ color: [gender == 'male' ? '#759eff' : '#de60ba'] }" />
     </q-avatar>
 
-    <base64
-      :label="$t('general.addPhoto')"
-      :multiple="false"
-      :gender="gender"
-      @done="getAppIcon"
-    ></base64>
+    <base64 :label="$t('general.addPhoto')" :multiple="false" :gender="gender" @done="getAppIcon"></base64>
 
-    <div
-      class="column items-center text-left text-bold q-mt-xl q-mb-xl"
-      style="font-size: 12pt; color: #000000a0"
-    >
+    <div class="column items-center text-left text-bold q-mt-xl q-mb-xl" style="font-size: 12pt; color: #000000a0">
       <div class="col">{{ $t("general.targetHeight") }}:</div>
       <div class="col">
         {{ childTargetHeight ? childTargetHeight + " cm" : "/" }}
@@ -125,20 +45,9 @@
     </div>
 
     <div class="row">
-      <q-btn
-        push
-        class="text-white bg-negative q-mr-sm col"
-        :label="$t('general.cancel')"
-        @click="otkazi"
-      />
-      <q-btn
-        push
-        class="text-white bg-positive q-ml-sm col"
-        :label="
-          id == null || id == undefined ? $t('general.add') : $t('general.edit')
-        "
-        @click="save"
-      />
+      <q-btn push class="text-white bg-negative q-mr-sm col" :label="$t('general.cancel')" @click="otkazi" />
+      <q-btn push class="text-white bg-positive q-ml-sm col" :label="id == null || id == undefined ? $t('general.add') : $t('general.edit')
+        " @click="save" />
     </div>
   </div>
 </template>
@@ -257,17 +166,13 @@ export default defineComponent({
         lastName.value == null ||
         dateOfBirth.value == null ||
         birthWeight.value == null ||
-        birthHeight.value == null ||
-        fathersHeight.value == null ||
-        mothersHeight.value == null
+        birthHeight.value == null
       ) {
         firstNameRef.value.validate();
         lastNameRef.value.validate();
         dateOfBirthRef.value.validate();
         birthWeightRef.value.validate();
         birthHeightRef.value.validate();
-        fathersHeightRef.value.validate();
-        mothersHeightRef.value.validate();
         $q.notify({
           message: $t("general.allFieldsAreRequired"),
           color: "negative",

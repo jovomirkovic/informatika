@@ -3,11 +3,11 @@ Podatke o prosečnoj visini i standardnoj devijaciji za određeni uzrast smo nab
 Linkovi sa podacima su na dnu fajla.
 
 
-Ciljana Visina Dečak  = (Visina Oca + Visina Majke + 13) / 2
-Ciljana Visina Devojčica  = (Visina Oca + Visina Majke - 13) / 2
+Ciljna Visina Dečak  = (Visina Oca + Visina Majke + 13) / 2
+Ciljna Visina Devojčica  = (Visina Oca + Visina Majke - 13) / 2
 
-Koeficijent za korekciju visine kod dečaka = Ciljana Visina Dečak / Prosečna visina odraslog muškarca (176.5cm)
-Koeficijent za korekciju visine kod devojčice = Ciljana Visina Devojčica / Prosečna visina odrasle žene (163.2cm)
+Koeficijent za korekciju visine kod dečaka = Ciljna Visina Dečak / Prosečna visina odraslog muškarca (176.5cm)
+Koeficijent za korekciju visine kod devojčice = Ciljna Visina Devojčica / Prosečna visina odrasle žene (163.2cm)
 
 
 Optimalna visina za dečaka starosti X = (Prosečna visina muškarca starosti X +- Standardna devijacija visine za muškarca starosti X) * Koeficijent za korekciju visine kod dečaka
