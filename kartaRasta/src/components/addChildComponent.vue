@@ -25,7 +25,7 @@
     <q-input type="number" :color="gender" ref="birthHeightRef" rounded outlined v-model="birthHeight"
       :label="$t('general.birthHeight')" :rules="[(val) => !!val || $t('general.requiredField')]" />
     <q-input type="number" :color="gender" ref="fathersHeightRef" rounded outlined v-model="fathersHeight"
-      :label="$t('general.fathersHeight')" />
+      class="q-mb-lg" :label="$t('general.fathersHeight')" />
     <q-input type="number" :color="gender" ref="mothersHeightRef" rounded outlined v-model="mothersHeight"
       :label="$t('general.mothersHeight')" />
 
@@ -123,7 +123,7 @@ export default defineComponent({
     };
 
     watch(fathersHeight, (newFathersHeight) => {
-      if (newFathersHeight != null && mothersHeight.value != null) {
+      if (newFathersHeight != null && newFathersHeight?.trim() != "" && mothersHeight.value != null && mothersHeight.value?.trim() != "") {
         childTargetHeight.value =
           (parseFloat(newFathersHeight) +
             parseFloat(mothersHeight.value) +
@@ -132,7 +132,7 @@ export default defineComponent({
       }
     });
     watch(mothersHeight, (newMothersHeight) => {
-      if (newMothersHeight != null && fathersHeight.value != null) {
+      if (newMothersHeight != null && newMothersHeight?.trim() != "" && fathersHeight.value != null && fathersHeight.value?.trim() != "") {
         childTargetHeight.value =
           (parseFloat(newMothersHeight) +
             parseFloat(fathersHeight.value) +
