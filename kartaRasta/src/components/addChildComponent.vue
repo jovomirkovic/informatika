@@ -129,7 +129,7 @@ export default defineComponent({
             parseFloat(mothersHeight.value) +
             (gender == "male" ? 13 : -13)) /
           2;
-      }
+      } else childTargetHeight.value = null
     });
     watch(mothersHeight, (newMothersHeight) => {
       if (newMothersHeight != null && newMothersHeight?.trim() != "" && fathersHeight.value != null && fathersHeight.value?.trim() != "") {
@@ -138,7 +138,7 @@ export default defineComponent({
             parseFloat(fathersHeight.value) +
             (gender.value == "male" ? 13 : -13)) /
           2;
-      }
+      } else childTargetHeight.value = null
     });
     onMounted(() => {
       if (props.selectedChild.id != undefined) {
