@@ -5,10 +5,12 @@
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       padding: 0px 0px 25px 0px;
       margin: 8px 0px;
+      font-size: 8pt;
     " v-if="props.child" :style="{
-      color: [props.child.gender == 'male' ? '#ffffff' : '#ffffff'],
+      color: [props.child.gender == 'male' ? '#000000' : '#000000'],
     }">
-    <p style="text-align: center; margin: 0px; position: absolute; top: 70px; width: 100%; z-index: 1000; left: 20px">
+    <p
+      style="color: #000000; text-align: center; margin: 0px; position: absolute; top: 70px; width: 100%; z-index: 1000; left: 20px">
       {{ $t("general.highZone") }}
       <br />
       {{ $t("general.callADoctor") }}
@@ -61,7 +63,7 @@ export default defineComponent({
         })
       );
       chart.plotContainer.set("background", am5.Rectangle.new(root, {
-        fill: am5.color(0xffb2ff), // dark background color for chart area
+        fill: am5.color(props.child.gender == "male" ? "#c3e1ff " : "#ffe5ff"), // dark background color for chart area
         fillOpacity: 1
       }));
 
@@ -228,7 +230,7 @@ export default defineComponent({
       });
 
       series32.set("fill", am5.color("#ffffff"));
-      series32.set("stroke", am5.color("#ff00ff"));
+      series32.set("stroke", am5.color(props.child.gender == "male" ? "#c3e1ff " : "#ffe5ff "));
       series32.data.setAll(optimalHeightZoneChartData);
       var series2 = chart.series.push(
         am5xy.LineSeries.new(root, {
@@ -279,12 +281,12 @@ export default defineComponent({
       );
 
       series3.fills.template.setAll({
-        fillOpacity: 0.5,
+        fillOpacity: 1,
         visible: true,
       });
 
-      series3.set("fill", am5.color("#ff0000"));
-      series3.set("stroke", am5.color("#ff0000"));
+      series3.set("fill", am5.color(props.child.gender == "male" ? "#76bbff" : "#ffb1ff"));
+      series3.set("stroke", am5.color(props.child.gender == "male" ? "#76bbff" : "#ffb1ff"));
       series3.data.setAll(optimalHeightZoneChartData);
 
 
@@ -316,11 +318,11 @@ export default defineComponent({
         return am5.Bullet.new(root, {
           locationY: 0,
           sprite: am5.Circle.new(root, {
-            radius: 4,
+            radius: 6,
             stroke: root.interfaceColors.get("background"),
             strokeWidth: 2,
-            stroke: am5.color("#00ff00"),
-            fill: am5.color("#ffffff"),
+            stroke: am5.color("#00b300"),
+            fill: am5.color("#00b300"),
           }),
         });
       });
