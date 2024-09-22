@@ -156,7 +156,7 @@ export default defineComponent({
             ]
           });
 
-        } else if (e.height < comparisonDateData.lowHeight && index == props.child.heightData.length - 1) {
+        } else if (e.height < comparisonDateData.lowHeight && index == props.child.heightData.length - 1 && e.height != 0) {
           $q.notify({
             message: t.t("general.callADoctorLow"),
             color: "negative",

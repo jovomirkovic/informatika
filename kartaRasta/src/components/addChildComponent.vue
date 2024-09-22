@@ -27,9 +27,9 @@
       <VueScrollPicker @update:modelValue="proveriDatum" v-model="selectedYear" :options="yearOptions" />
     </div>
     <q-input type="number" :color="gender" ref="birthWeightRef" rounded outlined v-model="birthWeight"
-      :label="$t('general.birthWeight')" :rules="[(val) => !!val || $t('general.requiredField')]" />
+      :label="$t('general.birthWeight')" style="margin-bottom: 20px;" />
     <q-input type="number" :color="gender" ref="birthHeightRef" rounded outlined v-model="birthHeight"
-      :label="$t('general.birthHeight')" :rules="[(val) => !!val || $t('general.requiredField')]" />
+      :label="$t('general.birthHeight')" style="margin-bottom: 20px;" />
     <q-input type="number" :color="gender" ref="fathersHeightRef" rounded outlined v-model="fathersHeight"
       class="q-mb-lg" :label="$t('general.fathersHeight')" />
     <q-input type="number" :color="gender" ref="mothersHeightRef" rounded outlined v-model="mothersHeight"
@@ -512,9 +512,7 @@ export default defineComponent({
         const monthIndex = monthOptions.value.indexOf(selectedMonth.value); // Get the month index
         const daysInMonth = getDaysInMonth(selectedYear.value, monthIndex);
         dayOptions.value = Array.from({ length: daysInMonth }, (v, i) => i + 1); // Fill with days
-        console.log(monthIndex)
-        console.log(daysInMonth)
-        console.log(dayOptions.value)
+
       }
       if (!dayOptions.value.includes(selectedDay.value)) {
         selectedDay.value = dayOptions.value[dayOptions.value.length - 1]
@@ -530,15 +528,11 @@ export default defineComponent({
       if (
         firstName.value == null ||
         lastName.value == null ||
-        dateOfBirth.value == null ||
-        birthWeight.value == null ||
-        birthHeight.value == null
+        dateOfBirth.value == null
       ) {
         firstNameRef.value.validate();
         lastNameRef.value.validate();
         dateOfBirthRef.value.validate();
-        birthWeightRef.value.validate();
-        birthHeightRef.value.validate();
         $q.notify({
           message: $t("general.allFieldsAreRequired"),
           color: "negative",

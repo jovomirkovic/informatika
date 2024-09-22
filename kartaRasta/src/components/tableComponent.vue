@@ -39,7 +39,7 @@
         <span class="row q-mb-lg" style="width: 90%">
           <q-btn v-close-popup push class="text-white bg-negative q-mr-sm col" :label="$t('general.yes')"
             @click="removeHeight()" />
-          <q-btn push class="text-white bg-positive q-ml-sm col" :label="$t('general.yes')" @click="cancel" />
+          <q-btn push class="text-white bg-positive q-ml-sm col" :label="$t('general.no')" @click="cancel" />
         </span>
       </q-card>
     </q-dialog>

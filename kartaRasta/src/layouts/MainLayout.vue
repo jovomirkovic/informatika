@@ -18,6 +18,7 @@ import { useI18n } from "vue-i18n";
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { addMonths, addMinutes, addSeconds } from 'date-fns';
 import logo from "../assets/logo.png"
+import averageHeight from "../scripts/averageHeight.vue";
 
 // LocalNotifications.addListener('localNotificationReceived', async (notification) => {
 //   console.log('Notification received:', notification);
@@ -166,6 +167,12 @@ export default defineComponent({
     };
 
     function addChild(newChild) {
+      var averageDataFromWHO = 0
+      // newChild.gender == "male"
+      //   ? averageHeight().boys[0].height
+      //   : averageHeight().girls[0].height
+
+      console.log(averageDataFromWHO)
       const child = {
         ...newChild,
         id: Date.now(),
@@ -176,7 +183,7 @@ export default defineComponent({
               date.extractDate(newChild.dateOfBirth, "DD.MM.YYYY."),
               "YYYY-MM-DD"
             ),
-            height: newChild.birthHeight,
+            height: newChild.birthHeight || averageDataFromWHO,
           },
         ],
       };
