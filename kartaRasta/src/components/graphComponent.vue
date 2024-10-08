@@ -413,10 +413,27 @@ export default defineComponent({
         })
       );
       // Add legend
-      var legend = chart.children.push(am5.Legend.new(root, {}));
+
+      var legend = chart.children.push(am5.Legend.new(root, {
+        // width: am5.percent(100),
+        // centerX: am5.percent(-50),
+        // maxColumns: 2 // Set the legend to display in two columns
+      }));
       legend.data.setAll(
-        chart.series.values.filter((e) => e._settings.name != "hide")
+        chart.series.values.filter((e) => e._settings.name != "hide" && e._settings.name != t.t("general.highZone") && e._settings.name != t.t("general.lowZone"))
       );
+
+      // legend.itemContainers.template.setAll({
+      //   width: am5.percent(20) // Set a custom width for each legend item (in pixels)
+      // });
+      legend.labels.template.setAll({
+        // magic number that works with different screen sizes
+        width: window.innerWidth / 2 - 120
+      });
+
+      legend.markers.template.setAll({
+        width: 15,
+      });
 
 
       root.events.on("frameended", function () {
