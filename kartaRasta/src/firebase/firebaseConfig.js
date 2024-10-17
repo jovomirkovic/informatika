@@ -5,7 +5,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCTXKhIABahQpW9oslsB8JMzaRUhZYSHN0",
-  authDomain: "com.mkonekt.kartaRasta",
+  authDomain: "com.informatika.kartaRasta",
   projectId: "prococah11",
   storageBucket: "prococah11.appspot.com",
   messagingSenderId: "1095826578642",

@@ -212,7 +212,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "com.mkonekt.kartaRasta",
+        appId: "com.informatika.kartaRasta",
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

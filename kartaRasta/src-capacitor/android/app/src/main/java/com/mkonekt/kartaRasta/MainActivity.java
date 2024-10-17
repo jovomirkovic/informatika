@@ -1,4 +1,4 @@
-package com.mkonekt.kartaRasta;
+package com.informatika.kartaRasta;
 
 import android.content.Context;
 import android.content.res.Configuration;
