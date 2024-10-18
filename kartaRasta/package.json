@@ -1,5 +1,5 @@
 {
-  "name": "com.informatika.kartaRasta",
+  "name": "com.informatika.kartarasta1",
   "version": "0.0.1",
   "description": "Karta rasta za sve roditelje",
   "productName": "Karta rasta",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@amcharts/amcharts5": "^5.9.12",
     "@capacitor-community/fcm": "^6.0.0",
+    "@capacitor/ios": "^6.1.2",
     "@capacitor/local-notifications": "^6.1.0",
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
