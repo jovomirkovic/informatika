@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Karta rasta</string>
+    <string name="title_activity_main">Karta rasta</string>
+    <string name="package_name">com.informatika.kartarasta1</string>
+    <string name="custom_url_scheme">com.informatika.kartarasta1</string>
+</resources>
