@@ -9,6 +9,8 @@
       name="file"
       id="file"
       class="inputfile"
+      accept="image/*"
+      capture="environment"
     />
     <label
       for="file"

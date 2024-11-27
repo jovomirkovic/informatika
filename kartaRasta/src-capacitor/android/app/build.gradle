@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.informatika.kartarasta1"
+    namespace "com.informatika.kartarastadeteta"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.informatika.kartarasta1"
+        applicationId "com.informatika.kartarastadeteta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2

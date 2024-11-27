@@ -1,4 +1,4 @@
-package com.informatika.kartarasta1;
+package com.informatika.kartarastadeteta;
 
 import android.content.Context;
 import android.content.res.Configuration;
