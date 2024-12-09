@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Karta rasta</string>
+	<string>Praćenje rasta deteta</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -45,5 +45,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>This app requires access to your camera to take photos of your child for their avatar. Photos are stored locally and not shared.</string>
+  <key>NSCameraUsageDescription</key>
+  <string>This app requires access to your photo library to upload a child's avatar photo. Photos are stored locally and not shared.</string>
 </dict>
 </plist>
