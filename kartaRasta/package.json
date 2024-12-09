@@ -15,6 +15,7 @@
     "@capacitor-community/fcm": "^6.0.0",
     "@capacitor/ios": "^6.1.2",
     "@capacitor/local-notifications": "^6.1.0",
+    "@capacitor/preferences": "^6.0.3",
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
     "core-js": "^3.6.5",

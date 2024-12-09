@@ -1,10 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
-      <router-view :selectedChild="selectedChild" :children="children" @remove-child="removeChild"
-        @edit-child="editChild" @put-child="putChild" @add-child="addChild"
-        @resetuj-selektovano-dete="resetujSelektovanoDete" @select-child="selectChild" @add-height="addHeight"
-        @remove-height="removeHeight" />
+      <router-view
+        :selectedChild="selectedChild"
+        :children="children"
+        @remove-child="removeChild"
+        @edit-child="editChild"
+        @put-child="putChild"
+        @add-child="addChild"
+        @resetuj-selektovano-dete="resetujSelektovanoDete"
+        @select-child="selectChild"
+        @add-height="addHeight"
+        @remove-height="removeHeight"
+      />
     </q-page-container>
   </q-layout>
 </template>
@@ -15,10 +23,11 @@ import localforage from "localforage";
 import { useRouter } from "vue-router";
 import { useQuasar, date } from "quasar";
 import { useI18n } from "vue-i18n";
-import { LocalNotifications } from '@capacitor/local-notifications';
-import { addMonths, addMinutes, addSeconds } from 'date-fns';
-import logo from "../assets/logo.png"
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { addMonths, addMinutes, addSeconds } from "date-fns";
+import logo from "../assets/logo.png";
 import averageHeight from "../scripts/averageHeight.vue";
+import { Preferences } from "@capacitor/preferences";
 
 // LocalNotifications.addListener('localNotificationReceived', async (notification) => {
 //   console.log('Notification received:', notification);
@@ -27,8 +36,6 @@ import averageHeight from "../scripts/averageHeight.vue";
 //   const now = new Date();
 //   // const sixMonthsLater = addSeconds(new Date(), 15); // Calculate date 6 months from now
 //   const sixMonthsLater = addMonths(now, 6); // Calculate date 6 months from now
-
-
 
 //   await LocalNotifications.schedule({
 //     notifications: [
@@ -63,55 +70,65 @@ export default defineComponent({
     const router = useRouter();
 
     onMounted(async () => {
-
       try {
         // Request notification permissions
         const permission1 = await LocalNotifications.checkPermissions();
         const permission = await LocalNotifications.requestPermissions();
-        if (permission.display !== 'granted') {
-          console.error('Notification permission not granted.');
+        if (permission.display !== "granted") {
+          console.error("Notification permission not granted.");
           return;
         }
 
         // Schedule the reminder notification
         checkScheduledNotifications(true);
       } catch (error) {
-        console.error('Notification setup error: ', error);
+        console.error("Notification setup error: ", error);
       }
     });
 
-
     const scheduleNotificationInSixMonths = async (child) => {
       const now = new Date();
-      const sixMonthsLater = addMonths(now, 6);  // 6 months from now
-      const oneYearLater = addMonths(now, 12);   // 1 year from now
+      const sixMonthsLater = addMonths(now, 6); // 6 months from now
+      const oneYearLater = addMonths(now, 12); // 1 year from now
 
       await LocalNotifications.schedule({
         notifications: [
           {
             id: child.id % 2000000000,
             title: t.t("general.reminder"),
-            body: t.t("general.reminderText") + ': ' + child.firstName + ' ' + child.lastName + '!',
+            body:
+              t.t("general.reminderText") +
+              ": " +
+              child.firstName +
+              " " +
+              child.lastName +
+              "!",
             schedule: {
               at: sixMonthsLater,
               repeats: true, // Set to repeat
-              every: 'year', // Repeats every year after initial 6 months
+              every: "year", // Repeats every year after initial 6 months
             },
-            sound: 'default',
+            sound: "default",
             smallIcon: logo,
           },
           {
-            id: child.id % 2000000000 + 1,
+            id: (child.id % 2000000000) + 1,
             title: t.t("general.reminder"),
-            body: t.t("general.reminderText") + ': ' + child.firstName + ' ' + child.lastName + '!',
+            body:
+              t.t("general.reminderText") +
+              ": " +
+              child.firstName +
+              " " +
+              child.lastName +
+              "!",
             schedule: {
               at: oneYearLater,
               repeats: true, // Set to repeat
-              every: 'year', // Repeats every year after initial 1 year
+              every: "year", // Repeats every year after initial 1 year
             },
-            sound: 'default',
+            sound: "default",
             smallIcon: logo,
-          }
+          },
         ],
       });
     };
@@ -120,43 +137,41 @@ export default defineComponent({
         const { notifications } = await LocalNotifications.getPending();
 
         if (notifications.length > 0) {
-          console.log('Scheduled notifications:', notifications);
-          pendingNotifications.value = notifications
+          console.log("Scheduled notifications:", notifications);
+          pendingNotifications.value = notifications;
           // Process or display the notifications as needed
         } else {
-          console.log('No scheduled notifications.');
+          console.log("No scheduled notifications.");
         }
-        if (test)
-          loadChildren();
+        if (test) loadChildren();
       } catch (error) {
-        console.error('Error retrieving scheduled notifications:', error);
-        if (test)
-          loadChildren();
+        console.error("Error retrieving scheduled notifications:", error);
+        if (test) loadChildren();
       }
     };
 
     const loadChildren = async () => {
-      const storedChildren = await localforage.getItem("children");
+      const { value: storedChildren } = await Preferences.get({
+        key: "children",
+      });
+
       if (storedChildren) {
         children.value = JSON.parse(storedChildren).filter(
-          (e) => e.gender != undefined
+          (e) => e.gender !== undefined
         );
 
-        console.log("children.value");
-        console.log(children.value);
+        console.log("children.value", children.value);
+
         children.value.forEach((entry, index) => {
-
-
           children.value[index].heightData.sort((a, b) => {
-            return date.extractDate(a.date, "YYYY-MM-DD").getTime() -
-              date.extractDate(b.date, "YYYY-MM-DD").getTime() >
-              0
-              ? 1
-              : -1;
-          })
+            return (
+              date.extractDate(a.date, "YYYY-MM-DD").getTime() -
+              date.extractDate(b.date, "YYYY-MM-DD").getTime()
+            );
+          });
         });
-        console.log("children.value");
-        console.log(children.value);
+
+        console.log("children.value after sort", children.value);
         saveChildren();
       }
     };
@@ -167,12 +182,12 @@ export default defineComponent({
     };
 
     function addChild(newChild) {
-      var averageDataFromWHO = 0
+      var averageDataFromWHO = 0;
       // newChild.gender == "male"
       //   ? averageHeight().boys[0].height
       //   : averageHeight().girls[0].height
 
-      console.log(averageDataFromWHO)
+      console.log(averageDataFromWHO);
       const child = {
         ...newChild,
         id: Date.now(),
@@ -204,37 +219,43 @@ export default defineComponent({
     }
 
     const saveChildren = async (message, type, to) => {
-      await localforage
-        .setItem("children", JSON.stringify(children.value))
-        .then(() => {
-          if (message != undefined) {
-            $q.notify({
-              message: message,
-              color: type,
-              position: "top",
-            });
-          }
+      try {
+        await Preferences.set({
+          key: "children",
+          value: JSON.stringify(children.value),
+        });
 
-          children.value.forEach((entry, index) => {
-            if (pendingNotifications.value.filter(e => e.body.includes(entry.firstName + ' ' + entry.lastName)).length == 0) {
-              scheduleNotificationInSixMonths(entry)
-            }
-          });
-          checkScheduledNotifications(false);
-
-          if (to != undefined) {
-            goTo(to);
-          }
-        })
-        .catch((e) => {
-          console.log("ERROR");
-          console.log(e);
+        if (message) {
           $q.notify({
-            message: t.t("general.generalError"),
-            color: "negative",
+            message: message,
+            color: type,
             position: "top",
           });
+        }
+
+        children.value.forEach((entry) => {
+          if (
+            !pendingNotifications.value.some((e) =>
+              e.body.includes(`${entry.firstName} ${entry.lastName}`)
+            )
+          ) {
+            scheduleNotificationInSixMonths(entry);
+          }
         });
+
+        checkScheduledNotifications(false);
+
+        if (to) {
+          goTo(to);
+        }
+      } catch (e) {
+        console.error("Error saving children:", e);
+        $q.notify({
+          message: t.t("general.generalError"),
+          color: "negative",
+          position: "top",
+        });
+      }
     };
 
     function editChild(child) {
