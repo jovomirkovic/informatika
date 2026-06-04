@@ -3,10 +3,10 @@
     dir="D:\Jovo Mirkovic\Apps\informatika\kartaRasta\src-capacitor\android\app"
     name=":app"
     type="APP"
-    maven="android:app:"
-    agpVersion="8.2.1"
+    maven="android:app:unspecified"
+    agpVersion="8.13.2"
     buildFolder="build"
-    bootClassPath="C:\Users\Jovo Mirkovic\AppData\Local\Android\Sdk\platforms\android-34\android.jar;C:\Users\Jovo Mirkovic\AppData\Local\Android\Sdk\build-tools\34.0.0\core-lambda-stubs.jar"
+    bootClassPath="C:\Users\Jovo Mirkovic\AppData\Local\Android\Sdk\platforms\android-34\android.jar;C:\Users\Jovo Mirkovic\AppData\Local\Android\Sdk\build-tools\35.0.0\core-lambda-stubs.jar"
     javaSourceLevel="17"
     compileTarget="android-34"
     neverShrinking="true">
