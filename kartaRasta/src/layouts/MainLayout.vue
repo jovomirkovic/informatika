@@ -287,9 +287,10 @@ export default defineComponent({
       } catch (e) {
         console.error("Error saving children:", e);
         $q.notify({
-          message: t.t("general.generalError"),
+          message: "GREŠKA: " + (e && e.message ? e.message : String(e)),
           color: "negative",
           position: "top",
+          timeout: 10000,
         });
       }
 
