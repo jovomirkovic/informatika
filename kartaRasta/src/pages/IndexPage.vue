@@ -1,6 +1,6 @@
 <template>
   <q-page class="container flex justify-center">
-    <q-toolbar style="color: #00000040" class="q-pt-md">
+    <q-toolbar style="color: #00000040">
       <q-toolbar-title style="
           font-weight: 800;
           font-size: 13vw;

@@ -70,8 +70,6 @@ export default defineComponent({
     const router = useRouter();
 
     onMounted(async () => {
-
-      loadChildren();
       try {
         // Request notification permissions
         const permission1 = await LocalNotifications.checkPermissions();
@@ -82,7 +80,7 @@ export default defineComponent({
         }
 
         // Schedule the reminder notification
-
+        checkScheduledNotifications(true);
       } catch (error) {
         console.error("Notification setup error: ", error);
       }
@@ -134,8 +132,7 @@ export default defineComponent({
         ],
       });
     };
-    const checkScheduledNotifications = async () => {
-
+    const checkScheduledNotifications = async (test) => {
       try {
         const { notifications } = await LocalNotifications.getPending();
 
@@ -146,22 +143,41 @@ export default defineComponent({
         } else {
           console.log("No scheduled notifications.");
         }
+        if (test) loadChildren();
       } catch (error) {
         console.error("Error retrieving scheduled notifications:", error);
+        if (test) loadChildren();
       }
     };
 
     const loadChildren = async () => {
-      console.log("CHILDREN ARE BEING LOADED")
+<<<<<<< HEAD
+      try {
+        // Osiguravamo da čitamo iz istog storage engine-a
+        const storedChildren = await localforage.getItem("children").catch(async (error) => {
+          console.warn('⚠️ LocalForage read error, attempting fallback:', error);
+          // Fallback na localStorage ako IndexedDB nije dostupan
+          return localStorage.getItem("children");
+        });
+
+        if (storedChildren) {
+          const parsedData = typeof storedChildren === 'string'
+            ? JSON.parse(storedChildren)
+            : storedChildren;
+
+          children.value = parsedData.filter(
+            (e) => e.gender != undefined
+          );
+=======
       const { value: storedChildren } = await Preferences.get({
         key: "children",
       });
-      console.log(storedChildren)
 
       if (storedChildren) {
         children.value = JSON.parse(storedChildren).filter(
           (e) => e.gender !== undefined
         );
+>>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
 
         console.log("children.value", children.value);
 
@@ -177,6 +193,14 @@ export default defineComponent({
         console.log("children.value after sort", children.value);
         saveChildren();
       }
+    } catch (error) {
+      console.error('❌ Error loading children:', error);
+      $q.notify({
+        message: t.t("general.generalError"),
+        color: "negative",
+        position: "top",
+      });
+    }
     };
 
     const removeChild = (id) => {
@@ -223,12 +247,28 @@ export default defineComponent({
 
     const saveChildren = async (message, type, to) => {
       try {
+<<<<<<< HEAD
+        const dataToSave = JSON.stringify(children.value);
+
+        // Pišemo u IndexedDB
+        await localforage.setItem("children", dataToSave);
+
+        // Backup u localStorage kao fallback
+        try {
+          localStorage.setItem("children_backup", dataToSave);
+        } catch (e) {
+          console.warn('⚠️ localStorage backup failed:', e);
+        }
+
+        if (message != undefined) {
+=======
         await Preferences.set({
           key: "children",
           value: JSON.stringify(children.value),
         });
 
         if (message) {
+>>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
           $q.notify({
             message: message,
             color: type,
@@ -236,6 +276,20 @@ export default defineComponent({
           });
         }
 
+<<<<<<< HEAD
+        children.value.forEach((entry, index) => {
+          if (pendingNotifications.value.filter(e => e.body.includes(entry.firstName + ' ' + entry.lastName)).length == 0) {
+            scheduleNotificationInSixMonths(entry)
+          }
+        });
+        checkScheduledNotifications(false);
+
+        if (to != undefined) {
+          goTo(to);
+        }
+      } catch (e) {
+        console.error("❌ ERROR saving children:", e);
+=======
         children.value.forEach((entry) => {
           if (
             !pendingNotifications.value.some((e) =>
@@ -246,26 +300,20 @@ export default defineComponent({
           }
         });
 
-        checkScheduledNotifications();
+        checkScheduledNotifications(false);
 
         if (to) {
           goTo(to);
         }
       } catch (e) {
         console.error("Error saving children:", e);
+>>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
         $q.notify({
           message: t.t("general.generalError"),
           color: "negative",
           position: "top",
         });
       }
-      const { value: storedChildren } = await Preferences.get({
-        key: "children",
-      });
-      console.log("STORED CHILDREN GET")
-      console.log(storedChildren)
-
-
     };
 
     function editChild(child) {

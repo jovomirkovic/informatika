@@ -1,6 +1,6 @@
 <template>
   <q-page class="container">
-    <q-toolbar style="color: #00000040" class="q-pt-md">
+    <q-toolbar style="color: #00000040">
       <q-btn
         flat
         icon="arrow_back_ios"
