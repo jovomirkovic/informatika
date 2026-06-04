@@ -73,18 +73,15 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        // Request notification permissions
-        const permission1 = await LocalNotifications.checkPermissions();
         const permission = await LocalNotifications.requestPermissions();
-        if (permission.display !== "granted") {
-          console.error("Notification permission not granted.");
-          return;
+        if (permission.display === "granted") {
+          checkScheduledNotifications(true);
+        } else {
+          loadChildren();
         }
-
-        // Schedule the reminder notification
-        checkScheduledNotifications(true);
       } catch (error) {
         console.error("Notification setup error: ", error);
+        loadChildren();
       }
     });
 
@@ -284,18 +281,6 @@ export default defineComponent({
           });
         }
 
-        children.value.forEach((entry) => {
-          if (
-            !pendingNotifications.value.some((e) =>
-              e.body.includes(`${entry.firstName} ${entry.lastName}`)
-            )
-          ) {
-            scheduleNotificationInSixMonths(entry);
-          }
-        });
-
-        checkScheduledNotifications(false);
-
         if (to) {
           goTo(to);
         }
@@ -306,6 +291,22 @@ export default defineComponent({
           color: "negative",
           position: "top",
         });
+      }
+
+      // Notifikacije van try bloka - greska ne sme da blokira cuvanje
+      try {
+        children.value.forEach((entry) => {
+          if (
+            !pendingNotifications.value.some((e) =>
+              e.body.includes(`${entry.firstName} ${entry.lastName}`)
+            )
+          ) {
+            scheduleNotificationInSixMonths(entry);
+          }
+        });
+        checkScheduledNotifications(false);
+      } catch (e) {
+        console.warn("Notification scheduling error (non-critical):", e);
       }
     };
 
