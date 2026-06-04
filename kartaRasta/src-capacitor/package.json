@@ -1,0 +1,13 @@
+{
+  "name": "com.informatika.kartarastadeteta",
+  "version": "0.0.1",
+  "description": "Karta rasta za sve roditelje",
+  "author": "Jovo N. Mirkovic <jovo@mirkovic.rs>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.1.2"
+  }
+}

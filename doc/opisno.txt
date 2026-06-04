@@ -1,0 +1,75 @@
+Pocetna
+    Dodaj devojčicu
+    Dodaj dečaka
+    moja deca
+    O aplikaciji
+
+O aplikaciji
+    Poštovani korisniče,
+    Karta rasta je aplikacija namenjana praćenju rasta i 
+    pravovremenom prepoznavanju problema koji mogu 
+    da nastanu tokom rasta i razvoja deteta.
+    Ova aplikacija ne zamenjuje redovna merenja tokom
+    sistematskih pregleda u Domu Zdravlja. Za sve
+    dodatne informacije obratite se Vašem izabranom
+    lekaru!
+
+dodaj devojcicu
+    Ime
+    Prezime
+    Datum rođenja
+    Telesna masa na rođenju (g)
+    Telesna dužina na rođenju (cm)
+    Visina oca (cm)
+    Visina majke (cm)
+    Dodaj forografiju
+    Ciljana visina (cm)
+
+    Sačuvaj
+    Otkaži
+
+dodaj decaka
+    Ime
+    Prezime
+    Datum rođenja
+    Telesna masa na rođenju (g)
+    Telesna dužina na rođenju (cm)
+    Visina oca (cm)
+    Visina majke (cm)
+    Dodaj forografiju
+    Ciljana visina (cm) -- automatski se računa
+
+    Sačuvaj
+    Otkaži
+
+moja deca
+    Lista dece
+        slika
+        ime pezime
+        godine, uzrast, starost
+        edit
+        delete
+        dužina na rođenju
+        masa na rođenju
+        poslednja izmerena visina
+        ciljana visina
+        poslednje merenje datum
+    
+    Dodaj devojčicu
+    Dodaj dečaka
+
+Kada se klikne na dete -- tabovi
+    Detalji deteta
+    Grafički prikaz
+        graf
+            visina
+            starost
+    Tabelarni prikaz
+        visina
+        starost
+        datum merenja
+    Novo merenje
+        Izmerena vrednost (cm)
+        Datum merenja
+        Dodaj merenje
+        Otkaži
