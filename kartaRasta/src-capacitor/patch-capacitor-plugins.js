@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const plugins = ['app', 'filesystem', 'share'];
+const plugins = ['app', 'filesystem', 'local-notifications', 'preferences', 'share'];
 
 plugins.forEach((plugin) => {
   const filePath = path.join(
