@@ -70,6 +70,8 @@ export default defineComponent({
     const router = useRouter();
 
     onMounted(async () => {
+
+      loadChildren();
       try {
         // Request notification permissions
         const permission1 = await LocalNotifications.checkPermissions();
@@ -80,7 +82,7 @@ export default defineComponent({
         }
 
         // Schedule the reminder notification
-        checkScheduledNotifications(true);
+
       } catch (error) {
         console.error("Notification setup error: ", error);
       }
@@ -132,7 +134,8 @@ export default defineComponent({
         ],
       });
     };
-    const checkScheduledNotifications = async (test) => {
+    const checkScheduledNotifications = async () => {
+
       try {
         const { notifications } = await LocalNotifications.getPending();
 
@@ -143,17 +146,17 @@ export default defineComponent({
         } else {
           console.log("No scheduled notifications.");
         }
-        if (test) loadChildren();
       } catch (error) {
         console.error("Error retrieving scheduled notifications:", error);
-        if (test) loadChildren();
       }
     };
 
     const loadChildren = async () => {
+      console.log("CHILDREN ARE BEING LOADED")
       const { value: storedChildren } = await Preferences.get({
         key: "children",
       });
+      console.log(storedChildren)
 
       if (storedChildren) {
         children.value = JSON.parse(storedChildren).filter(
@@ -243,7 +246,7 @@ export default defineComponent({
           }
         });
 
-        checkScheduledNotifications(false);
+        checkScheduledNotifications();
 
         if (to) {
           goTo(to);
@@ -256,6 +259,13 @@ export default defineComponent({
           position: "top",
         });
       }
+      const { value: storedChildren } = await Preferences.get({
+        key: "children",
+      });
+      console.log("STORED CHILDREN GET")
+      console.log(storedChildren)
+
+
     };
 
     function editChild(child) {
