@@ -1,4 +1,10 @@
 /* app global css */
+
+/* Safe area za Android/iOS navigation bar na dnu */
+.q-page-container {
+  padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
 .text-girl {
   color: #cc6594 !important;
 }
