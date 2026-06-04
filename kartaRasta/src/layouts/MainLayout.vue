@@ -199,9 +199,7 @@ export default defineComponent({
     const loadChildren = async () => {
       await migrateToPreferences();
 
-      const { value: storedChildren } = await Preferences.get({
-        key: "children",
-      });
+      const { value: storedChildren } = await Preferences.get({ key: "children" });
 
       if (storedChildren) {
         children.value = JSON.parse(storedChildren).filter(
