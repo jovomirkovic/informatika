@@ -4,6 +4,9 @@
   "description": "Karta rasta za sve roditelje",
   "author": "Jovo N. Mirkovic <jovo@mirkovic.rs>",
   "private": true,
+  "scripts": {
+    "postinstall": "node patch-capacitor-plugins.js"
+  },
   "dependencies": {
     "@capacitor/android": "^6.2.1",
     "@capacitor/app": "^6.0.0",
