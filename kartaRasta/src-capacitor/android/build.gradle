@@ -17,10 +17,23 @@ buildscript {
 
 apply from: "variables.gradle"
 
+// Fix: AgpVersionAttr mismatch between Android Studio and Capacitor plugins
+abstract class AgpVersionCompatibilityRule implements AttributeCompatibilityRule<String> {
+    @Override
+    void execute(CompatibilityCheckDetails<String> details) {
+        details.compatible()
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+    dependencies.attributesSchema {
+        attribute(Attribute.of('com.android.build.api.attributes.AgpVersionAttr', String)) {
+            compatibilityRules.add(AgpVersionCompatibilityRule)
+        }
     }
 }
 
