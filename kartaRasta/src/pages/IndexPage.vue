@@ -23,6 +23,11 @@
             <q-icon size="1.5em" name="info" style="margin-right: 10px" />
             <span> {{ $t("general.info") }} </span>
           </q-item>
+
+          <q-item @click="backupDialog = true" clickable v-ripple v-close-popup class="flex items-center">
+            <q-icon size="1.5em" name="backup" style="margin-right: 10px" />
+            <span> {{ $t("general.backup") }} </span>
+          </q-item>
         </div>
       </q-btn-dropdown>
     </q-toolbar>
@@ -74,6 +79,49 @@
       </q-card>
     </q-dialog>
 
+    <q-dialog v-model="backupDialog">
+      <q-card style="
+          background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
+          color: #1e1e1e;
+          width: 100%;
+        ">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">{{ $t("general.backup") }}</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <p style="font-size: 11pt; margin-bottom: 16px">{{ $t("general.backupInfo") }}</p>
+
+          <q-btn
+            @click="exportBackup"
+            class="full-width q-mb-md"
+            color="primary"
+            icon="upload"
+            :label="$t('general.exportBackup')"
+            push
+          />
+
+          <q-btn
+            @click="$refs.fileInput.click()"
+            class="full-width"
+            color="secondary"
+            icon="download"
+            :label="$t('general.importBackup')"
+            push
+          />
+          <input
+            ref="fileInput"
+            type="file"
+            accept=".json"
+            style="display: none"
+            @change="importBackup"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
     <q-dialog v-model="languageDialog">
       <q-card style="
           background: linear-gradient(180deg, #d5e2ff 0%, #f9effc 100%);
@@ -104,15 +152,21 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import { useQuasar } from "quasar";
+import { Preferences } from "@capacitor/preferences";
+import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 
 export default defineComponent({
   name: "IndexPage",
   setup(props, ctx) {
     let router = useRouter();
-    const { locale } = useI18n({ useScope: "global" });
+    const { locale, t } = useI18n({ useScope: "global" });
+    const $q = useQuasar();
 
     let informationDialog = ref(false);
     let languageDialog = ref(false);
+    let backupDialog = ref(false);
     let selectedLanguage = ref({
       label: "Srpski",
       value: "sr",
@@ -128,29 +182,86 @@ export default defineComponent({
       },
     ];
 
-    onMounted(() => {
+    onMounted(async () => {
       ctx.emit("resetuj-selektovano-dete", "");
 
-      if (localStorage.getItem("lang") != null) {
-        if (localStorage.getItem("lang") == "sr") {
-          selectedLanguage.value = {
-            label: "Srpski",
-            value: "sr",
-          };
+      // Migracija: ako postoji stari localStorage lang, prebaci u Preferences
+      const oldLang = localStorage.getItem("lang");
+      if (oldLang) {
+        await Preferences.set({ key: "lang", value: oldLang });
+        localStorage.removeItem("lang");
+      }
+
+      const { value: lang } = await Preferences.get({ key: "lang" });
+      if (lang != null) {
+        if (lang === "sr") {
+          selectedLanguage.value = { label: "Srpski", value: "sr" };
         } else {
-          selectedLanguage.value = {
-            label: "English",
-            value: "en-US",
-          };
+          selectedLanguage.value = { label: "English", value: "en-US" };
         }
         changeLanguage();
       }
     });
 
-    function changeLanguage() {
+    async function changeLanguage() {
       locale.value = selectedLanguage.value.value;
-      localStorage.setItem("lang", selectedLanguage.value.value);
+      await Preferences.set({ key: "lang", value: selectedLanguage.value.value });
     }
+
+    const exportBackup = async () => {
+      try {
+        const { value: childrenData } = await Preferences.get({ key: "children" });
+        const backup = {
+          version: 1,
+          exportDate: new Date().toISOString(),
+          children: JSON.parse(childrenData || "[]"),
+        };
+        const fileName = `karta-rasta-${new Date().toISOString().split("T")[0]}.json`;
+        await Filesystem.writeFile({
+          path: fileName,
+          data: JSON.stringify(backup, null, 2),
+          directory: Directory.Cache,
+          encoding: Encoding.UTF8,
+        });
+        const { uri } = await Filesystem.getUri({
+          path: fileName,
+          directory: Directory.Cache,
+        });
+        await Share.share({
+          title: t("general.backup"),
+          url: uri,
+          dialogTitle: t("general.exportBackup"),
+        });
+      } catch (e) {
+        console.error("Export failed:", e);
+        $q.notify({ message: t("general.backupError"), color: "negative", position: "top" });
+      }
+    };
+
+    const importBackup = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      event.target.value = "";
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const children = parsed.version && Array.isArray(parsed.children)
+            ? parsed.children
+            : Array.isArray(parsed) ? parsed : null;
+          if (!children) throw new Error("Invalid format");
+          await Preferences.set({ key: "children", value: JSON.stringify(children) });
+          ctx.emit("restore-backup");
+          backupDialog.value = false;
+          $q.notify({ message: t("general.restoreSuccess"), color: "positive", position: "top" });
+        } catch (err) {
+          console.error("Import failed:", err);
+          $q.notify({ message: t("general.restoreError"), color: "negative", position: "top" });
+        }
+      };
+      reader.readAsText(file);
+    };
+
     function goTo(path) {
       console.log(path);
       console.log(router);
@@ -160,10 +271,13 @@ export default defineComponent({
     return {
       informationDialog,
       languageDialog,
+      backupDialog,
       selectedLanguage,
       languageOptions,
       goTo,
       changeLanguage,
+      exportBackup,
+      importBackup,
     };
   },
 });

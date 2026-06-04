@@ -106,5 +106,14 @@ export default {
     of: "of",
     reminder: "Reminder",
     reminderText: "Time to enter a new height for",
+
+    // Backup
+    backup: "Backup",
+    backupInfo: "Export your data as a JSON file and save it wherever you like (iCloud, Google Drive, email...). To restore, select a previously exported file.",
+    exportBackup: "Create backup",
+    importBackup: "Import backup",
+    restoreSuccess: "Data imported successfully",
+    restoreError: "Import failed — please check that the file is valid",
+    backupError: "Error creating backup",
   },
 };

@@ -13,9 +13,13 @@
   "dependencies": {
     "@amcharts/amcharts5": "^5.9.12",
     "@capacitor-community/fcm": "^6.0.0",
+    "@capacitor/app": "^6.0.3",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/filesystem": "^6.0.4",
     "@capacitor/ios": "^6.1.2",
     "@capacitor/local-notifications": "^6.1.0",
     "@capacitor/preferences": "^6.0.3",
+    "@capacitor/share": "^6.0.4",
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
     "core-js": "^3.6.5",

@@ -106,5 +106,14 @@ export default {
     of: "od",
     reminder: "Podsetnik",
     reminderText: "Vreme je da unesete novu visinu za",
+
+    // Backup
+    backup: "Rezervna kopija",
+    backupInfo: "Izvezite podatke kao JSON fajl i sačuvajte ih gde želite (iCloud, Google Drive, e-mail...). Za uvoz izaberite prethodno izvezeni fajl.",
+    exportBackup: "Napravi rezervnu kopiju",
+    importBackup: "Uvezi rezervnu kopiju",
+    restoreSuccess: "Podaci su uspešno uvezeni",
+    restoreError: "Greška pri uvoženju — proverite da li je fajl ispravan",
+    backupError: "Greška pri pravljenju rezervne kopije",
   },
 };

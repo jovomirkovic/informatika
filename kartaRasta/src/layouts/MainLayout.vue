@@ -12,6 +12,7 @@
         @select-child="selectChild"
         @add-height="addHeight"
         @remove-height="removeHeight"
+        @restore-backup="loadChildren"
       />
     </q-page-container>
   </q-layout>
@@ -19,7 +20,7 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue";
-import localforage from "localforage";
+
 import { useRouter } from "vue-router";
 import { useQuasar, date } from "quasar";
 import { useI18n } from "vue-i18n";
@@ -27,6 +28,7 @@ import { LocalNotifications } from "@capacitor/local-notifications";
 import { addMonths, addMinutes, addSeconds } from "date-fns";
 import logo from "../assets/logo.png";
 import averageHeight from "../scripts/averageHeight.vue";
+import localforage from "localforage";
 import { Preferences } from "@capacitor/preferences";
 
 // LocalNotifications.addListener('localNotificationReceived', async (notification) => {
@@ -150,25 +152,56 @@ export default defineComponent({
       }
     };
 
-    const loadChildren = async () => {
-<<<<<<< HEAD
+    const migrateToPreferences = async () => {
       try {
-        // Osiguravamo da čitamo iz istog storage engine-a
-        const storedChildren = await localforage.getItem("children").catch(async (error) => {
-          console.warn('⚠️ LocalForage read error, attempting fallback:', error);
-          // Fallback na localStorage ako IndexedDB nije dostupan
-          return localStorage.getItem("children");
-        });
+        const { value: migrated } = await Preferences.get({ key: "migrated_v2" });
+        if (migrated) return;
 
-        if (storedChildren) {
-          const parsedData = typeof storedChildren === 'string'
-            ? JSON.parse(storedChildren)
-            : storedChildren;
+        let data = null;
 
-          children.value = parsedData.filter(
-            (e) => e.gender != undefined
-          );
-=======
+        // 1. Pokušaj iz localforage (IndexedDB)
+        try {
+          const lfData = await localforage.getItem("children");
+          if (lfData) {
+            data = typeof lfData === "string" ? lfData : JSON.stringify(lfData);
+            console.log("Migration: pronađeni podaci u localforage");
+          }
+        } catch (e) {
+          console.warn("Migration: localforage čitanje nije uspelo", e);
+        }
+
+        // 2. Pokušaj iz localStorage backup
+        if (!data) {
+          const lsBackup = localStorage.getItem("children_backup");
+          if (lsBackup) {
+            data = lsBackup;
+            console.log("Migration: pronađeni podaci u localStorage backup");
+          }
+        }
+
+        // 3. Pokušaj iz localStorage direktno
+        if (!data) {
+          const lsDirect = localStorage.getItem("children");
+          if (lsDirect) {
+            data = lsDirect;
+            console.log("Migration: pronađeni podaci u localStorage");
+          }
+        }
+
+        if (data) {
+          await Preferences.set({ key: "children", value: data });
+          console.log("Migration: podaci uspešno migrirani u Preferences");
+        }
+
+        await Preferences.set({ key: "migrated_v2", value: "true" });
+      } catch (e) {
+        console.error("Migration neuspešna:", e);
+      }
+    };
+
+    const loadChildren = async () => {
+      await migrateToPreferences();
+
       const { value: storedChildren } = await Preferences.get({
         key: "children",
       });
@@ -177,7 +210,6 @@ export default defineComponent({
         children.value = JSON.parse(storedChildren).filter(
           (e) => e.gender !== undefined
         );
->>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
 
         console.log("children.value", children.value);
 
@@ -193,14 +225,6 @@ export default defineComponent({
         console.log("children.value after sort", children.value);
         saveChildren();
       }
-    } catch (error) {
-      console.error('❌ Error loading children:', error);
-      $q.notify({
-        message: t.t("general.generalError"),
-        color: "negative",
-        position: "top",
-      });
-    }
     };
 
     const removeChild = (id) => {
@@ -247,28 +271,12 @@ export default defineComponent({
 
     const saveChildren = async (message, type, to) => {
       try {
-<<<<<<< HEAD
-        const dataToSave = JSON.stringify(children.value);
-
-        // Pišemo u IndexedDB
-        await localforage.setItem("children", dataToSave);
-
-        // Backup u localStorage kao fallback
-        try {
-          localStorage.setItem("children_backup", dataToSave);
-        } catch (e) {
-          console.warn('⚠️ localStorage backup failed:', e);
-        }
-
-        if (message != undefined) {
-=======
         await Preferences.set({
           key: "children",
           value: JSON.stringify(children.value),
         });
 
         if (message) {
->>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
           $q.notify({
             message: message,
             color: type,
@@ -276,20 +284,6 @@ export default defineComponent({
           });
         }
 
-<<<<<<< HEAD
-        children.value.forEach((entry, index) => {
-          if (pendingNotifications.value.filter(e => e.body.includes(entry.firstName + ' ' + entry.lastName)).length == 0) {
-            scheduleNotificationInSixMonths(entry)
-          }
-        });
-        checkScheduledNotifications(false);
-
-        if (to != undefined) {
-          goTo(to);
-        }
-      } catch (e) {
-        console.error("❌ ERROR saving children:", e);
-=======
         children.value.forEach((entry) => {
           if (
             !pendingNotifications.value.some((e) =>
@@ -307,7 +301,6 @@ export default defineComponent({
         }
       } catch (e) {
         console.error("Error saving children:", e);
->>>>>>> a8ffae6bd34e78e7166d0d888efaa788a8ed3bf9
         $q.notify({
           message: t.t("general.generalError"),
           color: "negative",
