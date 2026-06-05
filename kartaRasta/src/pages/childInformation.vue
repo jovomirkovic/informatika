@@ -13,7 +13,7 @@
       </q-toolbar-title>
       <q-btn style="
           position: fixed;
-          bottom: 15px;
+          bottom: calc(15px + env(safe-area-inset-bottom));
           left: calc(50vw - 105px);
           width: 210px;
           color: #ffffff;
