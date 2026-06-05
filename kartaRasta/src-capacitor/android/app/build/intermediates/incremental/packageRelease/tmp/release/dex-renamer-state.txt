@@ -1,4 +1,4 @@
-#Thu Jun 04 22:39:30 CEST 2026
+#Fri Jun 05 14:11:04 CEST 2026
 base.0=D\:\\Jovo Mirkovic\\Apps\\informatika\\kartaRasta\\src-capacitor\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
 base.1=D\:\\Jovo Mirkovic\\Apps\\informatika\\kartaRasta\\src-capacitor\\android\\app\\build\\intermediates\\global_synthetics_dex\\release\\mergeReleaseGlobalSynthetics\\classes.dex
 path.0=classes.dex
