@@ -2,13 +2,13 @@
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
     <string name="app_name">Karta rasta</string>
-    <string name="custom_url_scheme">com.informatika.kartarastadeteta</string>
+    <string name="custom_url_scheme">com.informatika.kartaRasta</string>
     <string name="gcm_defaultSenderId" translatable="false">1095826578642</string>
     <string name="google_api_key" translatable="false">AIzaSyCTXKhIABahQpW9oslsB8JMzaRUhZYSHN0</string>
     <string name="google_app_id" translatable="false">1:1095826578642:android:1982425dc0b13ffdf6e10b</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCTXKhIABahQpW9oslsB8JMzaRUhZYSHN0</string>
     <string name="google_storage_bucket" translatable="false">prococah11.appspot.com</string>
-    <string name="package_name">com.informatika.kartarastadeteta</string>
+    <string name="package_name">com.informatika.kartaRasta</string>
     <string name="project_id" translatable="false">prococah11</string>
     <string name="title_activity_main">Karta rasta</string>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">

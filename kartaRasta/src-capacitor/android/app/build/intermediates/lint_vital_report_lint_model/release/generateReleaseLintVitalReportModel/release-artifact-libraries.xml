@@ -51,6 +51,12 @@
       name=":@@:capacitor-filesystem::release"
       project=":capacitor-filesystem"/>
   <library
+      name=":@@:capacitor-local-notifications::release"
+      project=":capacitor-local-notifications"/>
+  <library
+      name=":@@:capacitor-preferences::release"
+      project=":capacitor-preferences"/>
+  <library
       name=":@@:capacitor-share::release"
       project=":capacitor-share"/>
   <library

@@ -95,6 +95,34 @@
       externalAnnotations="annotations.zip"
       proguardRules="proguard.txt"/>
   <library
+      name=":@@:capacitor-local-notifications::release"
+      jars="C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\9ab543e595c0771a839997b237efc1a3\transformed\out\jars\classes.jar;C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\9ab543e595c0771a839997b237efc1a3\transformed\out\jars\libs\R.jar"
+      resolved="android:capacitor-local-notifications:unspecified"
+      partialResultsDir="D:\Jovo Mirkovic\Apps\informatika\kartaRasta\src-capacitor\node_modules\@capacitor\local-notifications\android\build\intermediates\lint_vital_partial_results\release\lintVitalAnalyzeRelease\out"
+      folder="C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\9ab543e595c0771a839997b237efc1a3\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
+      name=":@@:capacitor-preferences::release"
+      jars="C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\d90aa6b433b749ffb8b352bfae3a1cf5\transformed\out\jars\classes.jar;C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\d90aa6b433b749ffb8b352bfae3a1cf5\transformed\out\jars\libs\R.jar"
+      resolved="android:capacitor-preferences:unspecified"
+      partialResultsDir="D:\Jovo Mirkovic\Apps\informatika\kartaRasta\src-capacitor\node_modules\@capacitor\preferences\android\build\intermediates\lint_vital_partial_results\release\lintVitalAnalyzeRelease\out"
+      folder="C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\d90aa6b433b749ffb8b352bfae3a1cf5\transformed\out"
+      manifest="AndroidManifest.xml"
+      resFolder="res"
+      assetsFolder="assets"
+      lintJar="lint.jar"
+      publicResources="public.txt"
+      symbolFile="R.txt"
+      externalAnnotations="annotations.zip"
+      proguardRules="proguard.txt"/>
+  <library
       name=":@@:capacitor-share::release"
       jars="C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\d5233d4eab641d98fc3b1f328841afe8\transformed\out\jars\classes.jar;C:\Users\Jovo Mirkovic\.gradle\caches\8.13\transforms\d5233d4eab641d98fc3b1f328841afe8\transformed\out\jars\libs\R.jar"
       resolved="android:capacitor-share:unspecified"

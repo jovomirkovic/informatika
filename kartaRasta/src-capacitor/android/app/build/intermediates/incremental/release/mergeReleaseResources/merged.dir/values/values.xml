@@ -324,14 +324,14 @@
     <string name="call_notification_incoming_text">Incoming call</string>
     <string name="call_notification_ongoing_text">Ongoing call</string>
     <string name="call_notification_screening_text">Screening an incoming call</string>
-    <string name="custom_url_scheme">com.informatika.kartarastadeteta</string>
+    <string name="custom_url_scheme">com.informatika.kartaRasta</string>
     <string name="gcm_defaultSenderId" translatable="false">1095826578642</string>
     <string name="google_api_key" translatable="false">AIzaSyCTXKhIABahQpW9oslsB8JMzaRUhZYSHN0</string>
     <string name="google_app_id" translatable="false">1:1095826578642:android:1982425dc0b13ffdf6e10b</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCTXKhIABahQpW9oslsB8JMzaRUhZYSHN0</string>
     <string name="google_storage_bucket" translatable="false">prococah11.appspot.com</string>
     <string name="no_webview_text">This app requires a WebView to work</string>
-    <string name="package_name">com.informatika.kartarastadeteta</string>
+    <string name="package_name">com.informatika.kartaRasta</string>
     <string name="project_id" translatable="false">prococah11</string>
     <string name="search_menu_title">Search</string>
     <string name="status_bar_notification_info_overflow">999+</string>

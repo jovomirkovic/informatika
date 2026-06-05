@@ -1,7 +1,7 @@
-#Thu Jun 27 14:27:49 CEST 2024
-base.1=D\:\\Jovo Mirkovic\\Apps\\informatika\\kartaRasta\\src-capacitor\\android\\app\\build\\intermediates\\global_synthetics_dex\\release\\classes.dex
-path.1=classes.dex
+#Thu Jun 04 22:39:30 CEST 2026
 base.0=D\:\\Jovo Mirkovic\\Apps\\informatika\\kartaRasta\\src-capacitor\\android\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
-renamed.1=classes2.dex
-renamed.0=classes.dex
+base.1=D\:\\Jovo Mirkovic\\Apps\\informatika\\kartaRasta\\src-capacitor\\android\\app\\build\\intermediates\\global_synthetics_dex\\release\\mergeReleaseGlobalSynthetics\\classes.dex
 path.0=classes.dex
+path.1=classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex

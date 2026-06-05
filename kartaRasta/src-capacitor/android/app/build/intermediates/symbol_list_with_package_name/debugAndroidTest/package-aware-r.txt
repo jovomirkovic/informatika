@@ -1,3 +1,0 @@
-com.mkonekt.kartaRasta.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme
