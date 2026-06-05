@@ -254,6 +254,7 @@ export default defineComponent({
           ctx.emit("restore-backup");
           backupDialog.value = false;
           $q.notify({ message: t("general.restoreSuccess"), color: "positive", position: "top" });
+          router.push("/myChildren");
         } catch (err) {
           console.error("Import failed:", err);
           $q.notify({ message: t("general.restoreError"), color: "negative", position: "top" });
