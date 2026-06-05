@@ -251,7 +251,7 @@ export default defineComponent({
             : Array.isArray(parsed) ? parsed : null;
           if (!children) throw new Error("Invalid format");
           await Preferences.set({ key: "children", value: JSON.stringify(children) });
-          ctx.emit("restore-backup");
+          ctx.emit("restore-backup", children);
           backupDialog.value = false;
           $q.notify({ message: t("general.restoreSuccess"), color: "positive", position: "top" });
           router.push("/myChildren");

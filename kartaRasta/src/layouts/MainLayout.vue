@@ -12,7 +12,7 @@
         @select-child="selectChild"
         @add-height="addHeight"
         @remove-height="removeHeight"
-        @restore-backup="loadChildren"
+        @restore-backup="restoreFromBackup"
       />
     </q-page-container>
   </q-layout>
@@ -395,6 +395,10 @@ export default defineComponent({
     function selectChild(child) {
       selectedChild.value = child;
     }
+    const restoreFromBackup = (newChildren) => {
+      children.value = newChildren;
+    };
+
     function goTo(path) {
       router.push(path);
     }
@@ -409,6 +413,7 @@ export default defineComponent({
       resetujSelektovanoDete,
       addHeight,
       removeHeight,
+      restoreFromBackup,
     };
   },
 });
