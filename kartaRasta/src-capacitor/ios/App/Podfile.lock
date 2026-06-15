@@ -4,11 +4,23 @@ PODS:
   - CapacitorApp (6.0.1):
     - Capacitor
   - CapacitorCordova (6.1.2)
+  - CapacitorFilesystem (6.0.4):
+    - Capacitor
+  - CapacitorLocalNotifications (6.1.3):
+    - Capacitor
+  - CapacitorPreferences (6.0.4):
+    - Capacitor
+  - CapacitorShare (6.0.4):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorFilesystem (from `../../node_modules/@capacitor/filesystem`)"
+  - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
+  - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
+  - "CapacitorShare (from `../../node_modules/@capacitor/share`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -17,12 +29,24 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
+  CapacitorFilesystem:
+    :path: "../../node_modules/@capacitor/filesystem"
+  CapacitorLocalNotifications:
+    :path: "../../node_modules/@capacitor/local-notifications"
+  CapacitorPreferences:
+    :path: "../../node_modules/@capacitor/preferences"
+  CapacitorShare:
+    :path: "../../node_modules/@capacitor/share"
 
 SPEC CHECKSUMS:
   Capacitor: 679f9673fdf30597493a6362a5d5bf233d46abc2
   CapacitorApp: 0bc633b4eae40a1f32cd2834788fad3bc42da6a1
   CapacitorCordova: f48c89f96c319101cd2f0ce8a2b7449b5fb8b3dd
+  CapacitorFilesystem: 45e086a4396be03456c3d53d34b17c89169dd8cd
+  CapacitorLocalNotifications: b205182fab8947a0c412d56d72b709738a9d28e7
+  CapacitorPreferences: 877e40a640ee4311d4f7e334227a7b40052b9039
+  CapacitorShare: 44c43f74b95500ba7399c2ac21f0d55efc1a931e
 
-PODFILE CHECKSUM: 4233f5c5f414604460ff96d372542c311b0fb7a8
+PODFILE CHECKSUM: 7be5b14c474e69d33e919f3dfbfcf06380005510
 
 COCOAPODS: 1.15.2
