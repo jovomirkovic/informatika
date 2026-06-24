@@ -47,10 +47,12 @@ jobs:
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security unlock-keychain -p "temp123" $KEYCHAIN_PATH
           security import $CERT_PATH -P "$CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security set-key-partition-list -S apple-tool:,apple: -s -k "temp123" $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -s -k "temp123" $KEYCHAIN_PATH || true
           security list-keychain -d user -s $KEYCHAIN_PATH
           echo "--- Dostupni sertifikati ---"
           security find-identity -v -p codesigning $KEYCHAIN_PATH
+          echo "--- Sve u keychain ---"
+          security find-identity -v $KEYCHAIN_PATH
 
       - name: Install provisioning profile
         env:
